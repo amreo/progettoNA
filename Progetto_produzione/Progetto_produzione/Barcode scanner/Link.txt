@@ -1,0 +1,1 @@
+http://www.instructables.com/id/Arduino-PS2-Barcode-Scanner/step6/Upload-the-code/
