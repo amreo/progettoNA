@@ -1,3 +1,0 @@
-Porta 3306
-User: root password: PASSWORD
-User: arduino password: arduino4you
