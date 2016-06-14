@@ -12,7 +12,7 @@ Connector my_conn; //connettore verso server mysql per inviare comandi SQL
 char user[] = "arduino";
 char password[] = "arduino4you";
 
-char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');"
+char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
 
 void setup()
 {
