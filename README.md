@@ -1,4 +1,4 @@
-# progetto Nexapp
+# Progetto Nexapp
 
 Quando il sensore rileva una scatola Arduino legge il codice a barre su di essa 
 e chiede al database se lo conosce, se risponde si aumenta la quantità in 
