@@ -2,7 +2,7 @@
 #include "Ethernet.h"
 #include "sha1.h"
 #include "mysql.h"
-#define PIN_INPUT_IR = 5;
+#define PIN_INPUT_IR 5
 
 
 /*Nexapp project : When the sensor notice a box arduino modify the infrared value
@@ -24,8 +24,8 @@ IPAddress server_addr(11, 22, 33, 44); //TODO: impostare ip del server
 Connector my_conn; //connettore verso server mysql per inviare comandi SQL
 
 //Credenziali
-const char user[] = "arduino";
-const char password[] = "arduino4you";
+char user[] = "arduino";
+char password[] = "arduino4you";
 
 //Query da inviare
 const char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
@@ -105,7 +105,7 @@ void setup()
 }
 void loop()
 {
-	irState = digitalRead(outputIR);
+	irState = digitalRead(PIN_INPUT_IR);
  	if (irState == LOW)
  	{
  	
