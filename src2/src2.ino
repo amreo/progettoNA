@@ -211,13 +211,17 @@ void loop()
  	if (irState == LOW)
  	{
  		positionBox++;
+ 		//E' probabile che la variabile di riferimento now sia da indicare come tipo unsigned long dato che la 
+ 		//funzione millis() conta i millisecondi da quando arduino è acceso
 		now = millis();  //tempo da quando arduino è partito	 		
 		timeExpired = false;
 		
 		// legge il codice a barre
  	    	while (!readBarcode()) { 
 			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
-			//La scatole potrebbe non avere l'etichetta quindi errore	
+			//La scatole potrebbe non avere l'etichetta quindi errore
+			//TODO: Verificare il funzionamento dato che la funzione millis() non si resetta al ripartire del loop 
+			//nel caso sia così sarà da sostituire con un ciclo for
 			if (millis() - now >= TIMEOUT_READING_BARCODE)
 			{
 				timeExpired = true;
@@ -228,7 +232,7 @@ void loop()
 		//Se è stato superato il timeout invia un messaggio di errore
 		if (timeExpired)
 		{
-			sendLog(positionBox, "Scatola senza etichetta presubilmente");
+			sendLog(positionBox, "Scatola con codice insesistente o corrotto");
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
@@ -236,7 +240,7 @@ void loop()
 	 		// se il codice a barre è nel database la variabile found diventa true
 	 		/* found = true; */
  			
- 			//se il codice abarre non è sul database si mentiane la variabile found falsa			
+ 			//se il codice a barre non è sul database si mentiane la variabile found falsa			
 	 		if(found)
  			{
  				/*chiede al database il prodotto corrispondente al codice a barre*/
