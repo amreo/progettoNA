@@ -77,6 +77,40 @@ restart it to use the new library.
 
 Documentation
 -------------
-The documentation for the connector library is included with the source
-files. I have also written a couple of blogs about the connector that explain
-how to use it.
+The documentation for the connector library is a work in progress. In the
+meantime, I have written a couple of blogs about the connector that explain
+how to use it. Please refer to the blogs until such time there is sufficient
+documentation available.
+
+
+Dependency: SHA1 library
+------------------------
+The Connector/Arduino requires the SHA1 library from the following link.
+
+Note: The single file download already has this library with the changes
+described below already applied so there is nothing for you to do. However, if
+you cloned the connector library instead of using the download, please download
+the SHA1 library, install it, and read on for modifications needed to this
+library.
+
+http://code.google.com/p/cryptosuite/downloads/list
+
+You must download and install that library first and include it in your
+project. The following shows all of the library header files you need to
+include.
+
+#include <SPI.h>
+#include <Ethernet.h>
+#include <sha1.h>
+#include <avr/pgmspace.h>
+#include "mysql.h"
+
+NOTICE: The SHA1 library may not compile correctly in your IDE. A change is
+needed to ensure it will compile correctly. See the sha1.diff file for
+details.
+
+We also do not need some of the features in the SHA1 library and since it takes
+up space, we can eliminate them. If you would like to remove the unneeded code
+from the SHA1 library, apply the sha1_no256.diff file to remove them and
+delete the sha1256.h and sh1256.cpp files. This will save you about 2k of
+program space.

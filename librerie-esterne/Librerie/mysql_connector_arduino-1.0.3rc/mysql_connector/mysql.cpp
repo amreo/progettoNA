@@ -25,7 +25,6 @@
   Version 1.0.1b Updated by Dr. Charles A. Bell, February 2014.
   Version 1.0.2b Updated by Dr. Charles A. Bell, April 2014.
   Version 1.0.3rc Updated by Dr. Charles A. Bell, March 2015.
-  Version 1.0.4ga Updated by Dr. Charles A. Bell, July 2015.
 */
 #include "Arduino.h"
 #include "mysql.h"
@@ -1009,7 +1008,7 @@ boolean Connector::get_fields()
  * in the class.
  *
 */
-int Connector::get_row_values() {
+boolean Connector::get_row_values() {
   int res = 0;
   int offset = 0;
 
@@ -1017,7 +1016,7 @@ int Connector::get_row_values() {
   // are read.
   if (!columns_read) {
     print_message(READ_COLS, true);
-    return EOF_PACKET;
+    return true;
   }
   // Drop any row data already read
   free_row_buffer();
@@ -1030,7 +1029,10 @@ int Connector::get_row_values() {
       row.values[f] = read_string(&offset);
     }
   }
-  return res;
+  else {
+    return res;
+  }
+  return true;
 }
 
 #endif

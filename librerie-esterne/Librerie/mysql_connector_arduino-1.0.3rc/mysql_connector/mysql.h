@@ -30,7 +30,6 @@
   Version 1.0.1b Updated by Dr. Charles A. Bell, February 2014.
   Version 1.0.2b Updated by Dr. Charles A. Bell, April 2014.
   Version 1.0.3rc Updated by Dr. Charles A. Bell, March 2015.
-  Version 1.0.4ga Updated by Dr. Charles A. Bell, July 2015.
 */
 #ifndef mysql_h
 #define mysql_h
@@ -39,7 +38,8 @@
 #include <SPI.h>
 #include <Ethernet.h>
 
-//#define WITH_SELECT  // Uncomment this to use SELECT queries
+//#define WITH_SELECT  // Uncomment this for use without SELECT capability
+                       // to save space.
 
 //#define WITH_DEBUG   // Uncomment this for enabling debugging of messages
 
@@ -50,7 +50,7 @@
 #define EOF_PACKET    0xfe
 #define ERROR_PACKET  0xff
 #define MAX_FIELDS    0x20   // Maximum number of fields. Reduce to save memory. Default=32
-#define VERSION_STR   "1.0.4ga"
+#define VERSION_STR   "1.0.3rc"
 
 #if defined WITH_SELECT
 
@@ -157,7 +157,7 @@ class Connector
     int get_field(field_struct *fs);
     int get_row();
     boolean get_fields();
-    int get_row_values();
+    boolean get_row_values();
     column_names *query_result();
 #endif
 

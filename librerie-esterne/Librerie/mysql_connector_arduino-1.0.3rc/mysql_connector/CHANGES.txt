@@ -3,11 +3,6 @@ CHANGES
 This file contains a brief summary of changes made from previous versions of
 the connector.
 
-1.0.4ga - July 2015
---------------------
-* Fixed a defect in the get_next_row() method.
-* Added the reference manual. Yippee!
-
 1.0.3rc - March 2015
 --------------------
 * Code has been changed slightly to help with long latency issues over
