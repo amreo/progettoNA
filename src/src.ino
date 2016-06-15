@@ -258,13 +258,16 @@ void loop()
  	if (irState == LOW)
  	{
  		positionBox++;
+ 		//da verificare funzionamento corretto funzione millis()
 		now = millis();  //tempo da quando arduino è partito	 		
 		timeExpired = false;
 		
 		// legge il codice a barre
  	    	while (!readBarcode()) { 
 			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
-			//La scatole potrebbe non avere l'etichetta quindi errore	
+			//La scatole potrebbe non avere l'etichetta quindi errore
+			//TODO: Verificare il funzionamento dato che la funzione millis() non si resetta al ripartire del loop 
+			//nel caso sia così sarà da sostituire con un ciclo for
 			if (millis() - now >= TIMEOUT_READING_BARCODE)
 			{
 				timeExpired = true;
