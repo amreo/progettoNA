@@ -62,9 +62,16 @@ const char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info
 const char logQueryModel[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
 const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
 
+//Time out della lettura barcode
+const int TIMEOUT_LETTURA_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
+
+//Scatole viste
+int posizioneScatola = 0;
+
 
 //funzione per leggere il codice a barre
-int letturaBarcode(){
+//restituisce true se letto con successo
+boolean letturaBarcode(){
 	WAITLOW(PIN_CLOCK_BR);
   	WAITHIGH(PIN_CLOCK_BR);
   	unsigned char keycode = 0;
@@ -99,6 +106,8 @@ int letturaBarcode(){
     		lastScan = time;
     		for (int i = 0; i < 5; i++) buffer[i] = 0;
   	}
+
+	return scanCorrect;
 }
 
 
@@ -143,6 +152,10 @@ void sendLog(int posizione, char messaggio[])
 		Serial.println("Query fallita");
 		stabilisciConnessione();
 	};
+
+	Serial.print(posizione);
+	Serial.print(" ");
+	Serial.println(messaggio);
 }
 
 //Funzione che incrementa il numero di oggetti prodotti all'ID/Barcode
@@ -186,32 +199,48 @@ void loop()
 	irState = digitalRead(PIN_INPUT_IR);
  	if (irState == LOW)
  	{
+ 		posizioneScatola++;
+		int adesso = millis();  //tempo da quando arduino è partito	 		
+		bool tempoScaduto = false;
+		// legge il codice a barre
+ 	    	while (!letturaBarcode()) { 
+			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
+			//La scatole potrebbe non avere l'etichetta quindi errore	
+			if (millis() - adesso >= TIMEOUT_LETTURA_BARCODE)
+			{
+				tempoScaduto = true;
+				break;
+			}
+		}
+		
+		//Se è stato superato il timeout invia un messaggio di errore
+		if (tempoScaduto)
+		{
+			sendLog(posizioneScatola, "Scatola senza etichetta presubilmente");
+		} else {
+			// manda il codice a barre al database
+		 	// l'intero da mandare al database è scannedInt
+ 	
+	 		// se il codice a barre è nel database la variabile found diventa true
+	 		/* found = true; */
+ 	
+ 			//se il codice abarre non è sul database si mentiane la variabile found falsa
+ 	
+	 		if(found == true)
+ 			{
+ 				/*chiede al database il prodotto corrispondente al codice a barre*/
+ 				/*....................*/
+ 				
+ 				/*modifica il numero di pacchi prodotti*/
+ 				/*..................*/
  		
- 		// legge il codice a barre
- 	    	letturaBarcode();
- 	
-	    	// manda il codice a barre al database
-	 	// l'intero da mandare al database è scannedInt
- 	
- 		// se il codice a barre è nel database la variabile found diventa true
- 		/* found = true; */
- 	
- 		//se il codice abarre non è sul database si mentiane la variabile found falsa
- 	
-	 	if(found == true)
- 		{
- 			/*chiede al database il prodotto corrispondente al codice a barre*/
- 			/*....................*/
- 			
- 			/*modifica il numero di pacchi prodotti*/
- 			/*..................*/
- 		
- 		}
- 	
-	 	else
-	 	{
-	 		/*manda un errore*/
-	 		/*........................*/
-	 	}
-	 } 	
+ 			}	
+		 	else
+			{
+	 			/*manda un errore*/
+	 			/*........................*/
+			}
+
+		}
+	} 	
 }
