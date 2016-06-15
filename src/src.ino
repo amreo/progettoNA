@@ -1,10 +1,8 @@
-/*Nexapp project : When the sensor notice a box arduino modify the infrared value
-in true then the barcode scanner read the barcode on the box, arduino send it to
-the MySQL database that compare it with the barcodes saved in its memory, if the 
-barcode is valid arduino modify the value of producted items on the database; there
-are different kinds of products so every barcode is relative to a product.
-If the sensor notice a box but the barcode is not readable or isn't in the database
-the program will notify an error*/
+/*Progetto Nexapp:
+Quando il sensore rileva una scatola Arduino legge il codice a barre su di essa
+e chiede al database se lo conosce, se risponde si aumenta la quantità in magazzino
+del prodotto corrispondente al codice a barre, se invece il codice a barre non viene
+trovato nel database arduino manda un segnale di errore che sarà poi elaborato*/
 
 
 #include "SPI.h"
