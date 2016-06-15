@@ -215,14 +215,14 @@ bool checkProduct(int barcode)
 		Serial.println(barcode);
 		//Conta il numero di righe
 		int nRighe = 1; //TODO: mettero 0		
-		//my_conn.get_columns();
-		//row_values *row = NULL;
-		//while ((row = my_conn.get_next_row()) != NULL)
-		//{
-		//	nRighe++;		 	
-		//	my_conn.free_row_buffer();
-		//}
-		//my_conn.free_columns_buffer();		
+		my_conn.get_columns();
+		row_values *row = NULL;
+		while ((row = my_conn.get_next_row()) != NULL)
+		{
+			nRighe++;		 	
+			my_conn.free_row_buffer();
+		}
+		my_conn.free_columns_buffer();		
 		Serial.print("prodotto: ");
 		Serial.print(barcode);
 		Serial.print(" R=");
