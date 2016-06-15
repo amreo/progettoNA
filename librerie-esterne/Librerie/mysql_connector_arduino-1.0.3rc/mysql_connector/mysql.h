@@ -38,7 +38,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 
-//#define WITH_SELECT  // Uncomment this for use without SELECT capability
+#define WITH_SELECT  // Uncomment this for use without SELECT capability
                        // to save space.
 
 //#define WITH_DEBUG   // Uncomment this for enabling debugging of messages
