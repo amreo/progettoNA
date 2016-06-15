@@ -15,6 +15,7 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #define WAITLOW(pin) while (digitalRead(pin) != 0);
 #define WAITHIGH(pin) while (digitalRead(pin) != 1);
 
+
 int dataPin = 2;
 int clockPin = 3;
 static volatile uint8_t head;
