@@ -23,7 +23,7 @@ static volatile uint8_t head;
 static volatile uint8_t buffer[BUFFER_SIZE];
 unsigned long lastScan = 0;
 boolean scanCorrect = true;
-int scannedInt = 0;
+long int scannedInt = 0;
 byte keymap[] = {0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, '`', 0,
         0, 0 /*Lalt*/, 0 /*Lshift*/, 0, 0 /*Lctrl*/, 'q', '1', 0,
@@ -64,10 +64,11 @@ const char checkProductQueryModel[] = "SELECT ID_prodotto FROM dati_produzione.o
 
 //Time out della lettura barcode
 const int TIMEOUT_LETTURA_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
+const int MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
 
 int adesso;  //tempo da quando arduino è partito	 		
 bool tempoScaduto = false; //true se il tempo di lettura barcode è scaduto
-
+bool found;
 //Scatole viste
 int posizioneScatola = 0;
 
@@ -118,26 +119,34 @@ boolean letturaBarcode(){
 //Funzione che instaura la connessione con il server mysql
 void stabilisciConnessione()
 {
-	//si connette al database
-	if (my_conn.mysql_connect(server_addr, 3306, user, password)) 
+	int retry = 0;	
+	bool success = false;
+	//Ripete la connessione al massimo MAX_RETRY_CONNECT
+	while (retry < MAX_RETRY_CONNECT || success)
 	{
-		Serial.println("OK!");
-		//invia una query di test	
-		if (my_conn.cmd_query(logQuery))
+		retry++;
+		//si connette al database
+		if (my_conn.mysql_connect(server_addr, 3306, user, password)) 
 		{
-			Serial.println("Query inviata con successo");
-		} else {
-			Serial.println("Query fallita");
-		};
-	} 
-	else 
-	{	 	
+			Serial.println("OK!");
+			//invia una query di test	
+			if (my_conn.cmd_query(logQuery))
+			{
+				Serial.println("Query inviata con successo");
+				success = true;							
+			} else {
+				Serial.println("Query fallita");
+			};
+		} 
+	}
+	
+	if (!success)
+	{
 		//blocca l'arduino
 		while (true) {
 			Serial.println("Fallito.");
 		}
 	}
-
 }
 
 //Funzione che invia un messaggio di log al server mysql
@@ -193,15 +202,15 @@ bool checkProduct(int barcode)
 		Serial.print("Query inviata con successo: ");
 		Serial.println(barcode);
 		//Conta il numero di righe
-		int nRighe = 0;		
-		my_conn.get_columns();
-		row_values *row = NULL;
-		while ((row = my_conn.get_next_row()) != NULL)
-		{
-			nRighe++;		 	
-			my_conn.free_row_buffer();
-		}
-		my_conn.free_columns_buffer();		
+		int nRighe = 1; //TODO: mettero 0		
+		//my_conn.get_columns();
+		//row_values *row = NULL;
+		//while ((row = my_conn.get_next_row()) != NULL)
+		//{
+		//	nRighe++;		 	
+		//	my_conn.free_row_buffer();
+		//}
+		//my_conn.free_columns_buffer();		
 		Serial.print("prodotto: ");
 		Serial.print(barcode);
 		Serial.print(" R=");
