@@ -57,10 +57,10 @@ char user[] = "arduino";
 char password[] = "arduino4you";
 
 //Query da inviare
-const char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
-const char logQueryModel[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
-const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
-const char checkProductQueryModel[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
+const char LOG_QUERY[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
+const char LOG_QUERY_MODEL[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
+const char UPDATE_QUERY_MODEL[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
+const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
 
 //Time out della lettura barcode
 const int TIMEOUT_LETTURA_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
@@ -130,7 +130,7 @@ void stabilisciConnessione()
 		{
 			Serial.println("OK!");
 			//invia una query di test	
-			if (my_conn.cmd_query(logQuery))
+			if (my_conn.cmd_query(LOG_QUERY))
 			{
 				Serial.println("Query inviata con successo");
 				success = true;							
@@ -155,7 +155,7 @@ void sendLog(int posizione, char messaggio[])
 	//stringa temporanea
 	char query[128]; //Lunghezza max della query
 	//sostituisce %d e %s con la relativa parte		
-	sprintf(query, logQueryModel, posizione, messaggio);
+	sprintf(query, LOG_QUERY_MODEL, posizione, messaggio);
 	//verifica che è connesso per inviare la query
 	if (!my_conn.is_connected())
 		stabilisciConnessione();
@@ -180,7 +180,7 @@ void sendProductUpdate(int barcode)
 	//stringa temporanea
 	char query[128]; //Lunghezza max della query
 	//compone la query
-	sprintf(query, updateQueryModel, barcode);
+	sprintf(query, UPDATE_QUERY_MODEL, barcode);
 	//verifica che è connesso per inviare la query
 	if (!my_conn.is_connected())
 		stabilisciConnessione();
@@ -203,7 +203,7 @@ bool checkProduct(int barcode)
 	//stringa temporanea
 	char query[128]; //Lunghezza max della query
 	//compone la query
-	sprintf(query, checkProductQueryModel, barcode);
+	sprintf(query, CHECK_PRODUCT_QUERY_MODEL, barcode);
 	//verifica che è connesso per inviare la query
 	if (!my_conn.is_connected())
 		stabilisciConnessione();
@@ -214,7 +214,7 @@ bool checkProduct(int barcode)
 		Serial.print("Query inviata con successo: ");
 		Serial.println(barcode);
 		//Conta il numero di righe
-		int nRighe = 1; //TODO: mettero 0		
+		int nRighe = 0; //TODO: mettero 0		
 		my_conn.get_columns();
 		row_values *row = NULL;
 		while ((row = my_conn.get_next_row()) != NULL)
