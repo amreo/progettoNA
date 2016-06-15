@@ -156,13 +156,17 @@ void sendLog(int posizione, char messaggio[])
 	char query[128]; //Lunghezza max della query
 	//sostituisce %d e %s con la relativa parte		
 	sprintf(query, logQueryModel, posizione, messaggio);
+	//verifica che è connesso per inviare la query
+	if (!my_conn.is_connected())
+		stabilisciConnessione();
+	//SPERIAMO che non si disconnetta qui <--
 	//invia stringa		
 	if (my_conn.cmd_query(query))
 	{
 		Serial.println("Query inviata con successo");
 	} else {
 		Serial.println("Query fallita");
-		stabilisciConnessione();
+	
 	};
 
 	Serial.print(posizione);
@@ -177,6 +181,10 @@ void sendProductUpdate(int barcode)
 	char query[128]; //Lunghezza max della query
 	//compone la query
 	sprintf(query, updateQueryModel, barcode);
+	//verifica che è connesso per inviare la query
+	if (!my_conn.is_connected())
+		stabilisciConnessione();
+	//SPERIAMO che non si disconnetta qui <--
 	//la invia al database
 	if (my_conn.cmd_query(query))
 	{
@@ -196,6 +204,10 @@ bool checkProduct(int barcode)
 	char query[128]; //Lunghezza max della query
 	//compone la query
 	sprintf(query, checkProductQueryModel, barcode);
+	//verifica che è connesso per inviare la query
+	if (!my_conn.is_connected())
+		stabilisciConnessione();
+	//SPERIAMO che non si disconnetta qui <--
 	//la invia al database
 	if (my_conn.cmd_query(query))
 	{
