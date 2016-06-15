@@ -48,9 +48,9 @@ byte irState;
 
 byte mac[] = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 }; //TODO: impostare mac address corretto
 IPAddress ip(11,22,33,44); //TODO: impostare ip di arduino
-IPAddress server_addr(11, 22, 33, 44); //TODO: impostare ip del server
+IPAddress serverIP(11, 22, 33, 44); //TODO: impostare ip del server
 
-Connector my_conn; //connettore verso server mysql per inviare comandi SQL
+Connector myConn; //connettore verso server mysql per inviare comandi SQL
 
 //Credenziali
 char user[] = "arduino";
@@ -63,19 +63,19 @@ const char UPDATE_QUERY_MODEL[] = "UPDATE dati_produzione.output_catena SET numP
 const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
 
 //Time out della lettura barcode
-const int TIMEOUT_LETTURA_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
+const int TIMEOUT_READING_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
 const int MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
 
-int adesso;  //tempo da quando arduino è partito	 		
-bool tempoScaduto = false; //true se il tempo di lettura barcode è scaduto
+int now;  //tempo da quando arduino è partito	 		
+bool timeExpired = false; //true se il tempo di lettura barcode è scaduto
 bool found;
 //Scatole viste
-int posizioneScatola = 0;
+int positionBox = 0;
 
 
 //funzione per leggere il codice a barre
 //restituisce true se letto con successo
-boolean letturaBarcode(){
+boolean readBarcode(){
 	WAITLOW(PIN_CLOCK_BR);
   	WAITHIGH(PIN_CLOCK_BR);
   	unsigned char keycode = 0;
@@ -117,7 +117,7 @@ boolean letturaBarcode(){
 
 
 //Funzione che instaura la connessione con il server mysql
-void stabilisciConnessione()
+void connect()
 {
 	int retry = 0;	
 	bool success = false;
@@ -126,11 +126,11 @@ void stabilisciConnessione()
 	{
 		retry++;
 		//si connette al database
-		if (my_conn.mysql_connect(server_addr, 3306, user, password)) 
+		if (myConn.mysql_connect(serverIP, 3306, user, password)) 
 		{
 			Serial.println("OK!");
 			//invia una query di test	
-			if (my_conn.cmd_query(LOG_QUERY))
+			if (myConn.cmd_query(LOG_QUERY))
 			{
 				Serial.println("Query inviata con successo");
 				success = true;							
@@ -150,18 +150,18 @@ void stabilisciConnessione()
 }
 
 //Funzione che invia un messaggio di log al server mysql
-void sendLog(int posizione, char messaggio[])
+void sendLog(int position, char msg[])
 {
 	//stringa temporanea
 	char query[128]; //Lunghezza max della query
 	//sostituisce %d e %s con la relativa parte		
-	sprintf(query, LOG_QUERY_MODEL, posizione, messaggio);
+	sprintf(query, LOG_QUERY_MODEL, position, msg);
 	//verifica che è connesso per inviare la query
-	if (!my_conn.is_connected())
-		stabilisciConnessione();
+	if (!myConn.is_connected())
+		connect();
 	//SPERIAMO che non si disconnetta qui <--
 	//invia stringa		
-	if (my_conn.cmd_query(query))
+	if (myConn.cmd_query(query))
 	{
 		Serial.println("Query inviata con successo");
 	} else {
@@ -169,9 +169,9 @@ void sendLog(int posizione, char messaggio[])
 	
 	};
 
-	Serial.print(posizione);
+	Serial.print(position);
 	Serial.print(" ");
-	Serial.println(messaggio);
+	Serial.println(msg);
 }
 
 //Funzione che incrementa il numero di oggetti prodotti all'ID/Barcode
@@ -182,17 +182,17 @@ void sendProductUpdate(int barcode)
 	//compone la query
 	sprintf(query, UPDATE_QUERY_MODEL, barcode);
 	//verifica che è connesso per inviare la query
-	if (!my_conn.is_connected())
-		stabilisciConnessione();
+	if (!myConn.is_connected())
+		connect();
 	//SPERIAMO che non si disconnetta qui <--
 	//la invia al database
-	if (my_conn.cmd_query(query))
+	if (myConn.cmd_query(query))
 	{
 		Serial.print("Query inviata con successo: ");
 		Serial.println(barcode);
 	} else {
 		Serial.println("Query fallita");
-		stabilisciConnessione();
+		connect();
 	};
 }
 
@@ -205,24 +205,24 @@ bool checkProduct(int barcode)
 	//compone la query
 	sprintf(query, CHECK_PRODUCT_QUERY_MODEL, barcode);
 	//verifica che è connesso per inviare la query
-	if (!my_conn.is_connected())
-		stabilisciConnessione();
+	if (!myConn.is_connected())
+		connect();
 	//SPERIAMO che non si disconnetta qui <--
 	//la invia al database
-	if (my_conn.cmd_query(query))
+	if (myConn.cmd_query(query))
 	{
 		Serial.print("Query inviata con successo: ");
 		Serial.println(barcode);
 		//Conta il numero di righe
-		int nRighe = 0; //TODO: mettero 0		
-		my_conn.get_columns();
+		int nRighe = 0;	
+		myConn.get_columns();
 		row_values *row = NULL;
-		while ((row = my_conn.get_next_row()) != NULL)
+		while ((row = myConn.get_next_row()) != NULL)
 		{
 			nRighe++;		 	
-			my_conn.free_row_buffer();
+			myConn.free_row_buffer();
 		}
-		my_conn.free_columns_buffer();		
+		myConn.free_columns_buffer();		
 		Serial.print("prodotto: ");
 		Serial.print(barcode);
 		Serial.print(" R=");
@@ -230,7 +230,7 @@ bool checkProduct(int barcode)
 		return nRighe == 1? true : false;
 	} else {
 		Serial.println("Query fallita");
-		stabilisciConnessione();
+		connect();
 	};
 }
 
@@ -241,7 +241,7 @@ void setup()
     	pinMode(PIN_DATA_BR, INPUT_PULLUP);
 	
 	//messaggio seriale per varificare il corretto settaggio del barcode
-	 Serial.println("Barcode settato correttamente");
+	Serial.println("Barcode settato correttamente");
 	
 	pinMode(PIN_INPUT_IR, INPUT);
 	Serial.begin(9600);
@@ -250,32 +250,32 @@ void setup()
 	Serial.println(Ethernet.localIP());
 
 	Serial.println("Connettendo...");
-	stabilisciConnessione();
+	connect();
 }
 void loop()
 {
 	irState = digitalRead(PIN_INPUT_IR);
  	if (irState == LOW)
  	{
- 		posizioneScatola++;
-		adesso = millis();  //tempo da quando arduino è partito	 		
-		tempoScaduto = false;
+ 		positionBox++;
+		now = millis();  //tempo da quando arduino è partito	 		
+		timeExpired = false;
 		
 		// legge il codice a barre
- 	    	while (!letturaBarcode()) { 
+ 	    	while (!readBarcode()) { 
 			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
 			//La scatole potrebbe non avere l'etichetta quindi errore	
-			if (millis() - adesso >= TIMEOUT_LETTURA_BARCODE)
+			if (millis() - now >= TIMEOUT_READING_BARCODE)
 			{
-				tempoScaduto = true;
+				timeExpired = true;
 				break;
 			}
 		}
 		
 		//Se è stato superato il timeout invia un messaggio di errore
-		if (tempoScaduto)
+		if (timeExpired)
 		{
-			sendLog(posizioneScatola, "Scatola senza etichetta presubilmente");
+			sendLog(positionBox, "Scatola senza etichetta presubilmente");
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
@@ -293,10 +293,10 @@ void loop()
 		 	else
 			{
 	 			/*manda un errore*/
-	 			/*........................*/
-				sendLog(posizioneScatola, "Scatola con barcode non registrato");
+				sendLog(positionBox, "Scatola con barcode non registrato");
 			}
 
 		}
+		WAITHIGH(PIN_INPUT_IR);		
 	} 	
 }
