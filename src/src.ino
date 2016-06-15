@@ -12,6 +12,7 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #define PIN_CLOCK_BR 3
 #define PIN_DATA_BR 2
 
+
 //Macro per aspettare che il pin rimane in uno stato
 #define WAITLOW(pin) while (digitalRead(pin) != 0);
 #define WAITHIGH(pin) while (digitalRead(pin) != 1);
@@ -64,41 +65,40 @@ const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numPro
 
 //funzione per leggere il codice a barre
 int letturaBarcode(){
-	 WAITLOW(PIN_CLOCK_BR);
-  WAITHIGH(PIN_CLOCK_BR);
-  unsigned char keycode = 0;
-  for (uint8_t i = 0; i < 8; i++) {
-    WAITLOW(PIN_CLOCK_BR);
-    keycode >>= 1;
-    if (digitalRead(PIN_DATA_BR)) {
-      keycode |= 0x80;
-    }
-    WAITHIGH(PIN_CLOCK_BR);
-  }
-  buffer[head++] = keycode;
-  WAITLOW(PIN_CLOCK_BR);
-  WAITHIGH(PIN_CLOCK_BR);
-  WAITLOW(PIN_CLOCK_BR);
-  WAITHIGH(PIN_CLOCK_BR);
-  unsigned long time = millis();
-  scanCorrect = true;
-  if (head == 5 && lastScan - time > 2000) {
-    scannedInt = keymap[buffer[3]] - '0';
-    if (scannedInt > 0) {
-      Serial.println();
-      Serial.println("***** Detected Scan *******");
+	WAITLOW(PIN_CLOCK_BR);
+  	WAITHIGH(PIN_CLOCK_BR);
+  	unsigned char keycode = 0;
+  	for (uint8_t i = 0; i < 8; i++) {
+		WAITLOW(PIN_CLOCK_BR);
+  	  	keycode >>= 1;
+  	  	if (digitalRead(PIN_DATA_BR)) {
+      			keycode |= 0x80;
+    	  	}
+		WAITHIGH(PIN_CLOCK_BR);
+  	}
+  	buffer[head++] = keycode;
+  	WAITLOW(PIN_CLOCK_BR);
+ 	WAITHIGH(PIN_CLOCK_BR);
+  	WAITLOW(PIN_CLOCK_BR);
+  	WAITHIGH(PIN_CLOCK_BR);
+  	unsigned long time = millis();
+  	scanCorrect = true;
+  	if (head == 5 && lastScan - time > 2000) {
+    		scannedInt = keymap[buffer[3]] - '0';
+    		if (scannedInt > 0) {
+      			Serial.println();
+      			Serial.println("***** Detected Scan *******");
       
-      /*scanned int è il codice da mandare al database*/
-      Serial.println(scannedInt);
-      Serial.println("*******");
-    } else {
-      scanCorrect = false;
-    }
-    head = 0;
-    lastScan = time;
-    for (int i = 0; i < 5; i++) buffer[i] = 0;
-  }
-	
+      			/*scanned int è il codice da mandare al database*/
+      			Serial.println(scannedInt);
+      			Serial.println("*******");
+    		} else {
+      			scanCorrect = false;
+    		}
+    		head = 0;
+    		lastScan = time;
+    		for (int i = 0; i < 5; i++) buffer[i] = 0;
+  	}
 }
 
 
