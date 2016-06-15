@@ -236,11 +236,10 @@ void loop()
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
+			// se il codice a barre è nel database la variabile found diventa true			
 			found = checkProduct(scannedInt);			 	
-	 		// se il codice a barre è nel database la variabile found diventa true
-	 		/* found = true; */
- 			
- 			//se il codice a barre non è sul database si mentiane la variabile found falsa			
+
+ 			//se il codice a barre non è sul database la variabile found è falsa				
 	 		if(found)
  			{
  				/*chiede al database il prodotto corrispondente al codice a barre*/
