@@ -11,6 +11,36 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #include "mysql.h"
 #define PIN_INPUT_IR 5
 
+//dichiarazione variabili per leggere il codice a barre sulla scatola
+#define WAITLOW(pin) while (digitalRead(pin) != 0);
+#define WAITHIGH(pin) while (digitalRead(pin) != 1);
+
+int dataPin = 2;
+int clockPin = 3;
+static volatile uint8_t head;
+#define BUFFER_SIZE 45
+static volatile uint8_t buffer[BUFFER_SIZE];
+unsigned long lastScan = 0;
+boolean scanCorrect = true;
+int scannedInt = 0;
+byte keymap[] = {0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, '`', 0,
+        0, 0 /*Lalt*/, 0 /*Lshift*/, 0, 0 /*Lctrl*/, 'q', '1', 0,
+        0, 0, 'z', 's', 'a', 'w', '2', 0,
+        0, 'c', 'x', 'd', 'e', '4', '3', 0,
+        0, ' ', 'v', 'f', 't', 'r', '5', 0,
+        0, 'n', 'b', 'h', 'g', 'y', '6', 0,
+        0, 0, 'm', 'j', 'u', '7', '8', 0,
+        0, ',', 'k', 'i', 'o', '0', '9', 0,
+        0, '.', '/', 'l', ';', 'p', '-', 0,
+        0, 0, '\'', 0, '[', '=', 0, 0,
+        0 /*CapsLock*/, 0 /*Rshift*/, 0 /*Enter*/, ']', 0, '\\', 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, '1', 0, '4', '7', 0, 0, 0,
+        '0', '.', '2', '5', '6', '8', 0, 0 /*NumLock*/,
+        0, '+', '3', '-', '*', '9', 0, 0,
+        0, 0, 0, 0 };
+
 
 //variabile per leggere il check di ritorno del database
 boolean found = false; 
@@ -30,6 +60,48 @@ char password[] = "arduino4you";
 const char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
 const char logQueryModel[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
 const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
+
+
+//funzione per leggere il codice a barre
+void letturaBarcode(){
+	 WAITLOW(clockPin);
+  WAITHIGH(clockPin);
+  unsigned char keycode = 0;
+  for (uint8_t i = 0; i < 8; i++) {
+    WAITLOW(clockPin);
+    keycode >>= 1;
+    if (digitalRead(dataPin)) {
+      keycode |= 0x80;
+    }
+    WAITHIGH(clockPin);
+  }
+  buffer[head++] = keycode;
+  WAITLOW(clockPin);
+  WAITHIGH(clockPin);
+  WAITLOW(clockPin);
+  WAITHIGH(clockPin);
+  unsigned long time = millis();
+  scanCorrect = true;
+  if (head == 5 && lastScan - time > 2000) {
+    scannedInt = keymap[buffer[3]] - '0';
+    if (scannedInt > 0) {
+      Serial.println();
+      Serial.println("***** Detected Scan *******");
+      
+      /*scanned int è il codice da mandare al database*/
+      Serial.println(scannedInt);
+      Serial.println("*******");
+    } else {
+      scanCorrect = false;
+    }
+    head = 0;
+    lastScan = time;
+    for (int i = 0; i < 5; i++) buffer[i] = 0;
+  }
+	
+}
+
+
 
 //Funzione che instaura la connessione con il server mysql
 void stabilisciConnessione()
@@ -93,6 +165,13 @@ void sendProductUpdate(int barcode)
 
 void setup()
 {
+	//pin di collegamento del barcode reader
+	pinMode(clockPin, INPUT_PULLUP);
+    pinMode(dataPin, INPUT_PULLUP);
+	
+	//messaggio seriale per varificare il corretto settaggio del barcode
+	 Serial.println("Barcode settato correttamente");
+	
 	pinMode(PIN_INPUT_IR, INPUT);
 	Serial.begin(9600);
 	Ethernet.begin(mac, ip);
@@ -108,30 +187,30 @@ void loop()
  	if (irState == LOW)
  	{
  	
- 		// read barcode by the scanner
- 		/*........................*/
+ 		// legge il codice a barre
+ 	    letturaBarcode();
  	
-	    	// send barcode to the database
-	 	/*........................*/
+	    	// manda il codice a barre al database
+	 	// l'intero da mandare al database è scannedInt
  	
- 		// if the barcode is in the database found variable becomes true
+ 		// se il codice a barre è nel database la variabile found diventa true
  		/* found = true; */
  	
- 		//if the barcode hasn't been found the found variable keep false
+ 		//se il codice abarre non è sul database si mentiane la variabile found falsa
  	
 	 	if(found == true)
  		{
- 			/*ask to the database the kind of product corresponding to the barcode*/
+ 			/*chiede al database il prodotto corrispondente al codice a barre*/
  			/*....................*/
  			
- 			/*modify the number of items produced*/
+ 			/*modifica il numero di pacchi prodotti*/
  			/*..................*/
  		
  		}
  	
 	 	else
 	 	{
-	 		/*send an error*/
+	 		/*manda un errore*/
 	 		/*........................*/
 	 	}
 	 } 	
