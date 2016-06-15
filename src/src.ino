@@ -4,7 +4,6 @@ e chiede al database se lo conosce, se risponde si aumenta la quantità in magaz
 del prodotto corrispondente al codice a barre, se invece il codice a barre non viene
 trovato nel database arduino manda un segnale di errore che sarà poi elaborato*/
 
-
 #include "SPI.h"
 #include "Ethernet.h"
 #include "sha1.h"
@@ -16,8 +15,8 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #define WAITHIGH(pin) while (digitalRead(pin) != 1);
 
 
-int dataPin = 2;
-int clockPin = 3;
+const int dataPin = 2;
+const int clockPin = 3;
 static volatile uint8_t head;
 #define BUFFER_SIZE 45
 static volatile uint8_t buffer[BUFFER_SIZE];
@@ -168,7 +167,7 @@ void setup()
 {
 	//pin di collegamento del barcode reader
 	pinMode(clockPin, INPUT_PULLUP);
-    pinMode(dataPin, INPUT_PULLUP);
+    	pinMode(dataPin, INPUT_PULLUP);
 	
 	//messaggio seriale per varificare il corretto settaggio del barcode
 	 Serial.println("Barcode settato correttamente");
