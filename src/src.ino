@@ -14,7 +14,7 @@ the program will notify an error*/
 #define PIN_INPUT_IR 5
 
 
-//variable for read the return of the database
+//variabile per leggere il check di ritorno del database
 boolean found = false; 
 byte irState;
 
