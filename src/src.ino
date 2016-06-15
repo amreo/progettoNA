@@ -9,14 +9,14 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #include "sha1.h"
 #include "mysql.h"
 #define PIN_INPUT_IR 5
+#define PIN_CLOCK_BR 3
+#define PIN_DATA_BR 2
 
-//dichiarazione variabili per leggere il codice a barre sulla scatola
+//Macro per aspettare che il pin rimane in uno stato
 #define WAITLOW(pin) while (digitalRead(pin) != 0);
 #define WAITHIGH(pin) while (digitalRead(pin) != 1);
 
-
-const int dataPin = 2;
-const int clockPin = 3;
+//dichiarazione variabili per leggere il codice a barre sulla scatola
 static volatile uint8_t head;
 #define BUFFER_SIZE 45
 static volatile uint8_t buffer[BUFFER_SIZE];
@@ -63,23 +63,23 @@ const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numPro
 
 
 //funzione per leggere il codice a barre
-void letturaBarcode(){
-	 WAITLOW(clockPin);
-  WAITHIGH(clockPin);
+int letturaBarcode(){
+	 WAITLOW(PIN_CLOCK_BR);
+  WAITHIGH(PIN_CLOCK_BR);
   unsigned char keycode = 0;
   for (uint8_t i = 0; i < 8; i++) {
-    WAITLOW(clockPin);
+    WAITLOW(PIN_CLOCK_BR);
     keycode >>= 1;
-    if (digitalRead(dataPin)) {
+    if (digitalRead(PIN_DATA_BR)) {
       keycode |= 0x80;
     }
-    WAITHIGH(clockPin);
+    WAITHIGH(PIN_CLOCK_BR);
   }
   buffer[head++] = keycode;
-  WAITLOW(clockPin);
-  WAITHIGH(clockPin);
-  WAITLOW(clockPin);
-  WAITHIGH(clockPin);
+  WAITLOW(PIN_CLOCK_BR);
+  WAITHIGH(PIN_CLOCK_BR);
+  WAITLOW(PIN_CLOCK_BR);
+  WAITHIGH(PIN_CLOCK_BR);
   unsigned long time = millis();
   scanCorrect = true;
   if (head == 5 && lastScan - time > 2000) {
@@ -166,8 +166,8 @@ void sendProductUpdate(int barcode)
 void setup()
 {
 	//pin di collegamento del barcode reader
-	pinMode(clockPin, INPUT_PULLUP);
-    	pinMode(dataPin, INPUT_PULLUP);
+	pinMode(PIN_CLOCK_BR, INPUT_PULLUP);
+    	pinMode(PIN_DATA_BR, INPUT_PULLUP);
 	
 	//messaggio seriale per varificare il corretto settaggio del barcode
 	 Serial.println("Barcode settato correttamente");
@@ -186,9 +186,9 @@ void loop()
 	irState = digitalRead(PIN_INPUT_IR);
  	if (irState == LOW)
  	{
- 	
+ 		
  		// legge il codice a barre
- 	    letturaBarcode();
+ 	    	letturaBarcode();
  	
 	    	// manda il codice a barre al database
 	 	// l'intero da mandare al database è scannedInt
