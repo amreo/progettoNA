@@ -44,7 +44,6 @@ byte keymap[] = {0, 0, 0, 0, 0, 0, 0, 0,
 
 
 //variabile per leggere il check di ritorno del database
-boolean found = false; 
 byte irState;
 
 byte mac[] = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 }; //TODO: impostare mac address corretto
@@ -61,9 +60,13 @@ char password[] = "arduino4you";
 const char logQuery[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
 const char logQueryModel[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
 const char updateQueryModel[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
+const char checkProductQueryModel[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
 
 //Time out della lettura barcode
 const int TIMEOUT_LETTURA_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
+
+int adesso;  //tempo da quando arduino è partito	 		
+bool tempoScaduto = false; //true se il tempo di lettura barcode è scaduto
 
 //Scatole viste
 int posizioneScatola = 0;
@@ -176,6 +179,40 @@ void sendProductUpdate(int barcode)
 	};
 }
 
+
+//Restituisce true se il prodotto esiste nel database
+bool checkProduct(int barcode)
+{
+	//stringa temporanea
+	char query[128]; //Lunghezza max della query
+	//compone la query
+	sprintf(query, checkProductQueryModel, barcode);
+	//la invia al database
+	if (my_conn.cmd_query(query))
+	{
+		Serial.print("Query inviata con successo: ");
+		Serial.println(barcode);
+		//Conta il numero di righe
+		int nRighe = 0;		
+		my_conn.get_columns();
+		row_values *row = NULL;
+		while ((row = my_conn.get_next_row()) != NULL)
+		{
+			nRighe++;		 	
+			my_conn.free_row_buffer();
+		}
+		my_conn.free_columns_buffer();		
+		Serial.print("prodotto: ");
+		Serial.print(barcode);
+		Serial.print(" R=");
+		Serial.println(nRighe);			
+		return nRighe == 1? true : false;
+	} else {
+		Serial.println("Query fallita");
+		stabilisciConnessione();
+	};
+}
+
 void setup()
 {
 	//pin di collegamento del barcode reader
@@ -200,8 +237,9 @@ void loop()
  	if (irState == LOW)
  	{
  		posizioneScatola++;
-		int adesso = millis();  //tempo da quando arduino è partito	 		
-		bool tempoScaduto = false;
+		adesso = millis();  //tempo da quando arduino è partito	 		
+		tempoScaduto = false;
+		
 		// legge il codice a barre
  	    	while (!letturaBarcode()) { 
 			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
@@ -220,25 +258,22 @@ void loop()
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
- 	
+			found = checkProduct(scannedInt);			 	
 	 		// se il codice a barre è nel database la variabile found diventa true
 	 		/* found = true; */
- 	
- 			//se il codice abarre non è sul database si mentiane la variabile found falsa
- 	
-	 		if(found == true)
+ 			
+ 			//se il codice abarre non è sul database si mentiane la variabile found falsa			
+	 		if(found)
  			{
  				/*chiede al database il prodotto corrispondente al codice a barre*/
- 				/*....................*/
- 				
- 				/*modifica il numero di pacchi prodotti*/
- 				/*..................*/
+				sendProductUpdate(scannedInt);
  		
  			}	
 		 	else
 			{
 	 			/*manda un errore*/
 	 			/*........................*/
+				sendLog(posizioneScatola, "Scatola con barcode non registrato");
 			}
 
 		}
