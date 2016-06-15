@@ -192,10 +192,6 @@ bool checkProduct(int barcode)
 
 void setup()
 {
-	//pin di collegamento del barcode reader
-	pinMode(PIN_CLOCK_BR, INPUT_PULLUP);
-    	pinMode(PIN_DATA_BR, INPUT_PULLUP);
-	
 	//messaggio seriale per varificare il corretto settaggio del barcode
 	Serial.println("Barcode settato correttamente");
 	
