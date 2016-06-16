@@ -41,6 +41,7 @@ void setup() {
 void loop() {
   WAITLOW(clockPin);
   WAITHIGH(clockPin);
+  Serial.println("qui");
   unsigned char keycode = 0;
   for (uint8_t i = 0; i < 8; i++) {
     WAITLOW(clockPin);
