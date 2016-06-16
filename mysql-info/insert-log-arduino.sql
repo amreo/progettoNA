@@ -1,2 +1,2 @@
-INSERT INTO dati_produzione.log_eventi (Posizione, Info)
-VALUES (posizione, testo);
+INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
+VALUES (Linea, posizione, testo);

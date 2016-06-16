@@ -1,3 +1,3 @@
 TRUNCATE TABLE dati_produzione.log_eventi; -- elimina dati
-INSERT INTO dati_produzione.log_eventi (Posizione, Info)
-VALUES (-1, "Sono stati rimossi tutti i log degli eventi");
+INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
+VALUES (Linea, -1, "Sono stati rimossi tutti i log degli eventi");
