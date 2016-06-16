@@ -6,8 +6,6 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 
 #include "SPI.h"
 #include "Ethernet.h"
-#include "sha1.h"
-#include "mysql.h"
 #include "SD.h"
 #define PIN_INPUT_IR 5
 #define PIN_CLOCK_BR 3
@@ -52,17 +50,9 @@ IPAddress ip;
 IPAddress serverIP;
 int port;
 
-Connector myConn; //connettore verso server mysql per inviare comandi SQL
-
 //Credenziali
 char user[30];
 char password[30];
-
-//Query da inviare
-const char LOG_QUERY[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
-const char LOG_QUERY_MODEL[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (%d, \'%s\');";
-const char UPDATE_QUERY_MODEL[] = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = %d;";
-const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
 
 //Time out della lettura barcode
 int TIMEOUT_READING_BARCODE; //5 sec, timeout da quando inizia a vedere la scatola
@@ -117,123 +107,52 @@ boolean readBarcode(){
 }
 
 
-
 //Funzione che instaura la connessione con il server mysql
 void connect()
 {
-	int retry = 0;	
-	bool success = false;
-	//Ripete la connessione al massimo MAX_RETRY_CONNECT
-	while (retry < MAX_RETRY_CONNECT || success)
-	{
-		retry++;
-		//si connette al database
-		if (myConn.mysql_connect(serverIP, 3306, user, password)) 
-		{
-			Serial.println("OK!");
-			//invia una query di test	
-			if (myConn.cmd_query(LOG_QUERY))
-			{
-				Serial.println("Query inviata con successo");
-				success = true;							
-			} else {
-				Serial.println("Query fallita");
-			};
-		} 
-	}
-	
-	if (!success)
-	{
-		//blocca l'arduino
-		while (true) {
-			Serial.println("Fallito.");
-		}
-	}
+  byte retry = 0; 
+  bool success = false;
+  //Ripete la connessione al massimo MAX_RETRY_CONNECT
+  while (retry < MAX_RETRY_CONNECT || success)
+  {
+    retry++;
+    //si connette al database
+    if (true) //TODO: 
+    {
+      Serial.println("OK!");
+      //invia una query di test 
+    } 
+  }
+  
+  if (!success)
+  {
+    //blocca l'arduino
+    while (true) {
+      Serial.println("Fallito.");
+    }
+  }
 }
 
 //Funzione che invia un messaggio di log al server mysql
 void sendLog(int position, char msg[])
 {
-	//stringa temporanea
-	char query[128]; //Lunghezza max della query
-	//sostituisce %d e %s con la relativa parte		
-	sprintf(query, LOG_QUERY_MODEL, position, msg);
-	//verifica che è connesso per inviare la query
-	if (!myConn.is_connected())
-		connect();
-	//SPERIAMO che non si disconnetta qui <--
-	//invia stringa		
-	if (myConn.cmd_query(query))
-	{
-		Serial.println("Query inviata con successo");
-	} else {
-		Serial.println("Query fallita");
-	
-	};
 
-	Serial.print(position);
-	Serial.print(" ");
-	Serial.println(msg);
+  Serial.print(position);
+  Serial.print(" ");
+  Serial.println(msg);
 }
 
 //Funzione che incrementa il numero di oggetti prodotti all'ID/Barcode
 void sendProductUpdate(int barcode)
 {
-	//stringa temporanea
-	char query[128]; //Lunghezza max della query
-	//compone la query
-	sprintf(query, UPDATE_QUERY_MODEL, barcode);
-	//verifica che è connesso per inviare la query
-	if (!myConn.is_connected())
-		connect();
-	//SPERIAMO che non si disconnetta qui <--
-	//la invia al database
-	if (myConn.cmd_query(query))
-	{
-		Serial.print("Query inviata con successo: ");
-		Serial.println(barcode);
-	} else {
-		Serial.println("Query fallita");
-		connect();
-	};
+
 }
 
 
 //Restituisce true se il prodotto esiste nel database
 bool checkProduct(int barcode)
 {
-	//stringa temporanea
-	char query[128]; //Lunghezza max della query
-	//compone la query
-	sprintf(query, CHECK_PRODUCT_QUERY_MODEL, barcode);
-	//verifica che è connesso per inviare la query
-	if (!myConn.is_connected())
-		connect();
-	//SPERIAMO che non si disconnetta qui <--
-	//la invia al database
-	if (myConn.cmd_query(query))
-	{
-		Serial.print("Query inviata con successo: ");
-		Serial.println(barcode);
-		//Conta il numero di righe
-		int nRighe = 0;	
-		myConn.get_columns();
-		row_values *row = NULL;
-		while ((row = myConn.get_next_row()) != NULL)
-		{
-			nRighe++;		 	
-			myConn.free_row_buffer();
-		}
-		myConn.free_columns_buffer();		
-		Serial.print("prodotto: ");
-		Serial.print(barcode);
-		Serial.print(" R=");
-		Serial.println(nRighe);			
-		return nRighe == 1? true : false;
-	} else {
-		Serial.println("Query fallita");
-		connect();
-	};
+
 }
 
 //Funzione che restituisce l'indirizzo IP contenuto nel file filename
