@@ -1,10 +1,10 @@
-#include <PS2Keyboard.h>
+#include "PS2Keyboard.h"
 
 #define DATA_PIN 4
 PS2Keyboard keyboard;
 
 void setup() {
-  keyboard.begin(DATA_PIN);
+  keyboard.begin(DATA_PIN, 3);
 
   Serial.begin(9600);
   Serial.println("hi");
@@ -18,9 +18,9 @@ void loop() {
 
     if(val >= 0 && val <= 9) {
       Serial.print(val, DEC);
-    } else if(dat == PS2_KC_ENTER) {
+    } else if(dat == PS2_ENTER) {
       Serial.println();
-    } else if(dat == PS2_KC_ESC) {
+    } else if(dat == PS2_ESC) {
       Serial.println("[ESC]");
     } 
   }

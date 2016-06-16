@@ -8,9 +8,12 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #include "Ethernet.h"
 #include "sha1.h"
 #include "mysql.h"
-#include <PS2Keyboard.h>
+#include "PS2Keyboard.h"
 #define PIN_INPUT_IR 5
 #define PIN_DATA_BR 2
+#define PIN_CLOCK_BR 3
+
+PS2Keyboard keyboard;
 
 //Variabili che contengono i risultati dello scan
 boolean scanCorrect = true;
@@ -58,7 +61,7 @@ boolean readBarcode()
 		byte dat, val;
 		scannedInt = 0;
 		//Continua a leggere le cifre finche incontra l'ENTER
-		while ((dat = keyboard.read()) != PS2_KC_ENTER)
+		while ((dat = keyboard.read()) != PS2_ENTER)
 		{
 			val = dat - '0';
 			scannedInt = scannedInt * 10 + val; //Sposta le cifre precedente a dx e ne aggiunge val
@@ -198,7 +201,7 @@ void setup()
 	pinMode(PIN_INPUT_IR, INPUT);
 	Serial.begin(9600);
 	Ethernet.begin(mac, ip);
-  	keyboard.begin(DATA_PIN);
+  keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
 	
 	Serial.println(Ethernet.localIP());
 
@@ -253,6 +256,6 @@ void loop()
 			}
 
 		}
-		WAITHIGH(PIN_INPUT_IR);		
+    while (digitalRead(PIN_INPUT_IR) == LOW) {}
 	} 	
 }
