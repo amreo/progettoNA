@@ -106,9 +106,9 @@ class Connector
     Connector();
     boolean mysql_connect(IPAddress server, int port,
                           char *user, char *password);
-    void disconnect();
+    //void disconnect();
     boolean cmd_query(const char *query);
-    boolean cmd_query_P(const char *query);
+    //boolean cmd_query_P(const char *query);
     int is_connected () { return client.connected(); }
     const char *version() { return VERSION_STR; }
 #if defined WITH_SELECT
@@ -116,7 +116,7 @@ class Connector
     row_values *get_next_row();
     void free_columns_buffer();
     void free_row_buffer();
-    void show_results();
+    //void show_results();
     bool clear_ok_packet();
 #endif
   private:

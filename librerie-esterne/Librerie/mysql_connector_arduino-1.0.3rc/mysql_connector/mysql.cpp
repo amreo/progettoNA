@@ -111,15 +111,15 @@ boolean Connector::mysql_connect(IPAddress server, int port,
  * Terminates connection with the server. You must call mysql_connect()
  * to reconnect.
 */
-void Connector::disconnect()
-{
-  if (is_connected())
-  {
-    client.flush();
-    client.stop();
-    print_message(DISCONNECTED, true);
-  }
-}
+//void Connector::disconnect()
+//{
+//  if (is_connected())
+//  {
+//    client.flush();
+//    client.stop();
+//    print_message(DISCONNECTED, true);
+//  }
+//}
 
 /**
  * cmd_query - Execute a SQL statement
@@ -168,7 +168,7 @@ boolean Connector::cmd_query(const char *query)
  *
  * Returns boolean - True = a result set is available for reading
 */
-boolean Connector::cmd_query_P(const char *query)
+/*boolean Connector::cmd_query_P(const char *query)
 {
   int query_len = (int)strlen_P(query);
 
@@ -183,7 +183,7 @@ boolean Connector::cmd_query_P(const char *query)
 
   // Send the query
   return run_query(query_len);
-}
+}*/
 
 #if defined WITH_SELECT
 
@@ -199,7 +199,7 @@ boolean Connector::cmd_query_P(const char *query)
  * because it uses the public methods designed to return result
  * sets from the server.
 */
-void Connector::show_results() {
+/*void Connector::show_results() {
   column_names *cols;
   int rows = 0;
 
@@ -235,7 +235,7 @@ void Connector::show_results() {
 
   // Free any post-query messages in queue for stored procedures
   clear_ok_packet();
-}
+}*/
 
 
 /**
@@ -247,7 +247,7 @@ void Connector::show_results() {
  *
  * Returns False if the packet was not an Ok packet.
 */
-bool Connector::clear_ok_packet() {
+/*bool Connector::clear_ok_packet() {
   int num = 0;
 
   do {
@@ -261,7 +261,7 @@ bool Connector::clear_ok_packet() {
     }
   } while (num > 0);
   return true;
-}
+}*/
 
 
 /**
