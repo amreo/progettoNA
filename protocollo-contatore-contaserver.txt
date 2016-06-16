@@ -1,0 +1,2 @@
+log::[linea]::[posizione]::[info]
+add::[linea]::[barcode]
