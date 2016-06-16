@@ -42,7 +42,7 @@ const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzion
 const int TIMEOUT_READING_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
 const int MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
 
-int now;  //tempo da quando arduino è partito	 		
+unsigned long now;  //tempo da quando arduino è partito	 		
 bool timeExpired = false; //true se il tempo di lettura barcode è scaduto
 bool found;
 //Scatole viste
@@ -236,6 +236,7 @@ void loop()
 		if (timeExpired)
 		{
 			sendLog(positionBox, "Scatola con codice insesistente o corrotto");
+      sendProductUpdate(1);
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
