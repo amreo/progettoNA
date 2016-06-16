@@ -42,14 +42,14 @@ const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzion
 
 //Time out della lettura barcode
 int TIMEOUT_READING_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
-int MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
+byte MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
 
 unsigned long now;  //tempo da quando arduino è partito	 		
 bool timeExpired = false; //true se il tempo di lettura barcode è scaduto
 bool found;
 //Scatole viste
-int positionBox = 0;
-int LINEA;
+long positionBox = 0;
+byte LINEA;
 
 //funzione per leggere il codice a barre
 //restituisce true se letto con successo
@@ -80,7 +80,7 @@ boolean readBarcode()
 //Funzione che instaura la connessione con il server mysql
 void connect()
 {
-	int retry = 0;	
+	byte retry = 0;	
 	bool success = false;
 	//Ripete la connessione al massimo MAX_RETRY_CONNECT
 	while (retry < MAX_RETRY_CONNECT || success)
@@ -199,10 +199,10 @@ bool checkProduct(int barcode)
 IPAddress readFileIP(char filename[])
 {
   File dataFile = SD.open(filename);
-  int numeri[4];
+  byte numeri[4];
   if (dataFile)
   {
-    for (int i=0; i<4; i++)
+    for (byte i=0; i<4; i++)
     {
       numeri[i] = dataFile.parseInt();  
     }
@@ -267,10 +267,10 @@ void readFileMac(char filename[], byte result[])
   if (dataFile)
   {
     char temp;
-    int i;
-    for (int i=0; i<6; i++)
+    byte i;
+    for (byte i=0; i<6; i++)
       result[i] = 0;
-    for (int i=0; i<12; i++)
+    for (byte i=0; i<12; i++)
     {
       temp = dataFile.read();
       if (temp >= '0' && temp <= '9')
