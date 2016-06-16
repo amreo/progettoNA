@@ -220,7 +220,7 @@ void loop()
 		timeExpired = false;
 		
 		// legge il codice a barre
- 	    	while (!readBarcode()) { 
+ 	  while (!readBarcode()) { 
 			//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
 			//La scatole potrebbe non avere l'etichetta quindi errore
 			if (millis() - now >= TIMEOUT_READING_BARCODE)
