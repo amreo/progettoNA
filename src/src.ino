@@ -8,10 +8,11 @@ trovato nel database arduino manda un segnale di errore che sarà poi elaborato*
 #include "Ethernet.h"
 #include "sha1.h"
 #include "mysql.h"
+#include "SD.h"
 #define PIN_INPUT_IR 5
 #define PIN_CLOCK_BR 3
 #define PIN_DATA_BR 2
-
+#define PIN_SELECT 4
 
 //Macro per aspettare che il pin rimane in uno stato
 #define WAITLOW(pin) while (digitalRead(pin) != 0);
@@ -46,15 +47,16 @@ byte keymap[] = {0, 0, 0, 0, 0, 0, 0, 0,
 //variabile per leggere il check di ritorno del database
 byte irState;
 
-byte mac[] = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 }; //TODO: impostare mac address corretto
-IPAddress ip(11,22,33,44); //TODO: impostare ip di arduino
-IPAddress serverIP(11, 22, 33, 44); //TODO: impostare ip del server
+byte mac[6]; 
+IPAddress ip; 
+IPAddress serverIP;
+int port;
 
 Connector myConn; //connettore verso server mysql per inviare comandi SQL
 
 //Credenziali
-char user[] = "arduino";
-char password[] = "arduino4you";
+char user[30];
+char password[30];
 
 //Query da inviare
 const char LOG_QUERY[] = "INSERT INTO dati_produzione.log_eventi (Posizione, Info) VALUES (-1, \'arduino si è connesso\');";
@@ -63,15 +65,15 @@ const char UPDATE_QUERY_MODEL[] = "UPDATE dati_produzione.output_catena SET numP
 const char CHECK_PRODUCT_QUERY_MODEL[] = "SELECT ID_prodotto FROM dati_produzione.output_catena WHERE ID_prodotto = %d;";
 
 //Time out della lettura barcode
-const int TIMEOUT_READING_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
-const int MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
+int TIMEOUT_READING_BARCODE; //5 sec, timeout da quando inizia a vedere la scatola
+int MAX_RETRY_CONNECT; //Numero di massime volte di riprovare la connessione
 
 unsigned long now;  //tempo da quando arduino è partito	 		
 bool timeExpired = false; //true se il tempo di lettura barcode è scaduto
 bool found;
 //Scatole viste
 int positionBox = 0;
-
+int LINEA;
 
 //funzione per leggere il codice a barre
 //restituisce true se letto con successo
@@ -89,7 +91,7 @@ boolean readBarcode(){
   	}
   	buffer[head++] = keycode;
   	WAITLOW(PIN_CLOCK_BR);
- 	WAITHIGH(PIN_CLOCK_BR);
+ 	  WAITHIGH(PIN_CLOCK_BR);
   	WAITLOW(PIN_CLOCK_BR);
   	WAITHIGH(PIN_CLOCK_BR);
   	unsigned long time = millis();
@@ -234,6 +236,109 @@ bool checkProduct(int barcode)
 	};
 }
 
+//Funzione che restituisce l'indirizzo IP contenuto nel file filename
+IPAddress readFileIP(char filename[])
+{
+  File dataFile = SD.open(filename);
+  int numeri[4];
+  if (dataFile)
+  {
+    for (int i=0; i<4; i++)
+    {
+      numeri[i] = dataFile.parseInt();  
+    }
+    dataFile.close();
+    return IPAddress(numeri[0], numeri[1], numeri[2], numeri[3]);
+  }
+  else
+  {
+    Serial.print("Errore apertura file: ");
+    Serial.println(filename);
+    return IPAddress(99,99,99,99);
+  }
+}
+
+//Funzione che restituisce l'intero contenuto nel file filename
+int readFileInt(char filename[])
+{
+  File dataFile = SD.open(filename);
+  if (dataFile)
+  {
+    int n=0;
+    while (dataFile.available())
+      n = n*10 + (dataFile.read() - '0');
+    dataFile.close();
+   return n;  
+  }
+  else
+  {
+    Serial.print("Errore apertura file: ");
+    Serial.println(filename);
+    return -1;
+  }
+}
+
+//Funzione che restituisce la stringa contenuta nel filename
+void readFileString(char filename[], char str[])
+{
+ 
+  File dataFile = SD.open(filename);
+  if (dataFile)
+  {
+    int i=0;
+    while (dataFile.available())
+    {
+      str[i] = dataFile.read();
+      i++;  
+    }
+    dataFile.close();
+  }
+  else
+  {
+    Serial.print("Errore apertura file: ");
+    Serial.println(filename);
+    str = "";
+  } 
+}
+
+//Funzione che restituisce l'indirizzo MAC contenuto nel file filename
+void readFileMac(char filename[], byte result[])
+{
+  File dataFile = SD.open(filename);
+  if (dataFile)
+  {
+    char temp;
+    int i;
+    for (int i=0; i<6; i++)
+      result[i] = 0;
+    for (int i=0; i<12; i++)
+    {
+      temp = dataFile.read();
+      if (temp >= '0' && temp <= '9')
+      {
+        result[i/2] = result[i/2]*10 + (temp - '0');
+      } else if (temp >= 'a' && temp <= 'f') {
+        result[i/2] = result[i/2]*10 + (temp - 'a');
+      } else if (temp >= 'A' && temp <= 'F') {
+        result[i/2] = result[i/2]*10 + (temp - 'A');
+      } else {
+        i--; //Rifare il giro;  
+      }
+    }
+  }
+  else
+  {
+    Serial.print("Errore apertura file: ");
+    Serial.println(filename);
+    result[0] = 0x11;
+    result[1] = 0x22;
+    result[2] = 0x33;
+    result[3] = 0x44;
+    result[4] = 0x55;
+    result[5] = 0x66;
+  } 
+}
+
 void setup()
 {
 	//pin di collegamento del barcode reader
@@ -245,10 +350,26 @@ void setup()
 	
 	pinMode(PIN_INPUT_IR, INPUT);
 	Serial.begin(9600);
+
+  Serial.print("Inizializzando SD...");
+  //Inizializza SD
+  if (!SD.begin(PIN_SELECT)) {
+    Serial.println("SD non presente. Configurazione di FALLBACK");
+  }
+  Serial.println("OK");
+
+  readFileMac("mac.txt", mac);
+  ip = readFileIP("localip.txt");
+  serverIP = readFileIP("serverip.txt");
+  port = readFileInt("serverport.txt");
+  readFileString("username.txt", user);
+  readFileString("password.txt", password);
+  LINEA = readFileInt("lineaproduzione.txt");
+  MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
+  TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
+  
 	Ethernet.begin(mac, ip);
-
 	Serial.println(Ethernet.localIP());
-
 	Serial.println("Connettendo...");
 	connect();
 }
