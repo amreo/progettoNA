@@ -1,2 +1,3 @@
-log::[linea]::[posizione]::[info]
-add::[linea]::[barcode]
+$LOG::[linea]::[posizione]::[info]!
+$ADD::[linea]::[barcode]!
+$CHECK::[barcode]!
