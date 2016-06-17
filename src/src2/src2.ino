@@ -26,12 +26,20 @@ IPAddress ip;
 IPAddress serverIP;
 int port;
 
+//Client di connessione remota a contaserver
+EthernetClient client;
+//Query da inviare
+const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
+const char ADD_QUERY[] = "$ADD::%d::%d!";
+const char CHECK_QUERY[] = "$CHECK::%d!";
+
 //Credenziali
-char user[30];
-char password[30];
+//char user[30];
+//char password[30];
 
 //Time out della lettura barcode
-int TIMEOUT_READING_BARCODE = 5000; //5 sec, timeout da quando inizia a vedere la scatola
+int TIMEOUT_READING_BARCODE; //5 sec, timeout da quando inizia a vedere la scatola
+int TIMEOUT_WAITING_RESPONSE; //2 sec, timeout max di aspettare la risposta dal contaserver
 byte MAX_RETRY_CONNECT = 3; //Numero di massime volte di riprovare la connessione
 
 unsigned long now;  //tempo da quando arduino è partito	 		
@@ -70,50 +78,111 @@ boolean readBarcode()
 //Funzione che instaura la connessione con il server mysql
 void connect()
 {
-	byte retry = 0;	
-	bool success = false;
-	//Ripete la connessione al massimo MAX_RETRY_CONNECT
-	while (retry < MAX_RETRY_CONNECT || success)
-	{
-		retry++;
-		//si connette al database
-		if (true) //TODO: 
-		{
-			Serial.println("OK!");
-			//invia una query di test	
-		} 
-	}
+	byte retry = 0; 
+  	bool success = false;
+  	//Ripete la connessione al massimo MAX_RETRY_CONNECT
+  	while (retry < MAX_RETRY_CONNECT || success)
+  	{
+   		retry++;
+    	//si connette al contaserver
+    	if (client.connect(serverIP, port))
+   		{
+      		Serial.println("OK!");
+      		//invia una query di test 
+			sendLog(LINEA,positionBox, "Connesso al contaserver");
+    	} 
+  	}
+  
+  	if (!success)
+  	{
+    	//blocca l'arduino
+    	while (true) {
+      		Serial.println("Fallito.");
+    	}
+  	}
+}
+
+//Funzione che invia un messaggio di log al server contaserver
+void sendLog(int linea, int position, char msg[])
+{
+	char query[128];
+	sprintf(query, LOG_QUERY, linea, position, msg);
 	
-	if (!success)
-	{
-		//blocca l'arduino
-		while (true) {
-			Serial.println("Fallito.");
-		}
-	}
+	Serial.println(query);	
+	
+	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+	if (!client.connected())
+		connect();
+	client.print(query);
+
 }
 
-//Funzione che invia un messaggio di log al server mysql
-void sendLog(int position, char msg[])
+//Funzione che invia una notifica di rilevamento al server contaserver
+void sendProductAdd(int linea, int barcode)
 {
-
-	Serial.print(position);
-	Serial.print(" ");
-	Serial.println(msg);
-}
-
-//Funzione che incrementa il numero di oggetti prodotti all'ID/Barcode
-void sendProductUpdate(int barcode)
-{
-
+	char query[128];
+	sprintf(query, ADD_QUERY, linea, barcode);
+	
+	Serial.println(query);	
+	
+	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+	if (!client.connected())
+		connect();
+	client.print(query);
 }
 
 
 //Restituisce true se il prodotto esiste nel database
-bool checkProduct(int barcode)
+boolean sendCheckProduct(int linea, int position, int barcode)
 {
+	int i=0;
+	char query[128];
+	bool loopEnd = false;
+	char temp;
+	bool result;
+	sprintf(query, CHECK_QUERY, barcode);
+	
+	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+	if (!client.connected())
+		connect();
+	client.print(query);
 
-}
+	//ottiene il tempo di adesso
+	now = millis();
+	
+	//Aspetta che è arrivato un messaggio
+	while (!loopEnd) { 
+		//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
+		//La scatole potrebbe non avere l'etichetta quindi errore
+		if (millis() - now >= TIMEOUT_READING_BARCODE)
+		{
+			timeExpired = true;
+			loopEnd = true;
+			sendLog(LINEA, position, "Risposta non ricevuta");
+			result = false;		
+		}
+		//Se sono disponibili almeno 3 caratteri leggibili (quindi presubilmente si ha ricevuto $F! o $T!) leggere i caratteri
+		if (client.available() >= 3)
+		{
+			//legge il carattere
+			temp = client.read();
+			//se è $ significa che è inizio del protocollo, quindi legge gli altri due
+			if (temp == '$')
+			{
+				temp = client.read();
+				if (temp == 'F')
+					result = false;
+				else if (temp == 'T')
+					result = true;
+				client.read();
+				loopEnd = true;	
+			}
+		}
+	}	
+
+	return result;
+}	
+
 
 //Funzione che restituisce l'indirizzo IP contenuto nel file filename
 IPAddress readFileIP(char filename[])
@@ -227,26 +296,26 @@ void setup()
 	pinMode(PIN_INPUT_IR, INPUT);
 	Serial.begin(9600);
 
-  Serial.print("Inizializzando SD...");
-  //Inizializza SD
-  if (!SD.begin(PIN_SELECT)) {
-    Serial.println("SD non presente. Configurazione di FALLBACK");
-  }
-  Serial.println("OK");
+	Serial.print("Inizializzando SD...");
+	//Inizializza SD
+	if (!SD.begin(PIN_SELECT)) {
+		Serial.println("SD non presente. Configurazione di FALLBACK");
+	}
+	Serial.println("OK");
 
-  readFileMac("mac.txt", mac);
-  ip = readFileIP("localip.txt");
-  serverIP = readFileIP("serverip.txt");
-  port = readFileInt("serverport.txt");
-  readFileString("username.txt", user);
-  readFileString("password.txt", password);
-  LINEA = readFileInt("lineaproduzione.txt");
-  MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
-  TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
+	readFileMac("mac.txt", mac);
+	ip = readFileIP("localip.txt");
+	serverIP = readFileIP("serverip.txt");
+	port = readFileInt("serverport.txt");
+	//readFileString("username.txt", user);
+	//readFileString("password.txt", password);
+	LINEA = readFileInt("lineaproduzione.txt");
+	MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
+	TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
   
 	Ethernet.begin(mac, ip);
-  keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
-  Serial.println(Ethernet.localIP());
+	keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
+	Serial.println(Ethernet.localIP());
   
 	Serial.println("Connettendo...");
 	connect();
@@ -276,28 +345,28 @@ void loop()
 		//Se è stato superato il timeout invia un messaggio di errore
 		if (timeExpired)
 		{
-			sendLog(positionBox, "Scatola con codice insesistente o corrotto");
-      sendProductUpdate(1);
+			sendLog(LINEA, positionBox, "Scatola con codice insesistente o corrotto");
+			sendProductAdd(LINEA, 1);
 		} else {
 			// manda il codice a barre al database
 		 	// l'intero da mandare al database è scannedInt
 			// se il codice a barre è nel database la variabile found diventa true			
-			found = checkProduct(scannedInt);			 	
+			found = sendCheckProduct(LINEA, positionBox, scannedInt);			 	
 
  			//se il codice a barre non è sul database la variabile found è falsa				
 	 		if(found)
  			{
  				/*chiede al database il prodotto corrispondente al codice a barre*/
-				sendProductUpdate(scannedInt);
+				sendProductAdd(LINEA, scannedInt);
  		
  			}	
 		 	else
 			{
 	 			/*manda un errore*/
-				sendLog(positionBox, "Scatola con barcode non registrato");
+				sendLog(LINEA, positionBox, "Scatola con barcode non registrato");
 			}
 
 		}
-    while (digitalRead(PIN_INPUT_IR) == LOW) {}
+    	while (digitalRead(PIN_INPUT_IR) == LOW) {}
 	} 	
 }
