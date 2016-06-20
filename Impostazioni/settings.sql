@@ -1,6 +1,6 @@
 CREATE TABLE settings (
 
-arduinoid INTEGER,
+idstazione INTEGER,
 lineaproduzione INTEGER,
 barcodetimeout INTEGER,
 descrizione TEXT,
