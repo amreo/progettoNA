@@ -1,3 +1,4 @@
 $LOG::[linea]::[posizione]::[info]!
-$ADD::[linea]::[barcode]!
-$CHECK::[barcode]!   						$T!  $F!
+$ADD::[linea]::[barcode]!															//OBSOLETO--> usare checked-add
+$CHECK::[barcode]!   						$T!  $F!					
+$CHECKED-ADD::[linea]::[posizione]::[barcode]!
