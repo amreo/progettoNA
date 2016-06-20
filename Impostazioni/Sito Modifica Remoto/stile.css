@@ -15,7 +15,7 @@ input[type=submit] {
 }
 h3 {
     color: red;
-    font-family: arial;
+    font-family: calibri;
 }
 
 p {
@@ -23,5 +23,5 @@ p {
 }
 
 body {
-    background-color: #FFFFEE;
+    background-color: #FFFFFF;
 }
