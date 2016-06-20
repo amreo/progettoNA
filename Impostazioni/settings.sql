@@ -5,3 +5,4 @@ lineaproduzione INTEGER,
 barcodetimeout INTEGER,
 descrizione TEXT,
 );
+
