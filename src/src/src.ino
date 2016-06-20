@@ -403,22 +403,7 @@ void loop()
 			sendProductAdd(LINEA, 1);		
 		} else {
 			// manda il codice a barre al database
-		 	// l'intero da mandare al database è scannedInt
-			// se il codice a barre è nel database la variabile found diventa true			
-			found = sendCheckProduct(LINEA, positionBox, scannedInt);			 	
-
- 			//se il codice a barre non è sul database la variabile found è falsa			
-	 		if(found)
- 			{
- 				/*chiede al database il prodotto corrispondente al codice a barre*/
-				sendProductAdd(LINEA, scannedInt);
- 		
- 			}	
-		 	else
-			{
-	 			/*manda un errore*/
-				sendLog(LINEA, positionBox, "Scatola con barcode non registrato");
-			}
+			sendProductAdd(LINEA, positionBox, scannedInt);
 
 		}
 		WAITHIGH(PIN_INPUT_IR);		

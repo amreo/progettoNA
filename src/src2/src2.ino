@@ -364,7 +364,6 @@ void loop()
 		} else {
 			// manda il codice a barre al database
 			sendProductAdd(LINEA, positionBox, scannedInt);
-
 		}
     	while (digitalRead(PIN_INPUT_IR) == LOW) {}
 	} 	
