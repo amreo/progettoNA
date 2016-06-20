@@ -30,8 +30,9 @@ int port;
 EthernetClient client;
 //Query da inviare
 const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
-const char ADD_QUERY[] = "$ADD::%d::%d!";
-const char CHECK_QUERY[] = "$CHECK::%d!";
+//const char ADD_QUERY[] = "$ADD::%d::%d!";
+//const char CHECK_QUERY[] = "$CHECK::%d!";
+const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!"
 
 //Credenziali
 //char user[30];
@@ -117,11 +118,25 @@ void sendLog(int linea, int position, char msg[])
 
 }
 
+////Funzione che invia una notifica di rilevamento al server contaserver
+//void sendProductAdd(int linea, int barcode)
+//{
+//	char query[128];
+//	sprintf(query, ADD_QUERY, linea, barcode);
+//	
+//	Serial.println(query);	
+//	
+//	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+//	if (!client.connected())
+//		connect();
+//	client.print(query);
+//}
+
 //Funzione che invia una notifica di rilevamento al server contaserver
-void sendProductAdd(int linea, int barcode)
+void sendProductCheckedAdd(int linea, int position, int barcode)
 {
 	char query[128];
-	sprintf(query, ADD_QUERY, linea, barcode);
+	sprintf(query, CHECKED_ADD_QUERY, linea, position, barcode);
 	
 	Serial.println(query);	
 	
@@ -133,56 +148,55 @@ void sendProductAdd(int linea, int barcode)
 
 
 //Restituisce true se il prodotto esiste nel database
-boolean sendCheckProduct(int linea, int position, int barcode)
-{
-	int i=0;
-	char query[128];
-	bool loopEnd = false;
-	char temp;
-	bool result;
-	sprintf(query, CHECK_QUERY, barcode);
-	
-	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
-	if (!client.connected())
-		connect();
-	client.print(query);
-
-	//ottiene il tempo di adesso
-	now = millis();
-	
-	//Aspetta che è arrivato un messaggio
-	while (!loopEnd) { 
-		//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
-		//La scatole potrebbe non avere l'etichetta quindi errore
-		if (millis() - now >= TIMEOUT_READING_BARCODE)
-		{
-			timeExpired = true;
-			loopEnd = true;
-			sendLog(LINEA, position, "Risposta non ricevuta");
-			result = false;		
-		}
-		//Se sono disponibili almeno 3 caratteri leggibili (quindi presubilmente si ha ricevuto $F! o $T!) leggere i caratteri
-		if (client.available() >= 3)
-		{
-			//legge il carattere
-			temp = client.read();
-			//se è $ significa che è inizio del protocollo, quindi legge gli altri due
-			if (temp == '$')
-			{
-				temp = client.read();
-				if (temp == 'F')
-					result = false;
-				else if (temp == 'T')
-					result = true;
-				client.read();
-				loopEnd = true;	
-			}
-		}
-	}	
-
-	return result;
-}	
-
+//boolean sendCheckProduct(int linea, int position, int barcode)
+//{
+//	int i=0;
+//	char query[128];
+//	bool loopEnd = false;
+//	char temp;
+//	bool result;
+//	sprintf(query, CHECK_QUERY, barcode);
+//	
+//	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+//	if (!client.connected())
+//		connect();
+//	client.print(query);
+//
+//	//ottiene il tempo di adesso
+//	now = millis();
+//	
+//	//Aspetta che è arrivato un messaggio
+//	while (!loopEnd) { 
+//		//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
+//		//La scatole potrebbe non avere l'etichetta quindi errore
+//		if (millis() - now >= TIMEOUT_READING_BARCODE)
+//		{
+//			timeExpired = true;
+//			loopEnd = true;
+//			sendLog(linea, position, "Risposta non ricevuta");
+//			result = false;		
+//		}
+//		//Se sono disponibili almeno 3 caratteri leggibili (quindi presubilmente si ha ricevuto $F! o $T!) leggere i caratteri
+//		if (client.available() >= 3)
+//		{
+//			//legge il carattere
+//			temp = client.read();
+//			//se è $ significa che è inizio del protocollo, quindi legge gli altri due
+//			if (temp == '$')
+//			{
+//				temp = client.read();
+//				if (temp == 'F')
+//					result = false;
+//				else if (temp == 'T')
+//					result = true;
+//				client.read();
+//				loopEnd = true;	
+//			}
+//		}
+//	}	
+//
+//	return result;
+//}	
 
 //Funzione che restituisce l'indirizzo IP contenuto nel file filename
 IPAddress readFileIP(char filename[])
@@ -349,22 +363,7 @@ void loop()
 			sendProductAdd(LINEA, 1);
 		} else {
 			// manda il codice a barre al database
-		 	// l'intero da mandare al database è scannedInt
-			// se il codice a barre è nel database la variabile found diventa true			
-			found = sendCheckProduct(LINEA, positionBox, scannedInt);			 	
-
- 			//se il codice a barre non è sul database la variabile found è falsa				
-	 		if(found)
- 			{
- 				/*chiede al database il prodotto corrispondente al codice a barre*/
-				sendProductAdd(LINEA, scannedInt);
- 		
- 			}	
-		 	else
-			{
-	 			/*manda un errore*/
-				sendLog(LINEA, positionBox, "Scatola con barcode non registrato");
-			}
+			sendProductAdd(LINEA, positionBox, scannedInt);
 
 		}
     	while (digitalRead(PIN_INPUT_IR) == LOW) {}
