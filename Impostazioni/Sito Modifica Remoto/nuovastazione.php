@@ -1,13 +1,12 @@
 <?php
 mysql_connect("Host Name", "User Name", "User Password") or die("Connection Failed");
 mysql_select_db("DataBase Name")or die("Connection Failed");
-$arduinoid = $_POST['arduinoid'];
+$idstazione = $_POST['idstazione'];
 $lineaproduzione = $_POST['lineaproduzione'];
-
 $timeout = $_POST['timeout'];
 $descrizione = $_POST['descrizione'];
-$query = "INSERT INTO settings (arduinoid, lineaproduzione, timeout,descrizione)
-VALUES ($arduinoid,$lineaproduzione,$timeout,'$descrizione')";
+$query = "INSERT INTO settings (idstazione, lineaproduzione, timeout,descrizione)
+VALUES ($idstazione,$lineaproduzione,$timeout,'$descrizione')";
 if(mysql_query($query)){
 echo "updated";}
 else{
