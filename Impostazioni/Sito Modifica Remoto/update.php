@@ -4,7 +4,7 @@ mysql_select_db("DataBase Name")or die("Connection Failed");
 $arduinoip = $_POST['arduinoip'];
 $lineaproduzione = $_POST['lineaproduzione'];
 $timeout = $_POST['timeout'];
-$query = "UPDATE test SET lineaproduzione = '$lineaproduzione' SET timeout = '$timeout' WHERE name = '$arduinoip'";
+$query = "UPDATE nomedatabase SET lineaproduzione = '$lineaproduzione' SET timeout = '$timeout' WHERE name = '$arduinoip'";
 if(mysql_query($query)){
 echo "updated";}
 else{
