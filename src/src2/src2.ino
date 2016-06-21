@@ -360,10 +360,10 @@ void loop()
 		if (timeExpired)
 		{
 			sendLog(LINEA, positionBox, "Scatola con codice insesistente o corrotto");
-			sendProductAdd(LINEA, 1);
+			sendProductCheckedAdd(LINEA, positionBox, 1);
 		} else {
 			// manda il codice a barre al database
-			sendProductAdd(LINEA, positionBox, scannedInt);
+			sendProductCheckedAdd(LINEA, positionBox, scannedInt);
 		}
     	while (digitalRead(PIN_INPUT_IR) == LOW) {}
 	} 	
