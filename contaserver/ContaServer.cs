@@ -36,9 +36,11 @@ namespace contaserver
 		const string LOG_QUERY = "INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
 		const string UPDATE_PRODUCT_QUERY = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0};";
 		const string UPDATE_STATS_QUERY = "UPDATE dati_produzione.contatori_dati SET numProdotti = numProdotti + 1 WHERE ID = {0} AND ID_prodotto = {1};";
+		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM dati_produzione.settings WHERE IDStazione = {0};";
 
 		//Modello stringa protocollo CCS
 		const string BOOL_MSG = "${0}!";
+		const string CONFIG_RETURN_MSG = "${0:D3}::{1:D5}!";
 
 		/// <summary>
 		/// Inizializza i parametri del client mysql e porta locale
@@ -281,6 +283,9 @@ namespace contaserver
 				case "CHECKED-ADD":
 					runCheckedAddCommandCCS (info);
 					break;
+				case "CONFIG":
+					runConfigCommandCCS (info, client);
+					break;
 			}
 		}
 
@@ -348,6 +353,23 @@ namespace contaserver
 				sendSQLCommand (String.Format (UPDATE_STATS_QUERY, info [1], info[3]));					
 			}
 		}
+		/// <summary>
+		/// Esegue il comando Check del protocollo CCS
+		/// </summary>
+		private void runConfigCommandCCS(string[] info, TcpClient client)
+		{
+			//Scrive un messagio di debug
+			if (debugInfo) 
+				Console.WriteLine ("Messaggio di configurazione stazione IDStazione={0}", 
+					info[1]);
+			//Conta il numero di prodotti
+			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
+			//Scrive in output il risultato
+			StreamWriter writer = new StreamWriter (client.GetStream ());
+			writer.WriteLine (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'));
+			writer.Close ();
+		}
+
 
 		/// <summary>
 		/// Invia un messaggio di log al server mysql
@@ -357,12 +379,18 @@ namespace contaserver
 			sendSQLCommand (string.Format (LOG_QUERY, linea, position, msg));
 		}
 
+		/// <summary>
+		/// Invia il comando SQL query e lo fa eseguire
+		/// </summary>
 		public void sendSQLCommand(string query)
 		{
 			MySqlCommand cmd = new MySqlCommand (query);
 			cmd.Connection = conn;
 			cmd.ExecuteNonQuery ();
 		}
+		/// <summary>
+		/// Conta il numero di prodotti con quel barcode
+		/// </summary>
 		public int countProduct(string barcode)
 		{
 			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0};", barcode), conn);
@@ -374,7 +402,23 @@ namespace contaserver
 				return 0;
 			}
 		}
+		/// <summary>
+		/// Invia il comando SQL query e ne restituisce la prima riga
+		/// </summary>
+		public string[] sendSQLTableCommandOneRow(string query, int n)
+		{
+			MySqlCommand cmd = new MySqlCommand (query);
+			cmd.Connection = conn;
+			cmd.CommandType = System.Data.CommandType.TableDirect;
+			MySqlDataReader reader = cmd.ExecuteReader ();
+			string[] result = new string[n];
+			reader.Read ();
+			for (int i = 0; i < result.Length; i++)
+				result [i] = reader.GetString (i);
+			reader.Close ();
 
+			return result;
+		}
 
 	}
 }
