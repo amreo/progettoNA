@@ -24,7 +24,7 @@ CREATE TABLE dati_produzione.contatori_dati
 	ID_prodotto INT NOT NULL,	-- ID del prodotto
 	numProdotti INT			-- Quantità prodotta
 );
-CREATE TABLE settings 
+CREATE TABLE dati_produzione.settings 
 (
 	IDstazione INTEGER UNIQUE NOT NULL,
 	Lineaproduzione INTEGER NOT NULL,
