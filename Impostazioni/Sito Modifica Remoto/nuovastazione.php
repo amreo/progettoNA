@@ -5,7 +5,7 @@ $idstazione = $_POST['idstazione'];
 $lineaproduzione = $_POST['lineaproduzione'];
 $timeout = $_POST['timeout'];
 $descrizione = $_POST['descrizione'];
-$query = "INSERT INTO settings (idstazione, lineaproduzione, timeout,descrizione)
+$query = "INSERT INTO settings (IDstazione, Lineaproduzione, Barcodetimeout,Descrizione)
 VALUES ($idstazione,$lineaproduzione,$timeout,'$descrizione')";
 if(mysql_query($query)){
 echo "updated";}

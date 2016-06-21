@@ -5,7 +5,7 @@ $idstazione = $_POST['idstazione'];
 $lineaproduzione = $_POST['lineaproduzione'];
 $timeout = $_POST['timeout'];
 $descrizione = $_POST['descrizione'];
-$query = "UPDATE test SET lineaproduzione = '$lineaproduzione' timeout = '$timeout'  descrizione= '$descrizione' WHERE name = '$idstazione'";
+$query = "UPDATE test SET Lineaproduzione = '$lineaproduzione',Barcodetimeout = '$timeout',Descrizione= '$descrizione',WHERE IDStazione = '$idstazione'";
 if(mysql_query($query)){
 echo "updated";}
 else{
