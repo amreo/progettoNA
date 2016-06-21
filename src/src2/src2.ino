@@ -32,7 +32,7 @@ EthernetClient client;
 const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
 //const char ADD_QUERY[] = "$ADD::%d::%d!";
 //const char CHECK_QUERY[] = "$CHECK::%d!";
-const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!"
+const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!";
 
 //Credenziali
 //char user[30];
@@ -323,9 +323,9 @@ void setup()
 	port = readFileInt("serverport.txt");
 	//readFileString("username.txt", user);
 	//readFileString("password.txt", password);
-	//LINEA = readFileInt("lineaproduzione.txt");
+	LINEA = readFileInt("lineaproduzione.txt");
 	MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
-	//TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
+	TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
   
 	Ethernet.begin(mac, ip);
 	keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
@@ -360,7 +360,7 @@ void loop()
 		if (timeExpired)
 		{
 			sendLog(LINEA, positionBox, "Scatola con codice insesistente o corrotto");
-			sendProductCheckedAdd(LINEA,positionBox, 1);
+			sendProductCheckedAdd(LINEA, positionBox, 1);
 		} else {
 			// manda il codice a barre al database
 			sendProductCheckedAdd(LINEA, positionBox, scannedInt);
