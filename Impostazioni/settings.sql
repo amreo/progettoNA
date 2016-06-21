@@ -1,6 +1,6 @@
 CREATE TABLE settings (
 
-idstazione INTEGER,
+idstazione INTEGER UNIQUE,
 lineaproduzione INTEGER,
 barcodetimeout INTEGER,
 descrizione TEXT,
