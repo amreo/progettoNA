@@ -32,7 +32,7 @@ EthernetClient client;
 const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
 //const char ADD_QUERY[] = "$ADD::%d::%d!";
 //const char CHECK_QUERY[] = "$CHECK::%d!";
-const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!"
+const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!";
 
 //Credenziali
 //char user[30];
