@@ -1,8 +1,8 @@
 CREATE TABLE settings (
 
-idstazione INTEGER UNIQUE,
-lineaproduzione INTEGER,
-barcodetimeout INTEGER,
-descrizione TEXT,
+IDstazione INTEGER UNIQUE,
+Lineaproduzione INTEGER,
+Barcodetimeout INTEGER,
+Descrizione TEXT,
 );
 
