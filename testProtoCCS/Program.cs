@@ -9,8 +9,9 @@ namespace testProtoCCS
 		public static void Main (string[] args)
 		{
 			TcpClient client = new TcpClient ();
-			System.IO.StreamWriter writer = new System.IO.StreamWriter (client.GetStream ());
 			client.Connect ("127.0.0.1", 10000);
+			System.IO.StreamWriter writer = new System.IO.StreamWriter (client.GetStream ());
+			System.IO.StreamReader reader = new System.IO.StreamReader (client.GetStream ());
 			int scelta = 99;
 			string param1, param2, param3;
 
@@ -19,7 +20,8 @@ namespace testProtoCCS
 				Console.WriteLine ("1) add");
 				Console.WriteLine ("2) log");
 				Console.WriteLine ("3) checked-add");
-
+				Console.WriteLine ("4) check");
+				Console.WriteLine ("5) config");
 				scelta = int.Parse (Console.ReadLine ());
 
 				switch (scelta) {				
@@ -49,6 +51,20 @@ namespace testProtoCCS
 						Console.Write ("Barcode: ");
 						param3 = Console.ReadLine ();
 						writer.Write ("$ADD::{0}::{1}::{2}!", param1, param2, param3);
+						break;
+					case 4:
+						Console.Write ("Barcode: ");
+						param1 = Console.ReadLine ();
+						writer.Write ("$CHECK::{0}!", param1);
+						while (reader.EndOfStream) { }
+						Console.WriteLine(reader.ReadToEnd());
+						break;
+					case 5:
+						Console.Write ("IDStazione: ");
+						param1 = Console.ReadLine ();
+						writer.Write ("$CONFIG::{0}!", param1);
+						while (reader.EndOfStream) { }
+						Console.WriteLine(reader.ReadToEnd());
 						break;
 				}
 
