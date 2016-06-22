@@ -71,9 +71,14 @@ namespace testProtoCCS
 					sr = string.Format ("$CHECK::{0}!", param1);
 					msg = System.Text.Encoding.ASCII.GetBytes (sr);
 					client.Client.Send (msg);
-					//TODO: TOFIX	
-					while (reader.EndOfStream) { }
-						Console.WriteLine(reader.ReadToEnd());
+					//TODO: TOFIX
+
+					while (client.Available == 0) { }
+
+					msg = new byte[client.Client.Available];
+					client.Client.Receive (msg);
+					sr = System.Text.Encoding.ASCII.GetString (msg);
+					Console.WriteLine(sr);
 						break;
 					case 5:
 						Console.Write ("IDStazione: ");
@@ -83,8 +88,12 @@ namespace testProtoCCS
 					msg = System.Text.Encoding.ASCII.GetBytes (sr);
 					client.Client.Send (msg);
 					//todo:tofix
-						while (reader.EndOfStream) { }
-						Console.WriteLine(reader.ReadToEnd());
+					while (client.Available == 0) { }
+
+					msg = new byte[client.Client.Available];
+					client.Client.Receive (msg);
+					sr = System.Text.Encoding.ASCII.GetString (msg);
+					Console.WriteLine(sr);
 						break;
 				}
 
