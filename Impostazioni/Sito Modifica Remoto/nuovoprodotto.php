@@ -4,7 +4,7 @@ mysql_connect("127.0.0.1", "root", "PASSWORD") or die("Connection Failed");
 mysql_select_db("dati_produzione")or die("Connection Failed");
 
 
-$idstazione = $_POST['linea'];
+$linea = $_POST['linea'];
 $descrizione = $_POST['descrizione'];
 $idprodotto = $_POST['idprodotto'];
 $nome = $_POST['nome'];
