@@ -150,6 +150,8 @@ namespace contaserver
 			short tempInt;
 			IPAddress tempIP;
 			bool tempBool;
+			
+			key = key.toLowerCase();			
 
 			switch (key) {
 				case "mysql.port": //se key="mysql.port" imposta l'intero
