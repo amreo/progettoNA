@@ -28,7 +28,7 @@ if($trovato == 1) {
  echo "Sei entrato";
  
  /*Registro la sessione*/
-  session_register("autorizzato");
+  //session_register("autorizzato");
  
   $_SESSION["autorizzato"] = 1;
  
@@ -36,7 +36,7 @@ if($trovato == 1) {
   $_SESSION['cod'] = $cod;
  
  /*Redirect alla pagina riservata*/
-   echo '<script language=javascript>window.location.href=homepage.php";</script>'; 
+   echo "<script language=javascript>window.location.href='homepage.php';</script>"; 
  
 } else {
  
