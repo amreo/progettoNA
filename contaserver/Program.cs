@@ -11,6 +11,7 @@ namespace contaserver
 	{
 		public static void Main(string[] args)
 		{
+
 			//Ottiene il nome del config file dai parametri, se non c'è usare /etc/contaserver.conf
 			String conf;
 			ContaServer serv;
