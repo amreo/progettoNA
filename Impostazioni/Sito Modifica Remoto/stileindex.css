@@ -3,7 +3,12 @@ h2 {
     font-family: calibri;
 }
 
-a:link, a:visited {
+#btn{
+    
+    font-family:calibri;
+}
+
+#logout:link, #logout:visited {
     background-color: #9A9A9A;
     color: white;
     padding: 14px 25px;
@@ -16,6 +21,6 @@ font-family:calibri;
 }
 
 
-a:hover, a:active {
+#logout:hover, #logout:active {
     background-color: grey;
 }
