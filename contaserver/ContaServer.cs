@@ -335,9 +335,12 @@ namespace contaserver
 			//Conta il numero di prodotti
 			int n = countProduct (info [1]);
 			//Scrive in output il risultato
-			StreamWriter writer = new StreamWriter (client.GetStream ());
-			writer.WriteLine (BOOL_MSG, n == 0 ? 'F' : 'T');
-			writer.Close ();
+
+
+			string sr = string.Format (BOOL_MSG, n == 0 ? 'F' : 'T');
+			byte[] msg = System.Text.Encoding.ASCII.GetBytes (sr);
+			client.Client.Send (msg);
+
 		}
 		/// <summary>
 		/// Esegue il comando Checked-add del protocollo CCS
@@ -374,9 +377,10 @@ namespace contaserver
 			//Conta il numero di prodotti
 			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
 			//Scrive in output il risultato
-			StreamWriter writer = new StreamWriter (client.GetStream ());
-			writer.WriteLine (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'));
-			writer.Close ();
+
+			string sr = string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'));
+			byte[] msg = System.Text.Encoding.ASCII.GetBytes (sr);
+			client.Client.Send (msg);
 		}
 
 

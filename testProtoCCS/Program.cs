@@ -9,7 +9,7 @@ namespace testProtoCCS
 		public static void Main (string[] args)
 		{
 			TcpClient client = new TcpClient ();
-			client.Connect ("127.0.0.1", 1001);
+			client.Connect ("192.168.1.226", 1001);
 			System.IO.StreamWriter writer = new System.IO.StreamWriter (client.GetStream ());
 			System.IO.StreamReader reader = new System.IO.StreamReader (client.GetStream ());
 			int scelta = 99;
@@ -35,7 +35,9 @@ namespace testProtoCCS
 						param1 = Console.ReadLine ();
 						Console.Write ("Barcode: ");
 						param2 = Console.ReadLine ();
-						writer.Write ("$ADD::{0}::{1}!", param1, param2);
+					sr = string.Format ("$ADD::{0}::{1}!", param1, param2);
+					msg = System.Text.Encoding.ASCII.GetBytes (sr);
+					client.Client.Send (msg);
 						break;
 				case 2:
 					Console.Write ("Linea: ");
@@ -56,19 +58,31 @@ namespace testProtoCCS
 						param2 = Console.ReadLine ();
 						Console.Write ("Barcode: ");
 						param3 = Console.ReadLine ();
-						writer.Write ("$ADD::{0}::{1}::{2}!", param1, param2, param3);
+						
+					sr = string.Format ("$CHECKED-ADD::{0}::{1}::{2}!", param1, param2, param3);
+					msg = System.Text.Encoding.ASCII.GetBytes (sr);
+					client.Client.Send (msg);
 						break;
+
 					case 4:
 						Console.Write ("Barcode: ");
 						param1 = Console.ReadLine ();
-						writer.Write ("$CHECK::{0}!", param1);
-						while (reader.EndOfStream) { }
+						
+					sr = string.Format ("$CHECK::{0}!", param1);
+					msg = System.Text.Encoding.ASCII.GetBytes (sr);
+					client.Client.Send (msg);
+					//TODO: TOFIX	
+					while (reader.EndOfStream) { }
 						Console.WriteLine(reader.ReadToEnd());
 						break;
 					case 5:
 						Console.Write ("IDStazione: ");
 						param1 = Console.ReadLine ();
-						writer.Write ("$CONFIG::{0}!", param1);
+						
+					sr = string.Format ("$CONFIG::{0}!", param1);
+					msg = System.Text.Encoding.ASCII.GetBytes (sr);
+					client.Client.Send (msg);
+					//todo:tofix
 						while (reader.EndOfStream) { }
 						Console.WriteLine(reader.ReadToEnd());
 						break;
