@@ -1,4 +1,4 @@
-/*Progetto Nexapp:
+﻿/*Progetto Nexapp:
 Quando il sensore rileva una scatola Arduino legge il codice a barre su di essa
 e chiede al database se lo conosce, se risponde si aumenta la quantità in magazzino
 del prodotto corrispondente al codice a barre, se invece il codice a barre non viene
@@ -33,10 +33,7 @@ const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
 //const char ADD_QUERY[] = "$ADD::%d::%d!";
 //const char CHECK_QUERY[] = "$CHECK::%d!";
 const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!";
-<<<<<<< HEAD
-=======
 const char REMOTE_CONFIG_QUERY[] = "$CONFIG::%d!";
->>>>>>> conf-remota
 
 //Credenziali
 //char user[30];
@@ -403,7 +400,7 @@ void setup()
   
 	Serial.println("Connettendo...");
 	connect();
-  sendRemoteConfig(-2, 0);
+	sendRemoteConfig(-2, 0);
   
 }
 void loop()
