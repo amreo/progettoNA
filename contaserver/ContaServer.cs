@@ -243,13 +243,15 @@ namespace contaserver
 		/// </summary>
 		private void checkPendingMessage()
 		{
+			
 			//Controlla ogni client se ha messaggi in attesa
 			foreach (TcpClient client in clientsList) 
 			{
 				Console.WriteLine ("client: {0} available: {1}", client.Client.RemoteEndPoint.ToString (), client.Available);
 
 				//Se ha ricevuto bytes
-				if (client.Available > 0) {
+				if (client.GetStream().DataAvailable) {
+					Console.WriteLine("Sono entrato");
 					//Legge il contenuto del bytes
 					StreamReader reader = new StreamReader(client.GetStream ());
 					string msg = reader.ReadToEnd ();
@@ -305,6 +307,7 @@ namespace contaserver
 					info[1], info[2], info[3]);
 			//Invia il comando SQL di log
 			sendLogMessage(info[1], info[2], info[3]);
+			Console.WriteLine("sono qui");
 		}
 		/// <summary>
 		/// Esegue il comando Add del protocollo CCS
