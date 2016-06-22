@@ -246,6 +246,8 @@ namespace contaserver
 			//Controlla ogni client se ha messaggi in attesa
 			foreach (TcpClient client in clientsList) 
 			{
+				Console.WriteLine ("client: {0} available: {1}", client.Client.RemoteEndPoint.ToString (), client.Available);
+
 				//Se ha ricevuto bytes
 				if (client.Available > 0) {
 					//Legge il contenuto del bytes
