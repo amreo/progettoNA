@@ -151,7 +151,7 @@ namespace contaserver
 			IPAddress tempIP;
 			bool tempBool;
 			
-			key = key.toLowerCase();			
+			key = key.ToLower();			
 
 			switch (key) {
 				case "mysql.port": //se key="mysql.port" imposta l'intero
