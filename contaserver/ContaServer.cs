@@ -59,7 +59,6 @@ namespace contaserver
 		{
 			//inizializza varie funzionalità
 			initConfigurationFile ();
-			printInfo ();
 			initMysqlConnection();
 			initServerListener ();
 
@@ -211,6 +210,7 @@ namespace contaserver
 		{
 			bool running = true;
 	
+			listener.Start();
 			//Ripete finchè è in esecuzione
 			while (running) {
 				//Verifica connessioni in ascolto

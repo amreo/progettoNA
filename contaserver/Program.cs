@@ -14,8 +14,9 @@ namespace contaserver
 			//Ottiene il nome del config file dai parametri, se non c'è usare /etc/contaserver.conf
 			String conf;
 			ContaServer serv;
-			if (args.Length > 1)
-				conf = args [1]; //Seconda stringa
+
+			if (args.Length > 0)
+				conf = args [0]; //Seconda stringa
 			else 
 				conf = "/etc/contaserver.conf";
 
