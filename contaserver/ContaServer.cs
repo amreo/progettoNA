@@ -25,7 +25,7 @@ namespace contaserver
 		private string password = "arduino4you";
 		//Parametri del contaserver
 		private short localPort = 10000;
-		public bool debugInfo = false;
+		public bool debugInfo = true;
 	
 		//Oggetti in uso
 		private MySqlConnection conn; //mysql-contaserver
