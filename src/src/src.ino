@@ -437,6 +437,8 @@ void setup()
 	Serial.println(Ethernet.localIP());
 	Serial.println("Connettendo...");
 	connect();
+
+  sendRemoteConfig(-2, 0);
 }
 void loop()
 {

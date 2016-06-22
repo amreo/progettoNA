@@ -391,6 +391,8 @@ void setup()
 	MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
 	//TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
 	idStazione = readFileInt("idstazione.txt");
+  
+
 
 	Ethernet.begin(mac, ip);
 	keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
@@ -398,6 +400,8 @@ void setup()
   
 	Serial.println("Connettendo...");
 	connect();
+  sendRemoteConfig(-2, 0);
+  
 }
 void loop()
 {
