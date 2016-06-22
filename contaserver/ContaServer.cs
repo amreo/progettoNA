@@ -250,13 +250,14 @@ namespace contaserver
 				Console.WriteLine ("client: {0} available: {1}", client.Client.RemoteEndPoint.ToString (), client.Available);
 
 				//Se ha ricevuto bytes
-				if (client.GetStream().DataAvailable) {
+				if (client.Available > 0) {
 					Console.WriteLine("Sono entrato");
 					//Legge il contenuto del bytes
-					StreamReader reader = new StreamReader(client.GetStream ());
-					string msg = reader.ReadToEnd ();
+					byte[] data = new byte[client.Client.Available];
+					client.Client.Receive (data);
+	
+					string msg = System.Text.Encoding.ASCII.GetString (data);
 					//e quindi chiude la connessione
-					reader.Close ();
 
 					//messagio di debug
 					if (debugInfo) Console.WriteLine (msg);
