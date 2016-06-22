@@ -33,11 +33,11 @@ if(mysql_num_rows($query)>0):
  
 <table>
   <tr>
-    <td align="center">ID Stazione</td>
-    <td align="center">Barcode Prodotto</td>
-    <td align="center">Nome Prodotto</td>
-    <td align="center">Descrizione</td>
-    <td align="center">Quantita'</td>
+    <th align="center">ID Stazione</th>
+    <th align="center">Barcode Prodotto</th>
+    <th align="center">Nome Prodotto</th>
+    <t align="center">Descrizione</th>
+    <th align="center">Quantita'</th>
   </tr>
   <?php 
   // looping 
