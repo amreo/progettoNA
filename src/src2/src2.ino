@@ -33,6 +33,10 @@ const char LOG_QUERY[] = "$LOG::%d::%d::%s!";
 //const char ADD_QUERY[] = "$ADD::%d::%d!";
 //const char CHECK_QUERY[] = "$CHECK::%d!";
 const char CHECKED_ADD_QUERY[] = "$CHECKED-ADD::%d::%d::%d!";
+<<<<<<< HEAD
+=======
+const char REMOTE_CONFIG_QUERY[] = "$CONFIG::%d!";
+>>>>>>> conf-remota
 
 //Credenziali
 //char user[30];
@@ -49,6 +53,8 @@ bool found;
 //Scatole viste
 long positionBox = 0;
 byte LINEA;
+
+int idStazione;
 
 //funzione per leggere il codice a barre
 //restituisce true se letto con successo
@@ -169,7 +175,7 @@ void sendProductCheckedAdd(int linea, int position, int barcode)
 //	while (!loopEnd) { 
 //		//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
 //		//La scatole potrebbe non avere l'etichetta quindi errore
-//		if (millis() - now >= TIMEOUT_READING_BARCODE)
+//		if (millis() - now >= TIMEOUT_WAITING_RESPONSE)
 //		{
 //			timeExpired = true;
 //			loopEnd = true;
@@ -197,6 +203,67 @@ void sendProductCheckedAdd(int linea, int position, int barcode)
 //
 //	return result;
 //}	
+
+//Configura alcune info da remoto
+void sendRemoteConfig(int linea, int position)
+{
+	int i=0;
+	char query[128];
+	bool loopEnd = false;
+	char temp;
+	bool result;
+	sprintf(query, REMOTE_CONFIG_QUERY, idStazione);
+	
+	//Verifica che è connesso e eventualmente si ricconnette di nuovo	
+	if (!client.connected())
+		connect();
+	client.print(query);
+
+	//ottiene il tempo di adesso
+	now = millis();
+	
+	//Aspetta che è arrivato un messaggio
+	while (!loopEnd) { 
+		//se da adesso fino a adesso di tempo fa c'è una differenza troppo grande
+		//La scatole potrebbe non avere l'etichetta quindi errore
+		if (millis() - now >= TIMEOUT_WAITING_RESPONSE)
+		{
+			timeExpired = true;
+			loopEnd = true;
+			sendLog(linea, position, "Risposta non ricevuta");
+			result = false;		
+		}
+		//Se sono disponibili almeno 3 caratteri leggibili (quindi presubilmente si ha ricevuto $F! o $T!) leggere i caratteri
+		if (client.available() >= 12)
+		{
+			//legge il carattere
+			temp = client.read();
+			LINEA = 0;
+			TIMEOUT_READING_BARCODE = 0;
+			//se è $ significa che è inizio del protocollo, quindi legge gli altri due
+			if (temp == '$')
+			{
+				for (int i=0; i<3; i++)
+				{
+					temp = client.read();
+					LINEA = LINEA * 10 + (temp - '0');				
+				}			
+				client.read();
+				client.read();
+				for (int i=0; i<5; i++)
+				{
+					temp = client.read();
+					TIMEOUT_READING_BARCODE = TIMEOUT_READING_BARCODE * 10 + (temp - '0');				
+				}	
+
+				client.read();
+				loopEnd = true;	
+			}
+		}
+	}
+}	
+
+
 
 //Funzione che restituisce l'indirizzo IP contenuto nel file filename
 IPAddress readFileIP(char filename[])
@@ -323,16 +390,21 @@ void setup()
 	port = readFileInt("serverport.txt");
 	//readFileString("username.txt", user);
 	//readFileString("password.txt", password);
-	LINEA = readFileInt("lineaproduzione.txt");
+	//LINEA = readFileInt("lineaproduzione.txt");
 	MAX_RETRY_CONNECT = readFileInt("max-retry-connect.txt");
-	TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
+	//TIMEOUT_READING_BARCODE = readFileInt("barcode-reading-timeout.txt");
+	idStazione = readFileInt("idstazione.txt");
   
+
+
 	Ethernet.begin(mac, ip);
 	keyboard.begin(PIN_DATA_BR, PIN_CLOCK_BR);
 	Serial.println(Ethernet.localIP());
   
 	Serial.println("Connettendo...");
 	connect();
+  sendRemoteConfig(-2, 0);
+  
 }
 void loop()
 {
