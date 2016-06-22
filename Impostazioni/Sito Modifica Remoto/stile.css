@@ -4,7 +4,7 @@ input[type=text]:focus{
 }
 
 input[type=submit] {
-   background-color: #4CAF50;
+   background-color: #FF6633;
    border: none;
    color: white;
    padding : 15px 32px;
@@ -20,8 +20,4 @@ h3 {
 
 p {
   font-family: calibri;
-}
-
-body {
-    background-color: #FFFFFF;
 }
