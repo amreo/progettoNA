@@ -1,13 +1,12 @@
 
 
-<html>
-<link rel="stylesheet" href="stileprodotto.css" type="text/css" />
-<form method="post" name="Salva" action="nuovoprodotto.php" />
+<html> <link rel="stylesheet" href="stileprodotto.css" type="text/css" /> <form method="post" name="Salva" 
+action="nuovoprodotto.php" />
   <h3>Nuovo Prodotto</h3>
 
-<p>ID Stazione<p>
+<p>Linea di produzione<p>
  
-<input type="text" name="idstazione" />
+<input type="text" name="linea" />
  
 <p>Barcode Prodotto<p>
  

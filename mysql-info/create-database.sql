@@ -3,7 +3,7 @@
   	DEFAULT COLLATE utf8_general_ci;
 CREATE TABLE dati_produzione.output_catena 
 (
-	IDstazione INT NOT NULL,		-- IDstazione dove viene fatto il prodotto
+	Linea INT NOT NULL,			-- Linea dove viene fatto il prodotto
 	ID_prodotto INT NOT NULL UNIQUE, 	-- barcode
 	Nome VARCHAR(40),			-- nome prodotto
 	Descrizione VARCHAR(255),		-- descrizione del prodotto
