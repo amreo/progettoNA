@@ -59,6 +59,7 @@ namespace contaserver
 		{
 			//inizializza varie funzionalità
 			initConfigurationFile ();
+			printInfo ();
 			initMysqlConnection();
 			initServerListener ();
 
