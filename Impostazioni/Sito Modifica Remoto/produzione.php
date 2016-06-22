@@ -1,21 +1,7 @@
-<?php
-session_start();
-//se non c'è la sessione registrata
-if (!session_is_registered('autorizzato')) {
-  echo "<h1>Area riservata, accesso negato.</h1>";
-  echo "Per effettuare il login clicca <a href='index.php'><font color='blue'>qui</font></a>";
-  die;
-}
- 
-//Altrimenti Prelevo il codice identificatico dell'utente loggato
-session_start();
-$cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
-?>
-
-
 <!DOCTYPE html >
 <html >
 <head>
+<meta charset="UTF-8">
  <link href="stileproduzione.css" rel="stylesheet" type="text/css">
 <title></title>
 </head>
@@ -26,16 +12,19 @@ if ($mysql_status = 'checked')
 {
 
 <?php 
+header('Content-Type: text/html; charset=utf-8');
 //connect to mysql server with host,username,password
 //if connection fails stop further execution and show mysql error
 $connection=mysql_connect('localhost','root','PASSWORD') or die(mysql_error());
 //select a database for given connection
 //if database selection  fails stop further execution and show mysql error
-mysql_select_db('dati_produzione.output_catena',$connection) or die(mysql_error());
+mysql_select_db('dati_produzione',$connection) or die(mysql_error());
  
+mysql_query("SET character_set_results=utf8;") or die(mysql_error());
+
 //execute a mysql query to retrieve all the users from users table
 //if  query  fails stop further execution and show mysql error
-$query=mysql_query("SELECT * FROM dati_produzione.output_catena") or die(mysql_error());
+$query=mysql_query("SELECT * FROM dati_produzione.output_catena;") or die(mysql_error());
  
 //if we get any results we show them in table data
 if(mysql_num_rows($query)>0):
@@ -44,11 +33,11 @@ if(mysql_num_rows($query)>0):
  
 <table>
   <tr>
-    <td align="center">ID Stazione</td>
-    <td align="center">Barcode Prodotto</td>
-    <td align="center">Nome Prodotto</td>
-    <td align="center">Descrizione</td>
-    <td align="center">Quantita'</td>
+    <th align="center">ID Stazione</th>
+    <th align="center">Barcode Prodotto</th>
+    <th align="center">Nome Prodotto</th>
+    <th align="center">Descrizione</th>
+    <th align="center">Quantita'</th>
   </tr>
   <?php 
   // looping 

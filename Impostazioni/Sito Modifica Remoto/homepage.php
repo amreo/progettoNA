@@ -1,16 +1,4 @@
-<?php
-session_start();
-//se non c'è la sessione registrata
-if (!session_is_registered('autorizzato')) {
-  echo "<h1>Area riservata, accesso negato.</h1>";
-  echo "Per effettuare il login clicca <a href='index.php'><font color='blue'>qui</font></a>";
-  die;
-}
- 
-//Altrimenti Prelevo il codice identificatico dell'utente loggato
-session_start();
-$cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
-?>
+
 
 
 <html>
@@ -180,7 +168,7 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 .button4 {
   display: inline-block;
   border-radius: 4px;
-  background-color:  #9b9b9b;
+  background-color:  #993399;
   border: none;
   color: #FFFFFF;
   text-align: center;
@@ -237,9 +225,9 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 
 <a href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Vedi</span></button></a>
 
-<h2>Modifica Database</h2>
+<h2>Visualizza Log Eventi</h2>
 
-<a href="database.php" <button class="button4" style="vertical-align:middle"><span>Apri</span></button></a>
+<a href="log.php" <button class="button4" style="vertical-align:middle"><span>Vedi</span></button></a>
 
 <br></br>
 <a href="logout.php">Logout</a>

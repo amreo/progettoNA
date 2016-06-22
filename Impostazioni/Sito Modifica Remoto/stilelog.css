@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+    width: 60%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    font-family:calibri;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #993399;
+    color: white;
+}
