@@ -1,7 +1,7 @@
 ﻿CREATE DATABASE dati_produzione; -- Crea il database
 CREATE TABLE dati_produzione.output_catena 
 (
-	IDstazione INTEGER ;			-- IDstazione dove viene fatto il prodotto
+	IDstazione INTEGER,			-- IDstazione dove viene fatto il prodotto
 	ID_prodotto INT NOT NULL UNIQUE, 	-- barcode
 	Nome VARCHAR(40),			-- nome prodotto
 	Descrizione VARCHAR(255),		-- descrizione del prodotto
@@ -33,25 +33,19 @@ CREATE TABLE dati_produzione.settings
 	Descrizione TEXT
 );
 
---parte relativa agli utenti autorizzati a accedere al sito
+-- parte relativa agli utenti autorizzati a accedere al sito
 
-CREATE TABLE `login` (
-`id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
-`username` VARCHAR( 64 ) NOT NULL ,
-`password` VARCHAR( 64 ) NOT NULL ,
-PRIMARY KEY ( `id` )
+CREATE TABLE dati_produzione.login (
+	id INT( 11 ) NOT NULL AUTO_INCREMENT ,
+	username VARCHAR( 64 ) NOT NULL ,
+	password VARCHAR( 64 ) NOT NULL ,
+	PRIMARY KEY (id)
 ) ENGINE = MYISAM;
  
-INSERT INTO `login` (
-`id` ,
-`username` ,
-`password`
-)
-VALUES (
-NULL , 'tecnicoautorizzato', sha1( 'pwddifficile' )
-);
+INSERT INTO dati_produzione.login (id, username, password)
+VALUES (NULL, 'tecnicoautorizzato', sha1('pwddifficile'));
 
----------------------------
+-- -------------------------
 
 INSERT INTO dati_produzione.output_catena (ID_prodotto, Nome, Descrizione, numProdotti)
 VALUES (1, "Fallita_Lettura_Barcode", "Questo prodotti indica il numeri di prodotti in cui il barcode non è stato letto", 0);
