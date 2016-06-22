@@ -4,7 +4,7 @@
 <!DOCTYPE html >
 <html >
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
  <link href="stileproduzione.css" rel="stylesheet" type="text/css">
 <title></title>
 </head>
@@ -12,6 +12,7 @@
 <body>
  
 <?php 
+header('Content-Type: text/html; charset=utf-8');
 //connect to mysql server with host,username,password
 //if connection fails stop further execution and show mysql error
 $connection=mysql_connect('localhost','root','PASSWORD') or die(mysql_error());
@@ -19,9 +20,11 @@ $connection=mysql_connect('localhost','root','PASSWORD') or die(mysql_error());
 //if database selection  fails stop further execution and show mysql error
 mysql_select_db('dati_produzione',$connection) or die(mysql_error());
  
+mysql_query("SET character_set_results=utf8;") or die(mysql_error());
+
 //execute a mysql query to retrieve all the users from users table
 //if  query  fails stop further execution and show mysql error
-$query=mysql_query("SELECT * FROM dati_produzione.output_catena") or die(mysql_error());
+$query=mysql_query("SELECT * FROM dati_produzione.output_catena;") or die(mysql_error());
  
 //if we get any results we show them in table data
 if(mysql_num_rows($query)>0):
