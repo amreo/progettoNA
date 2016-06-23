@@ -15,7 +15,7 @@ $host = "localhost";
  
 $db_user = "root";
  
-$db_psw = "password";
+$db_psw = "PASSWORD";
  
 $db_name = "utenti";
 
