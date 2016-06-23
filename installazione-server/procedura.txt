@@ -1,0 +1,38 @@
+1-Installare Debian (GNU/Linux)
+	* Scaricare almeno la prima ISO (o versione CD o versione DVD)
+	* Se in virtuale settare la scheda di rete come bridge
+2-Elevarsi i diritti amministrativi
+	* su
+3-Aggiornare Debian
+	* apt-get update
+	* apt-get upgrade
+4-Installazione software necessari
+	* apt-get install mysql-server mysql-client
+	* apt-get install apache2 apache2-doc
+	* apt-get install php5 php5-mysql libapache2-mod-php5
+	* apt-get install git
+	* Per l'installazione di MONO
+	* apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+	* echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list
+	* echo "deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list	
+	* apt-get update
+	* apt-get install mono-complete
+5-Clonazione del repositori e installazione componenti
+	* mkdir github
+	* cd github
+	* git clone https://github.com/amreo/progettoNA.git
+	* cd progettoNA
+	* mkdir /var/www/html/old
+	* mv /v
+	* cp Impostazioni/Sito\ Modifica\ Remoto/* /var/www/html/
+	* cat mysql-info/create-database.sql | mysql -u root -p
+	* cp contaserver-conf/contaserver.conf /etc/contaserver.conf
+	* chmod 500 /etc/contaserver.conf
+	* cp contaserver/contaserver /etc/init.d/contaserver
+	* chmod 755 /etc/init.d/contaserver 
+	* gacutil -i librerie-esterne/mysql-data-connector-cs/mysql-connector-net-6.9.8-noinstall/v4.5/MySql.Data.Entity.EF5.dll 
+	* gacutil -i librerie-esterne/mysql-data-connector-cs/mysql-connector-net-6.9.8-noinstall/v4.5/MySql.Data.dll 
+	* xbuild contaserver/contaserver.sln 
+	* mkdir /usr/bin/local
+	* cp contaserver/bin/Debug/contaserver.exe /usr/bin/local/
+
