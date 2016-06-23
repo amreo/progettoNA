@@ -18,7 +18,6 @@ if($_SESSION["autorizzato"] == 0)
  
 <body>
 <?php include("radioButton.php");
-
 //connect to mysql server with host,username,password
 $conn_string = "host=127.0.0.1 port=3360 dbname=dati_produzione.output_catena user=root password=PASSWORD";
 $conn = pg_connect($conn_string);
@@ -68,25 +67,3 @@ else: ?>
 <a href="logout.php">Logout</a>
 </body>
 </html>
-=======
-
-
-<!DOCTYPE html >
-<html >
-<head>
-<meta charset="UTF-8">
- <link href="stileproduzione.css" rel="stylesheet" type="text/css">
-<title></title>
-</head>
- 
-<body>
- 
-<?php 
-header('Content-Type: text/html; charset=utf-8');
-//connect to mysql server with host,username,password
-//if connection fails stop further execution and show mysql error
-$connection=mysql_connect('localhost','root','PASSWORD') or die(mysql_error());
-//select a database for given connection
-//if database selection  fails stop further execution and show mysql error
-mysql_select_db('dati_produzione',$connection) or die(mysql_error());
- 
