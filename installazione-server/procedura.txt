@@ -35,4 +35,17 @@
 	* xbuild contaserver/contaserver.sln 
 	* mkdir /usr/bin/local
 	* cp contaserver/bin/Debug/contaserver.exe /usr/bin/local/
-
+6-Test esecuzione contaserver
+	* /etc/init.d/contaserver start
+7-Test php
+	* nano /var/www/html/test.php
+	* scriverci <?php phpInfo(); ?>
+	* Salvare con CTRL+O,invio e uscire con CTRL+X,invio
+8-Impostazione IP statico
+	* nano /etc/networks/interface
+	* Decommentare con # la linea iface eth0 inet dhcp
+	* Aggiungere:
+	iface eth0 inet static
+		address 192.168.250.50  # IP del server
+		netmask 255.255.255.0   # Subnet mask
+		gateway 192.168.250.254 # Gateway
