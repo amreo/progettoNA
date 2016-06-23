@@ -6,7 +6,7 @@ apt-get install -y postgresql postgresql-client
 echo "[ProgettoNA] Installando apache2"
 apt-get install -y apache2
 echo "[ProgettoNA] Installando php5"
-apt-get install -y php5 php5-pssql libapache2-mod-php5
+apt-get install -y php5 php5-pgsql libapache2-mod-php5
 echo "[ProgettoNA] Installando mono"
 apt-key adv -y --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list
