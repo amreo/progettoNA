@@ -322,7 +322,6 @@ namespace contaserver
 					info[1], info[2], info[3]);
 			//Invia il comando SQL di log
 			sendLogMessage(info[1], info[2], info[3]);
-			Console.WriteLine("sono qui");
 		}
 		/// <summary>
 		/// Esegue il comando Add del protocollo CCS
