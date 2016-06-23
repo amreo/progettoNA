@@ -32,7 +32,7 @@ if(mysql_num_rows($query)>0):
     <th align="center">ID Stazione</th>
     <th align="center">Linea Produzione</th>
     <th align="center">Timeout Barcode</th>
-    <th align="center">Descrizione</th>
+    
   </tr>
   <?php 
   // looping 
@@ -41,7 +41,7 @@ if(mysql_num_rows($query)>0):
     <td align="center"><?php echo $row->IDstazione;  //row id ?></td>
     <td align="center"><?php echo $row->Lineaproduzione; // row first name ?></td>
     <td align="center"><?php echo $row->Barcodetimeout; //row last name  ?></td>
-    <td align="center"><?php echo $row->Descrizione; //row contact number ?></td>
+    
   </tr>
   <?php endwhile;?>
 </table>
