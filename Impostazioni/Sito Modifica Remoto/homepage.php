@@ -6,7 +6,7 @@ include("updatestazione.php");
 
 if($a == 1 || $b == 1 || $c == 1 || $d == 1)
 {
-  echo "<script language=javascript>window.alert("Operazione completata con successo");</script>"; ;
+  echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
   $a = 0;
   $b = 0;
   $c = 0;
