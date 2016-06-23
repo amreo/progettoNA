@@ -247,16 +247,10 @@ namespace contaserver
 			//Controlla ogni client se ha messaggi in attesa
 			foreach (TcpClient client in clientsList) 
 			{
-				Console.WriteLine ("client: {0} available: {1}", client.Client.RemoteEndPoint.ToString (), client.Available);
-
 				//Se ha ricevuto bytes
 				if (client.Available > 0) {
-					Console.WriteLine("Sono entrato");
 					//Legge il contenuto del bytes
-					byte[] data = new byte[client.Client.Available];
-					client.Client.Receive (data);
-	
-					string msg = System.Text.Encoding.ASCII.GetString (data);
+					string msg = readMsg(client);
 					//e quindi chiude la connessione
 
 					//messagio di debug
@@ -335,12 +329,7 @@ namespace contaserver
 			//Conta il numero di prodotti
 			int n = countProduct (info [1]);
 			//Scrive in output il risultato
-
-
-			string sr = string.Format (BOOL_MSG, n == 0 ? 'F' : 'T');
-			byte[] msg = System.Text.Encoding.ASCII.GetBytes (sr);
-			client.Client.Send (msg);
-
+			sendMsg(client, string.Format (BOOL_MSG, n == 0 ? 'F' : 'T')); 
 		}
 		/// <summary>
 		/// Esegue il comando Checked-add del protocollo CCS
@@ -377,10 +366,7 @@ namespace contaserver
 			//Conta il numero di prodotti
 			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
 			//Scrive in output il risultato
-
-			string sr = string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'));
-			byte[] msg = System.Text.Encoding.ASCII.GetBytes (sr);
-			client.Client.Send (msg);
+			sendMsg(client, string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'))); 
 		}
 
 
@@ -406,8 +392,11 @@ namespace contaserver
 		/// </summary>
 		public int countProduct(string barcode)
 		{
+			//Crea una nuova instanza di MySqlCommand 
 			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0};", barcode), conn);
+			//Esegue il comando e resituisce il valore
 			object result = cmd.ExecuteScalar();
+			//lo converte in un numero intero
 			if (result != null) {
 				int r = Convert.ToInt32 (result);
 				return r;
@@ -420,19 +409,44 @@ namespace contaserver
 		/// </summary>
 		public string[] sendSQLTableCommandOneRow(string query, int n)
 		{
+			//Crea una nuova instanza di MySqlCommand che contiene la query
 			MySqlCommand cmd = new MySqlCommand (query);
 			cmd.Connection = conn;
 			cmd.CommandType = System.Data.CommandType.TableDirect;
+			//Esegue il comando e ne restituisce un lettore di dati
 			MySqlDataReader reader = cmd.ExecuteReader ();
 			string[] result = new string[n];
+			//legge la prima riga e imposta le celle di result i valori corrispondenti
 			reader.Read ();
 			for (int i = 0; i < result.Length; i++)
 				result [i] = reader.GetString (i);
+			//chiude la connessione e restituisce il risultato
 			reader.Close ();
 
 			return result;
 		}
 
+		/// <summary>
+		/// Legge il pacchetto ricevuto dal client
+		/// </summary>
+		public string readMsg(TcpClient client)
+		{
+			//Legge il contenuto del pacchetto in bytes
+			byte[] data = new byte[client.Client.Available];
+			client.Client.Receive (data);
+			//Converte i bytes in una stringa secondo la codifica ASCII in stringa e ne restituisce
+			return System.Text.Encoding.ASCII.GetString (data);
+		}
+		/// <summary>
+		/// Spedisce un messaggio al client
+		/// </summary>
+		public string sendMsg(TcpClient client, string str)
+		{
+			//Converte il messaggio (stringa) in un array di byte
+			byte[] msg = System.Text.Encoding.ASCII.GetBytes (str);
+			//Spedisce i byte
+			client.Client.Send (msg);
+		}
 	}
 }
 
