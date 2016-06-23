@@ -37,7 +37,7 @@ namespace contaserver
 		const string LOG_QUERY = "INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
 		const string UPDATE_PRODUCT_QUERY = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND Linea={1};";
 		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM dati_produzione.settings WHERE IDStazione = {0};";
-		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO dati_produzione.log_produzione (Linea, Barcode) VALUES ({0}, {1});";
+		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO dati_produzione.log_produzione (Linea, Barcode, Successo) VALUES ({0}, {1}, {2});";
 		//Modello stringa protocollo CCS
 		const string BOOL_MSG = "${0}!";
 		const string CONFIG_RETURN_MSG = "${0:D3}::{1:D5}!";
@@ -422,7 +422,7 @@ namespace contaserver
 					info[1], info[2]);
 			//Invia i comandi SQL
 			sendSQLCommand(String.Format(UPDATE_PRODUCT_QUERY, info[2], info[1]));
-			sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[2]));		
+			sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[2], "NULL"));		
 		}
 		/// <summary>
 		/// Esegue il comando Check del protocollo CCS
@@ -490,10 +490,10 @@ namespace contaserver
 				sendLogMessage (info [1], info [2], 
 					string.Format ("Barcode non esistente o corrotto: {0}", info [3]));
 				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, 1, 0));		
-				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));		
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3], "0"));		
 			} else {
 				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, info[3], info[1]));	
-				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));				
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3], "1"));				
 			}
 		}
 		/// <summary>

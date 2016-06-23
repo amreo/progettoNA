@@ -23,7 +23,7 @@ CREATE TABLE dati_produzione.settings
 	IDstazione INTEGER UNIQUE NOT NULL,
 	Lineaproduzione INTEGER NOT NULL,
 	Barcodetimeout INTEGER NOT NULL,
-	Successo BOOL NOT NULL
+	Successo BOOL
 );
 CREATE TABLE dati_produzione.log_produzione
 (
