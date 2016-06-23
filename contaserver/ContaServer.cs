@@ -97,7 +97,7 @@ namespace contaserver
 				if (line.IndexOf ('#') != -1)
 					line = line.Remove (line.IndexOf ('#'));
 				//messaggio di debug. linea letta
-				if (debugInfo) Console.WriteLine(line);
+				//if (debugInfo) Console.WriteLine(line);
 				//quindi fa il trim della linea per rimuovere gli spazi laterali
 				line = line.Trim();
 				//dovrebbe contenere o nulla (solo commento) o due parola (opzione valore)
@@ -213,6 +213,8 @@ namespace contaserver
 			listener.Start();
 			//Ripete finchè è in esecuzione
 			while (running) {
+				//Verifica connessioni chiuse
+				checkClosedConnection();
 				//Verifica connessioni in ascolto
 				checkPendingConnection ();
 	
@@ -221,6 +223,24 @@ namespace contaserver
 			}
 
 			return 0;
+		}
+
+		/// <summary>
+		/// Verifica le connessioni di tutti i client se sono aperte o chiuse
+		/// </summary>
+		private void checkClosedConnection()
+		{
+			//Per ogni client nella lista
+			for (int i = 0; i < clientsList.Count; i++) {
+				//Se non è connesso...
+				if (!clientsList [i].Connected) {
+					//Chiude la connessione
+					clientsList [i].Client.Shutdown (SocketShutdown.Both);
+					//Rimuove il client dalla lista
+					clientsList.RemoveAt (i);
+				}
+					
+			}
 		}
 
 		/// <summary>
@@ -440,7 +460,7 @@ namespace contaserver
 		/// <summary>
 		/// Spedisce un messaggio al client
 		/// </summary>
-		public string sendMsg(TcpClient client, string str)
+		public void sendMsg(TcpClient client, string str)
 		{
 			//Converte il messaggio (stringa) in un array di byte
 			byte[] msg = System.Text.Encoding.ASCII.GetBytes (str);
