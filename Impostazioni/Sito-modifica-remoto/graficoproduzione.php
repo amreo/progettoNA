@@ -1,4 +1,13 @@
 <?php
+session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+?>
+
+<?php
  $con = mysqli_connect('localhost','root','PASSWORD','dati_produzione');
 ?>
 <!DOCTYPE HTML>
@@ -15,14 +24,14 @@
  function drawChart() {
 
  var data = google.visualization.arrayToDataTable([
- ['Prodotto', 'Quantità'],
+ ['Nome', 'Numero'],
  <?php 
- $query = "SELECT numProdotti(*) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome";
+ $query = "SELECT sum(numProdotti) AS sum, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
 
- echo "['".$row['Prodotto']."',".$row['Quantità']."],";
+ echo "['".$row['Nome']."',".$row['sum']."],";
  }
  ?>
  ]);
@@ -38,7 +47,6 @@
  </script>
 </head>
 <body>
- <h3>Grafico</h3>
- <div id="piechart" style="width: 1200px; height: 800px;"></div>
+ <div id="piechart" style="width: 1100px; height: 700px;"></div>
 </body>
 </html>

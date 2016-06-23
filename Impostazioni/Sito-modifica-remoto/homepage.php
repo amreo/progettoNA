@@ -1,16 +1,18 @@
 <?php
-include("nuovoprodotto.php");
-include("nuovastazione.php");
-include("updateprodotto.php");
-include("updatestazione.php");
-
-if($a == 1 || $b == 1 || $c == 1 || $d == 1)
+session_start();
+if($_SESSION["autorizzato"] == 0)
 {
-  echo "<script language=javascript>window.alert("Operazione completata con successo");</script>"; ;
-  $a = 0;
-  $b = 0;
-  $c = 0;
-  $d = 0;
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+
+if($_SESSION["success0"] == 1 || $_SESSION["success1"] == 1 || $_SESSION["success2"] == 1 || $_SESSION["success3"] == 1)
+{
+  echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
+  $_SESSION["success0"] = 0;
+  $_SESSION["success1"] = 0;
+  $_SESSION["success2"] = 0;
+  $_SESSION["success3"] = 0;
   
 }
 ?>
@@ -436,7 +438,7 @@ font-family:calibri;
 <section id = "destra">
 <h2>Visualizza Database</h2>
 
-<a id="btn" href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Produzione</span></button></a>
+<a id="btn" href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Prodotti</span></button></a>
 
 <br></br>
 

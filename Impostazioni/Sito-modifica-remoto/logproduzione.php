@@ -1,3 +1,14 @@
+<?php
+session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+?>
+
+
+
 <!DOCTYPE html >
 <html >
 <head>
@@ -33,6 +44,7 @@ if(mysql_num_rows($query)>0):
     <th align="center">Linea Produzione</th>
     <th align="center">Data</th>
     <th align="center">Barcode</th>
+    <th align="center">Successo</th>
   </tr>
   <?php 
   // looping 
@@ -42,6 +54,7 @@ if(mysql_num_rows($query)>0):
     <td align="center"><?php echo $row->Linea; // row first name ?></td>
     <td align="center"><?php echo $row->Date; //row last name  ?></td>
     <td align="center"><?php echo $row->Barcode; //row contact number ?></td>
+    <td align="center"><?php if($row->Successo == 1){echo "Si";} //row contact number ?></td>
   </tr>
   <?php endwhile;?>
 </table>

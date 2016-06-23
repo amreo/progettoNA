@@ -1,3 +1,13 @@
+<?php
+session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+?>
+
+
 <html>
 <link rel="stylesheet" href="stilenuova.css" type="text/css" />
 <form method="post" name="Salva" action="nuovastazione.php" />

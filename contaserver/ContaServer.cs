@@ -37,7 +37,8 @@ namespace contaserver
 		const string LOG_QUERY = "INSERT INTO log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
 		const string UPDATE_PRODUCT_QUERY = "UPDATE output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND Linea={1};";
 		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM settings WHERE IDStazione = {0};";
-		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO log_produzione (Linea, Barcode) VALUES ({0}, {1});";
+		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO log_produzione (Linea, Barcode, Successo) VALUES ({0}, {1}, {2});";
+
 		//Modello stringa protocollo CCS
 		const string BOOL_MSG = "${0}!";
 		const string CONFIG_RETURN_MSG = "${0:D3}::{1:D5}!";
@@ -422,7 +423,7 @@ namespace contaserver
 					info[1], info[2]);
 			//Invia i comandi SQL
 			sendSQLCommand(String.Format(UPDATE_PRODUCT_QUERY, info[2], info[1]));
-			sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[2]));		
+			sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[2], "NULL"));		
 		}
 		/// <summary>
 		/// Esegue il comando Check del protocollo CCS
@@ -490,10 +491,10 @@ namespace contaserver
 				sendLogMessage (info [1], info [2], 
 					string.Format ("Barcode non esistente o corrotto: {0}", info [3]));
 				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, 1, 0));		
-				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));		
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3], "0"));		
 			} else {
 				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, info[3], info[1]));	
-				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));				
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3], "1"));				
 			}
 		}
 		/// <summary>
@@ -554,8 +555,9 @@ namespace contaserver
 		/// </summary>
 		public int countProduct(string barcode, string linea)
 		{
+
 			//Crea una nuova instanza di NpgsqlCommand 
-			NpgsqlCommand cmd = new NpgsqlCommand(string.Format("SELECT COUNT(*) FROM output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode), conn);
+			NpgsqlCommand cmd = new NpgsqlCommand(string.Format("SELECT COUNT(*) FROM output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode, linea), conn);
 			//Esegue il comando e resituisce il valore
 			object result = cmd.ExecuteScalar();
 			//lo converte in un numero intero
@@ -580,6 +582,10 @@ namespace contaserver
 				NpgsqlDataReader reader = cmd.ExecuteReader ();
 				string[] result = new string[n];
 				//legge la prima riga e imposta le celle di result i valori corrispondenti
+				if (!reader.HasRows)
+				{
+					return new string[] {};
+				}
 				reader.Read ();
 				for (int i = 0; i < result.Length; i++)
 					result [i] = reader.GetString (i);

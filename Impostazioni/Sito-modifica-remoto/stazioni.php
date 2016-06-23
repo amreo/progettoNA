@@ -1,8 +1,18 @@
+<?php
+session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+?>
+
+
 <!DOCTYPE html >
 <html >
 <head>
 <meta charset="UTF-8">
- <link href="stilelogeventi.css" rel="stylesheet" type="text/css">
+ <link href="stazionistile.css" rel="stylesheet" type="text/css">
 <title></title>
 </head>
  
@@ -20,7 +30,7 @@ mysql_select_db('dati_produzione',$connection) or die(mysql_error());
 mysql_query("SET character_set_results=utf8;") or die(mysql_error());
 //execute a mysql query to retrieve all the users from users table
 //if  query  fails stop further execution and show mysql error
-$query=mysql_query("SELECT * FROM dati_produzione.log_eventi;") or die(mysql_error());
+$query=mysql_query("SELECT * FROM dati_produzione.settings;") or die(mysql_error());
  
 //if we get any results we show them in table data
 if(mysql_num_rows($query)>0):
@@ -29,21 +39,19 @@ if(mysql_num_rows($query)>0):
  
 <table>
   <tr>
-    <th align="center">ID</th>
+    <th align="center">ID Stazione</th>
     <th align="center">Linea Produzione</th>
-    <th align="center">Posizione</th>
-    <th align="center">Data</th>
-    <th align="center">Info</th>
+    <th align="center">Timeout Barcode</th>
+    
   </tr>
   <?php 
   // looping 
   while($row=mysql_fetch_object($query)):?>
   <tr>
-    <td align="center"><?php echo $row->ID;  //row id ?></td>
-    <td align="center"><?php echo $row->Linea; // row first name ?></td>
-    <td align="center"><?php echo $row->Posizione; //row last name  ?></td>
-    <td align="center"><?php echo $row->Date; //row contact number ?></td>
-    <td align="center"><?php echo $row->Info; //row created time ?></td>
+    <td align="center"><?php echo $row->IDstazione;  //row id ?></td>
+    <td align="center"><?php echo $row->Lineaproduzione; // row first name ?></td>
+    <td align="center"><?php echo $row->Barcodetimeout; //row last name  ?></td>
+    
   </tr>
   <?php endwhile;?>
 </table>
