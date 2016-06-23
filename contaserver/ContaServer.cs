@@ -447,7 +447,7 @@ namespace contaserver
 				Console.WriteLine ("Messaggio di controllo barcode BARCODE={0}", 
 					info[1]);
 			//Conta il numero di prodotti
-			int n = countProduct (info [1], 0);
+			int n = countProduct (info [1], "0");
 			//Scrive in output il risultato
 			sendMsg(client, string.Format (BOOL_MSG, n == 0 ? 'F' : 'T')); 
 		}
@@ -521,7 +521,7 @@ namespace contaserver
 			//Conta il numero di prodotti
 			Console.WriteLine(READ_CONFIG_QUERY, info[1]);
 			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
-			if (rows.length > 0)
+			if (rows.Length > 0)
 			{
 				//Scrive in output il risultato
 				sendMsg(client, string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'))); 
@@ -552,10 +552,10 @@ namespace contaserver
 		/// <summary>
 		/// Conta il numero di prodotti con quel barcode
 		/// </summary>
-		public int countProduct(string barcode, int linea)
+		public int countProduct(string barcode, string linea)
 		{
 			//Crea una nuova instanza di MySqlCommand 
-			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode), conn);
+			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode, linea), conn);
 			//Esegue il comando e resituisce il valore
 			object result = cmd.ExecuteScalar();
 			//lo converte in un numero intero
@@ -580,6 +580,10 @@ namespace contaserver
 				MySqlDataReader reader = cmd.ExecuteReader ();
 				string[] result = new string[n];
 				//legge la prima riga e imposta le celle di result i valori corrispondenti
+				if (!reader.HasRows)
+				{
+					return new string[] {};
+				}
 				reader.Read ();
 				for (int i = 0; i < result.Length; i++)
 					result [i] = reader.GetString (i);
