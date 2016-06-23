@@ -1,7 +1,7 @@
 ﻿CREATE DATABASE dati_produzione; -- Crea il database
 CREATE TABLE dati_produzione.output_catena 
 (
- 	IDstazione INTEGER,                     -- stazione dove viene prodotto il prodotto
+	IDstazione INTEGER ;			-- IDstazione dove viene fatto il prodotto
 	ID_prodotto INT NOT NULL UNIQUE, 	-- barcode
 	Nome VARCHAR(40),			-- nome prodotto
 	Descrizione VARCHAR(255),		-- descrizione del prodotto
