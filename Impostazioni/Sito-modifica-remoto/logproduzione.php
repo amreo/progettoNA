@@ -54,7 +54,7 @@ if(mysql_num_rows($query)>0):
     <td align="center"><?php echo $row->Linea; // row first name ?></td>
     <td align="center"><?php echo $row->Date; //row last name  ?></td>
     <td align="center"><?php echo $row->Barcode; //row contact number ?></td>
-    <td align="center"><?php echo $row->Successo; //row contact number ?></td>
+    <td align="center"><?php if($row->Successo == 1){echo "Si"} //row contact number ?></td>
   </tr>
   <?php endwhile;?>
 </table>
