@@ -1,6 +1,6 @@
 <?php
 session_start();
-//se non c'è la sessione registrata
+//se non c'Ã¨ la sessione registrata
 if (!session_is_registered('autorizzato')) {
   echo "<h1>Area riservata, accesso negato.</h1>";
   echo "Per effettuare il login clicca <a href='index.php'><font color='blue'>qui</font></a>";
@@ -40,7 +40,7 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 }
 
 .button span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -80,7 +80,7 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 }
 
 .button1 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -120,7 +120,7 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 }
 
 .button2 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -133,6 +133,46 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 }
 
 .button2:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.button3 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:  #ff9900;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button3 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button3 span:after {
+  content: 'Â»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button3:hover span {
+  padding-right: 25px;
+}
+
+.button3:hover span:after {
   opacity: 1;
   right: 0;
 }
@@ -150,6 +190,12 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 <h2>Gestione Prodotti</h2>
 
 <a href="prodotti.php" <button class="button2" style="vertical-align:middle"><span>Nuovo</span></button></a>
+
+<br></br>
+
+<h2>Visualizza Produzione</h2>
+
+<a href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Vedi</span></button></a>
 
 <br></br>
 <a href="logout.php">Logout</a>
