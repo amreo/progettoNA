@@ -56,15 +56,19 @@ namespace contaserver
 		/// <summary>
 		/// Inizializza tutte le funzioni del server
 		/// </summary>
-		public void init()
+		public bool init()
 		{
 			//inizializza varie funzionalità
 			initConfigurationFile ();
-			initMysqlConnection();
+			if (!initMysqlConnection ())
+				return false;
 			initServerListener ();
 
 			//Spedisce messaggio di log di avvenuta inizializzazione
 			sendLogMessage("0","0","Avvenuto avvio di contaserver");
+		
+			//Restituisce true - successo
+			return true;
 		}
 		/// <summary>
 		/// Inizializza i parametri leggendo le info dal file
@@ -126,12 +130,19 @@ namespace contaserver
 		/// <summary>
 		/// Inizializza la connessione verso mysql
 		/// </summary>
-		public void initMysqlConnection()
+		public bool initMysqlConnection()
 		{
 			conn = new MySqlConnection ();
 			conn.ConnectionString = string.Format("Server={0};Port={1};Database=dati_produzione;Uid={2};Pwd={3};", 
 				mysqlIP, mysqlPort, username, password);
-			conn.Open ();
+
+			try {
+				conn.Open ();
+				return true;
+			} catch (Exception ex) {
+				Console.WriteLine ("Errore nell'apertura della connessione verso mysql, {0}, connection string: {1}", ex.ToString (), conn.ConnectionString);
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -216,11 +227,18 @@ namespace contaserver
 		/// <summary>
 		/// Inizia il ciclo di esecuzione del server
 		/// </summary>
-		public int run()
+		public bool run()
 		{
 			bool running = true;
-	
-			listener.Start();
+			//Comincia a ascoltare
+			try {
+				listener.Start();	
+			} catch (Exception ex) {
+				if (errorInfo)
+					Console.WriteLine ("Impossibili aprire la porta {0}, {1}", localPort, ex.ToString());
+				return false;
+			}
+
 			//Ripete finchè è in esecuzione
 			while (running) {
 				//Verifica connessioni chiuse
@@ -232,7 +250,7 @@ namespace contaserver
 				checkPendingMessage();
 			}
 
-			return 0;
+			return true;
 		}
 
 		/// <summary>

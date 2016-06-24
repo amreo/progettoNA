@@ -23,13 +23,15 @@ namespace contaserver
 
 			//Crea l'instanza del server e lo inizializza subito
 			serv = new ContaServer (conf);
-			serv.init ();
+			if (serv.init ()) {
+				//Stampa info di debug
+				if (serv.debugInfo)
+					serv.printInfo ();
 
-			//Stampa info di debug
-			if (serv.debugInfo) serv.printInfo();
+				//Inizia il ciclo di esecuzione del server
+				serv.run ();
+			}
 
-			//Inizia il ciclo di esecuzione del server
-			serv.run ();
 		}
 	}
 }
