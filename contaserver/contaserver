@@ -2,17 +2,12 @@
 
 NAME=contaserver
 DESC="Server dei contatori"
-PIDFILE="/var/run/${NAME}.pid"
 LOGFILE="/var/log/${NAME}.log"
+LOCKFILE="/var/run/${NAME}.lock"
+EXE="/usr/bin/local/contaserver.exr"
 
 # Percorso del demonizzatore mono
 DAEMON="/usr/bin/mono-service"
-
-# Opzione mono-service
-DAEMON_OPTS="/usr/bin/local/contaserver.exe"
-
-START_OPTS="--start --background --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} ${DAEMON_OPTS}"
-STOP_OPTS="--stop --pidfile ${PIDFILE}"
 
 test -x $DAEMON || exit 0
 
@@ -21,20 +16,21 @@ set -e
 case "$1" in
 start)
 echo -n "Starting ${DESC}: "
-start-stop-daemon $START_OPTS >> $LOGFILE
+/usr/bin/mono-service /usr/bin/local/contaserver.exe -l:/var/run/contaserver.lock --debug >> /var/log/contaserver.log 2>> /var/log/contaserver.log &
 echo "$NAME."
 ;;
 stop)
 echo -n "Stopping $DESC: "
-start-stop-daemon $STOP_OPTS
+kill -9 `cat /var/run/contaserver.lock`
 echo "$NAME."
-rm -f $PIDFILE
+rm -f /var/run/contaserver.lock
 ;;
 restart|force-reload)
 echo -n "Restarting $DESC: "
-start-stop-daemon $STOP_OPTS
+kill -9 `cat /var/run/contaserver.lock`
+rm -f /var/run/contaserver.lock
 sleep 1
-start-stop-daemon $START_OPTS >> $LOGFILE
+/usr/bin/mono-service /usr/bin/local/contaserver.exe -l:/var/run/contaserver.lock --debug >> /var/log/contaserver.log 2>> /var/log/contaserver.log &
 echo "$NAME."
 ;;
 *)
