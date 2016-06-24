@@ -4,7 +4,7 @@ NAME=contaserver
 DESC="Server dei contatori"
 LOGFILE="/var/log/${NAME}.log"
 LOCKFILE="/var/run/${NAME}.lock"
-EXE="/usr/bin/local/contaserver.exr"
+EXE="/usr/bin/local/contaserver.exe"
 
 # Percorso del demonizzatore mono
 DAEMON="/usr/bin/mono-service"
@@ -16,21 +16,21 @@ set -e
 case "$1" in
 start)
 echo -n "Starting ${DESC}: "
-/usr/bin/mono-service /usr/bin/local/contaserver.exe -l:/var/run/contaserver.lock --debug >> /var/log/contaserver.log 2>> /var/log/contaserver.log &
+$DAEMON $EXE -l:$LOCKFILE --debug >> $LOGFILE 2>> $LOGFILE &
 echo "$NAME."
 ;;
 stop)
 echo -n "Stopping $DESC: "
-kill -9 `cat /var/run/contaserver.lock`
+kill -9 `cat $LOCKFILE`
 echo "$NAME."
-rm -f /var/run/contaserver.lock
+rm -f $LOCKFILE
 ;;
 restart|force-reload)
 echo -n "Restarting $DESC: "
-kill -9 `cat /var/run/contaserver.lock`
-rm -f /var/run/contaserver.lock
+kill -9 `cat $LOCKFILE`
+rm -f $LOCKFILE
 sleep 1
-/usr/bin/mono-service /usr/bin/local/contaserver.exe -l:/var/run/contaserver.lock --debug >> /var/log/contaserver.log 2>> /var/log/contaserver.log &
+$DAEMON $EXE -l:$LOCKFILE --debug >> $LOGFILE 2>> $LOGFILE &
 echo "$NAME."
 ;;
 *)
