@@ -26,7 +26,8 @@ namespace contaserver
 		//Parametri del contaserver
 		private short localPort = 10000;
 		public bool debugInfo = true;
-	
+		public bool errorInfo = true;
+
 		//Oggetti in uso
 		private MySqlConnection conn; //mysql-contaserver
 		private TcpListener listener; //contaserver-contatori
@@ -75,7 +76,8 @@ namespace contaserver
 
 			//Verifica che esiste il file
 			if (!File.Exists (configFile)) {
-				Console.WriteLine ("Il file {0} non esiste", configFile);
+				if (errorInfo) 
+					Console.WriteLine ("Il file {0} non esiste", configFile);
 				return; //Esce dal metodo
 			}
 
@@ -83,7 +85,8 @@ namespace contaserver
 			try {
 				reader = new StreamReader (configFile);	
 			} catch (Exception ex) {
-				Console.WriteLine ("Errore nel aprire il file {0}:  {1}", configFile, ex.ToString ());
+				if (errorInfo) 
+					Console.WriteLine ("Errore nel aprire il file {0}:  {1}", configFile, ex.ToString ());
 			}
 
 			//Legge il file linea per linea fino alla fine dello stream
@@ -104,15 +107,15 @@ namespace contaserver
 				if (line == "") { //linea vuota
 					//nulla
 				} else if (line.IndexOf (' ') == -1) { //non contiene nessun spazio quindi parola attacata
-					Console.WriteLine ("Errore in file di configurazione alla linea {0}, contiene una sola parola: {1}", i, rawline); 
+					if (errorInfo) Console.WriteLine ("Errore in file di configurazione alla linea {0}, contiene una sola parola: {1}", i, rawline); 
 				} else if (line.IndexOf (' ') != line.LastIndexOf (' ')) { //gli indici di entrambi //gli spazi sono diversi quindi ci sono almeno due spazi
-					Console.WriteLine ("Errore in file di configurazione alla linea {0}, contiene troppe proprietà o valori (solo uno spazio): {1}", i, rawline);
+					if (errorInfo) Console.WriteLine ("Errore in file di configurazione alla linea {0}, contiene troppe proprietà o valori (solo uno spazio): {1}", i, rawline);
 				} else if (line.IndexOf (' ') == line.LastIndexOf (' ')) { //Lo spazio è lo stesos. dovrebbe essere giusto
 					//caso corretto, separa le due stringhe e imposta il valore
 					string[] words = line.Split(' ');
 					setOptions (words [0], words [1]);
 				} else { //Errore generico che non si dovrebbe verificare
-					Console.WriteLine ("Errore in file di configurazione sconosciuto alla linea {0}: {1}", i, rawline);
+					if (errorInfo) Console.WriteLine ("Errore in file di configurazione sconosciuto alla linea {0}: {1}", i, rawline);
 				}
 			}
 
@@ -158,13 +161,13 @@ namespace contaserver
 					if (short.TryParse (value, out tempInt)) //verifica che sia una stringa e quindi la mette
 						mysqlPort = tempInt;
 					else
-						Console.WriteLine ("Valore {0} non è valido per mysql.port", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per mysql.port", value);
 					break;
 				case "mysql.ip": //se key="mysql.ip" imposta l'ip di mysql
 					if (IPAddress.TryParse (value, out tempIP)) //verifica che sia un indirizzo ip
 						mysqlIP = tempIP;
 					else
-						Console.WriteLine ("Valore {0} non è valido per mysql.ip", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per mysql.ip", value);
 					break;
 				case "mysql.username": //se key="mysql.username"
 					username = value;
@@ -176,16 +179,23 @@ namespace contaserver
 					if (short.TryParse (value, out tempInt)) //verifica che sia una stringa e quindi la mette
 						localPort = tempInt;
 					else
-						Console.WriteLine ("Valore {0} non è valido per contaserver.port", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per contaserver.port", value);
 					break;
 				case "contaserver.debug": //se key="contaserver.debug"
 					if (bool.TryParse(value, out tempBool))
 						debugInfo = tempBool;
 					else
-						Console.WriteLine ("Valore {0} non è valido per contaserver.debug", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per contaserver.debug", value);
 					break;
+				case "contaserver.error": //se key="contaserver.error"
+					if (bool.TryParse(value, out tempBool))
+						errorInfo = tempBool;
+					else
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per contaserver.error", value);
+					break;				
+
 				default: //Parametri non riconosciuti
-					Console.WriteLine ("Il parametro {0} con valore {1} non è stato riconosciuto", key, value);
+					if (errorInfo) Console.WriteLine ("Il parametro {0} con valore {1} non è stato riconosciuto", key, value);
 					break;
 			}
 		}
@@ -287,10 +297,33 @@ namespace contaserver
 		/// </summary>
 		private void parseMsgProtoCCS(string msg, TcpClient client)
 		{
+			//Verifiche
+			if (msg.StartsWith ("$")) {
+				if (errorInfo) Console.WriteLine ("Messaggio non valido. Non comincia per $: {0}", msg);
+				return;
+			} else if (msg.EndsWith ("!")) {
+				if (errorInfo) Console.WriteLine ("Messaggio non valido. Non finisce per !: {0}", msg);
+				return;
+			} 
 			//Elimina dal messaggio il dollaro '$' iniziale e il punto esclamativo '!' finale
 			msg = msg.Substring (1, msg.Length - 2);
 			//Separa i componenti del messaggio per "::"
 			string[] info = msg.Split(new String[] {"::"}, StringSplitOptions.None);
+			//Verifica la quantità di elementi in info per irregolarità
+			if (info.Length == 0) {
+				if (errorInfo)
+					Console.WriteLine ("Messaggio non valido. Non ci sono informazioni (no '::') : {0}", msg);
+				return;				
+			} else if (info.Length == 1) {
+				if (errorInfo)
+					Console.WriteLine ("Messaggio non valido. Non c'è solo una informazione ({1}) : {0}", msg, info [1]);
+				return;
+			} else if (info.Length >= 5) {
+				if (errorInfo)
+					Console.WriteLine ("Messaggio non valido. Ci sono più di 5 informazioni : {0}", msg);
+				return;
+			}
+
 			//E quindi ne individua i componenti
 			switch (info [0]) {
 				case "LOG":
@@ -308,6 +341,9 @@ namespace contaserver
 				case "CONFIG":
 					runConfigCommandCCS (info, client);
 					break;
+				default:
+					if (errorInfo) Console.WriteLine ("Comando non valido {0} in {1}", info[0], msg);
+					break;
 			}
 		}
 
@@ -316,6 +352,23 @@ namespace contaserver
 		/// </summary>
 		private void runLogCommandCCS(string[] info)
 		{
+			uint temp; // variabile utilizzata solo per tryparse
+
+			//verifica il numero di informazioni
+			if (info.Length != 4) {
+				if (errorInfo)
+					Console.WriteLine ("Ci sono troppe info per il comando LOG: {0}", string.Join ("::", info));
+				return;
+			} else if (!uint.TryParse (info [1], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro della linea non è un numero intero positivo: {0}", info [1]);
+				return;			
+			} else if (!uint.TryParse (info [2], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro della posizione non è un numero intero positivo: {0}", info [2]);
+				return;
+			}
+
 			//Scrive un messagio di debug	
 			if (debugInfo) 
 				Console.WriteLine ("Messaggio di log: LINEA={0} POSIZIONE={1} MSG={2}", 
@@ -328,6 +381,24 @@ namespace contaserver
 		/// </summary>
 		private void runAddCommandCCS(string[] info)
 		{
+			uint temp; // variabile utilizzata solo per tryparse
+			int temp2; // variabile utilizzato solo per tryparse
+
+			//verifica il numero di informazioni
+			if (info.Length != 3) {
+				if (errorInfo)
+					Console.WriteLine ("Ci sono troppe info per il comando ADD: {0}", string.Join ("::", info));
+				return;
+			} else if (!uint.TryParse (info [1], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro della linea non è un numero intero positivo: {0}", info [1]);
+				return;			
+			} else if (!int.TryParse (info [2], out temp2)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro del barcode non è un numero intero: {0}", info [2]);
+				return;
+			}		
+
 			//Scrive un messagio di debug	
 			if (debugInfo) 
 				Console.WriteLine ("Messaggio di aggiunta: LINEA={0} BARCODE={1}", 
@@ -341,6 +412,19 @@ namespace contaserver
 		/// </summary>
 		private void runCheckCommandCCS(string[] info, TcpClient client)
 		{
+			int temp2; // variabile utilizzato solo per tryparse
+
+			//verifica il numero di informazioni
+			if (info.Length != 2) {
+				if (errorInfo)
+					Console.WriteLine ("Ci sono troppe info per il comando CHECK: {0}", string.Join ("::", info));
+				return;		
+			} else if (!int.TryParse (info [1], out temp2)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro del barcode non è un numero intero: {0}", info [1]);
+				return;
+			}
+
 			//Scrive un messagio di debug
 			if (debugInfo) 
 				Console.WriteLine ("Messaggio di controllo barcode BARCODE={0}", 
@@ -355,6 +439,28 @@ namespace contaserver
 		/// </summary>
 		private void runCheckedAddCommandCCS(string[] info)
 		{
+			uint temp; // variabile utilizzata solo per tryparse
+			int temp2; // variabile utilizzato solo per tryparse
+
+			//verifica il numero di informazioni
+			if (info.Length != 4) {
+				if (errorInfo)
+					Console.WriteLine ("Ci sono troppe info per il comando CHECKED-ADD: {0}", string.Join ("::", info));
+				return;
+			} else if (!uint.TryParse (info [1], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro della linea non è un numero intero positivo: {0}", info [1]);
+				return;			
+			} else if (!uint.TryParse (info [2], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro del posizione non è un numero intero positivo: {0}", info [2]);
+				return;
+			} else if (!int.TryParse (info [3], out temp2)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro del posizione non è un numero intero: {0}", info [3]);
+				return;
+			}
+
 			//Scrive un messagio di debug	
 			if (debugInfo) 
 				Console.WriteLine ("Messaggio di aggiunta sicura: LINEA={0} POSIZIONE={1} BARCODE={2}", 
@@ -378,6 +484,19 @@ namespace contaserver
 		/// </summary>
 		private void runConfigCommandCCS(string[] info, TcpClient client)
 		{
+			uint temp; // variabile utilizzata solo per tryparse 
+
+			//Esegue la verifica delle informazioni
+			if (info.Length != 2) {
+				if (errorInfo)
+					Console.WriteLine ("Ci sono troppe info per il comando CONFIG: {0}", string.Join ("::", info));
+				return;
+			} else if (!uint.TryParse (info [1], out temp)) {
+				if (errorInfo)
+					Console.WriteLine ("Il parametro IDStazione non è un numero intero positivo: {0}", info [1]);
+				return;		
+			}
+
 			//Scrive un messagio di debug
 			if (debugInfo) 
 				Console.WriteLine ("Messaggio di configurazione stazione IDStazione={0}", 
