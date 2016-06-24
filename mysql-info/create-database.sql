@@ -33,6 +33,26 @@ CREATE TABLE dati_produzione.settings
 	Descrizione TEXT
 );
 
+--parte relativa agli utenti autorizzati a accedere al sito
+
+CREATE TABLE `login` (
+`id` INT( 11 ) NOT NULL AUTO_INCREMENT ,
+`username` VARCHAR( 64 ) NOT NULL ,
+`password` VARCHAR( 64 ) NOT NULL ,
+PRIMARY KEY ( `id` )
+) ENGINE = MYISAM;
+ 
+INSERT INTO `login` (
+`id` ,
+`username` ,
+`password`
+)
+VALUES (
+NULL , 'tecnicoautorizzato', sha1( 'pwddifficile' )
+);
+
+---------------------------
+
 INSERT INTO dati_produzione.output_catena (ID_prodotto, Nome, Descrizione, numProdotti)
 VALUES (1, "Fallita_Lettura_Barcode", "Questo prodotti indica il numeri di prodotti in cui il barcode non è stato letto", 0);
 INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
