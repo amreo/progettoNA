@@ -385,6 +385,7 @@ namespace contaserver
 			//Conta il numero di prodotti
 			Console.WriteLine(READ_CONFIG_QUERY, info[1]);
 			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
+			Console.WriteLine("dopo sendSQLTableCommandOneRow");
 			//Scrive in output il risultato
 			sendMsg(client, string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'))); 
 		}
@@ -434,8 +435,10 @@ namespace contaserver
 			cmd.Connection = conn;
 			cmd.CommandType = System.Data.CommandType.TableDirect;
 			try {
+				Console.WriteLine("Eseguendo cmd.ExecuteReader()");
 				//Esegue il comando e ne restituisce un lettore di dati
 				MySqlDataReader reader = cmd.ExecuteReader ();
+				Console.WriteLine("dopo cmd.ExecuteReader()");
 				string[] result = new string[n];
 				//legge la prima riga e imposta le celle di result i valori corrispondenti
 				reader.Read ();
