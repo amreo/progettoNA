@@ -176,6 +176,46 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
   opacity: 1;
   right: 0;
 }
+
+.button4 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:  #9b9b9b;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button4 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button4 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button4:hover span {
+  padding-right: 25px;
+}
+
+.button4:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 </style>
 </head>
 <body>
@@ -196,6 +236,10 @@ $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 <h2>Visualizza Produzione</h2>
 
 <a href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Vedi</span></button></a>
+
+<h2>Modifica Database</h2>
+
+<a href="database.php" <button class="button4" style="vertical-align:middle"><span>Apri</span></button></a>
 
 <br></br>
 <a href="logout.php">Logout</a>
