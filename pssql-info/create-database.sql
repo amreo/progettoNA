@@ -1,4 +1,5 @@
 ﻿CREATE DATABASE dati_produzione; -- Crea il database
+
 CREATE TABLE dati_produzione.output_catena 
 (
 	ID_prodotto INTEGER NOT NULL UNIQUE PRIMARY KEY, 	-- barcode
@@ -32,21 +33,14 @@ CREATE TABLE dati_produzione.settings
 
 --parte relativa agli utenti autorizzati a accedere al sito
 
-CREATE TABLE `login` (
-`id` INTEGER( 11 ) NOT NULL AUTO_INCREMENT ,
-`username` VARCHAR( 64 ) NOT NULL ,
-`password` VARCHAR( 64 ) NOT NULL ,
-PRIMARY KEY ( `id` )
-) ENGINE = MYISAM;
- 
-INSERT INTO `login` (
-`id` ,
-`username` ,
-`password`
-)
-VALUES (
-NULL , 'tecnicoautorizzato', sha1( 'pwddifficile' )
+CREATE TABLE login (
+	ID INTEGER( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR( 64 ) NOT NULL ,
+	password VARCHAR( 64 ) NOT NULL
 );
+ 
+INSERT INTO login (username, password)
+VALUES ('tecnicoautorizzato', sha1( 'pwddifficile' ));
 
 ---------------------------
 
