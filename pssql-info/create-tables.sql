@@ -7,7 +7,7 @@ CREATE TABLE output_catena
 ); -- Tabella di output
 CREATE TABLE log_eventi
 (
-	ID SERIAL NOT NULL PRIMARY KEY,
+	ID SERIAL PRIMARY KEY,
 	Linea INTEGER,										-- Linea di produzione del contatore
 	Posizione INTEGER,									-- posizione dell'ultimo pacchetto ricevuto nell'ordine di produzione
 	Date TIMESTAMP,										-- data dell'evento
