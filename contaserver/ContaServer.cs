@@ -316,10 +316,10 @@ namespace contaserver
 		private void parseMsgProtoCCS(string msg, TcpClient client)
 		{
 			//Verifiche
-			if (msg.StartsWith ("$")) {
+			if (!msg.StartsWith ("$")) {
 				if (errorInfo) Console.WriteLine ("Messaggio non valido. Non comincia per $: {0}", msg);
 				return;
-			} else if (msg.EndsWith ("!")) {
+			} else if (!msg.EndsWith ("!")) {
 				if (errorInfo) Console.WriteLine ("Messaggio non valido. Non finisce per !: {0}", msg);
 				return;
 			} 
@@ -570,7 +570,7 @@ namespace contaserver
 			//Crea una nuova instanza di MySqlCommand che contiene la query
 			MySqlCommand cmd = new MySqlCommand (query);
 			cmd.Connection = conn;
-			cmd.CommandType = System.Data.CommandType.TableDirect;
+			cmd.CommandType = System.Data.CommandType.Text;
 			try {
 				Console.WriteLine("Eseguendo cmd.ExecuteReader()");
 				//Esegue il comando e ne restituisce un lettore di dati
