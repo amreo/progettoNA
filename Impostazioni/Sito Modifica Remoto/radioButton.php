@@ -1,7 +1,7 @@
 <?PHP
 
-$mysql_status = 'checked';
-$pgsql_status = 'unchecked';
+$mysql_status = 'unchecked';
+$pgsql_status = 'checked';
 
 if (isset($_POST['Submit1'])) {
 
