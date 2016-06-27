@@ -4,7 +4,7 @@ CREATE TABLE dati_produzione.output_catena
 	ID_prodotto INTEGER NOT NULL UNIQUE PRIMARY KEY, 	-- barcode
 	Nome VARCHAR(40),					-- nome prodotto
 	Descrizione VARCHAR(255),			-- descrizione del prodotto
-	numProdotti INTEGER, 					-- quantità prodotta	
+	numProdotti INTEGER 				-- quantità prodotta	
 ); -- Tabella di output
 CREATE TABLE dati_produzione.log_eventi
 (
