@@ -8,8 +8,10 @@ namespace testProtoCCS
 	{
 		public static void Main (string[] args)
 		{
+			const string IP = "192.168.250.50";
+
 			TcpClient client = new TcpClient ();
-			client.Connect ("192.168.250.50", 1001);
+			client.Connect (IP, 1001);
 			int scelta = 99;
 			byte[] msg;
 			string sr;
@@ -92,6 +94,15 @@ namespace testProtoCCS
 						client.Client.Receive (msg);
 						sr = System.Text.Encoding.ASCII.GetString (msg);
 						Console.WriteLine(sr);
+						break;
+
+					case 6:
+						client.Client.Shutdown (SocketShutdown.Both);
+						break;
+					case 7:
+						client.Client.Shutdown (SocketShutdown.Both);
+						client = new TcpClient ();
+						client.Connect (IP, 1001);
 						break;
 				}
 
