@@ -1,11 +1,11 @@
-CREATE TABLE dati_produzione.output_catena 
+CREATE TABLE output_catena 
 (
 	ID_prodotto INTEGER NOT NULL UNIQUE PRIMARY KEY, 	-- barcode
 	Nome VARCHAR(40),					-- nome prodotto
 	Descrizione VARCHAR(255),			-- descrizione del prodotto
 	numProdotti INTEGER 				-- quantità prodotta	
 ); -- Tabella di output
-CREATE TABLE dati_produzione.log_eventi
+CREATE TABLE log_eventi
 (
 	ID INTEGER NOT NULL PRIMARY KEY,
 	Linea INTEGER,			-- Linea di produzione del contatore
@@ -15,13 +15,13 @@ CREATE TABLE dati_produzione.log_eventi
 
 	PRIMARY KEY(ID)	
 );
-CREATE TABLE dati_produzione.contatori_dati
+CREATE TABLE contatori_dati
 (
 	ID INTEGER NOT NULL,		-- Linea di produzione 
 	ID_prodotto INTEGER NOT NULL,	-- ID del prodotto
 	numProdotti INTEGER			-- Quantità prodotta
 );
-CREATE TABLE dati_produzione.settings 
+CREATE TABLE settings 
 (
 	IDstazione INTEGER UNIQUE NOT NULL,
 	Lineaproduzione INTEGER NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE dati_produzione.settings
 --parte relativa agli utenti autorizzati a accedere al sito
 
 CREATE TABLE login (
-	ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ID INTEGER NOT NULL PRIMARY KEY,
 	username VARCHAR( 64 ) NOT NULL ,
 	password VARCHAR( 64 ) NOT NULL
 );
@@ -42,9 +42,9 @@ VALUES ('tecnicoautorizzato', sha1( 'pwddifficile' ));
 
 ---------------------------
 
-INSERT INTO dati_produzione.output_catena (ID_prodotto, Nome, Descrizione, numProdotti)
+INSERT INTO output_catena (ID_prodotto, Nome, Descrizione, numProdotti)
 VALUES (1, 'Fallita_Lettura_Barcode', 'Questo prodotti indica il numeri di prodotti in cui il barcode non è stato letto', 0);
-INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
+INSERT INTO log_eventi (Linea, Posizione, Info)
 VALUES (0, -1, 'sono stati inseriti i dati di default nel server');
 
 
