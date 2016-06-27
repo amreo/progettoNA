@@ -37,7 +37,7 @@ CREATE TABLE login
 );
  
 INSERT INTO login (username, password)
-VALUES ('tecnicoautorizzato', sha1( 'pwddifficile' ));
+VALUES ('tecnicoautorizzato', 'pwddifficile');
 
 ---------------------------
 
