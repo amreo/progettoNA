@@ -1,25 +1,23 @@
 CREATE TABLE output_catena 
 (
 	ID_prodotto INTEGER NOT NULL UNIQUE PRIMARY KEY, 	-- barcode
-	Nome VARCHAR(40),					-- nome prodotto
-	Descrizione VARCHAR(255),			-- descrizione del prodotto
-	numProdotti INTEGER 				-- quantità prodotta	
+	Nome VARCHAR(40),									-- nome prodotto
+	Descrizione VARCHAR(255),							-- descrizione del prodotto
+	numProdotti INTEGER 								-- quantità prodotta	
 ); -- Tabella di output
 CREATE TABLE log_eventi
 (
 	ID INTEGER NOT NULL PRIMARY KEY,
-	Linea INTEGER,			-- Linea di produzione del contatore
-	Posizione INTEGER,		-- posizione dell'ultimo pacchetto ricevuto nell'ordine di produzione
-	Date TIMESTAMP,			-- data dell'evento
-	Info VARCHAR(255),		-- descrizione dell'evento
-
-	PRIMARY KEY(ID)	
+	Linea INTEGER,										-- Linea di produzione del contatore
+	Posizione INTEGER,									-- posizione dell'ultimo pacchetto ricevuto nell'ordine di produzione
+	Date TIMESTAMP,										-- data dell'evento
+	Info VARCHAR(255)									-- descrizione dell'evento
 );
 CREATE TABLE contatori_dati
 (
-	ID INTEGER NOT NULL,		-- Linea di produzione 
-	ID_prodotto INTEGER NOT NULL,	-- ID del prodotto
-	numProdotti INTEGER			-- Quantità prodotta
+	ID INTEGER NOT NULL,								-- Linea di produzione 
+	ID_prodotto INTEGER NOT NULL,						-- ID del prodotto
+	numProdotti INTEGER									-- Quantità prodotta
 );
 CREATE TABLE settings 
 (
@@ -29,9 +27,10 @@ CREATE TABLE settings
 	Descrizione TEXT
 );
 
---parte relativa agli utenti autorizzati a accedere al sito
+-- parte relativa agli utenti autorizzati a accedere al sito
 
-CREATE TABLE login (
+CREATE TABLE login 
+(
 	ID INTEGER NOT NULL PRIMARY KEY,
 	username VARCHAR( 64 ) NOT NULL ,
 	password VARCHAR( 64 ) NOT NULL
