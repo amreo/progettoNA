@@ -10,7 +10,7 @@
  
 </head>
 <body>
- 
+   <h3>Inserisci le credenziali per continuare</h3>
     <form id="login" action="verifica.php" method="post">
         <fieldset id="inputs">
             <input id="username" name="username" type="text" placeholder="Username" autofocus required>
