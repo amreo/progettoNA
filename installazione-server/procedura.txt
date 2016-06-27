@@ -7,9 +7,9 @@
 	* apt-get update
 	* apt-get upgrade
 4-Installazione software necessari
-	* apt-get install mysql-server mysql-client
+	* apt-get install apt-get install postgresql postgresql-client
 	* apt-get install apache2 apache2-doc
-	* apt-get install php5 php5-mysql libapache2-mod-php5
+	* apt-get install php5 php5-pssql libapache2-mod-php5
 	* apt-get install git
 	* Per l'installazione di MONO
 	* apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
