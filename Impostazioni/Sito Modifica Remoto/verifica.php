@@ -5,7 +5,9 @@ include("connessione_db.php");
 include("config.php"); 
  
 //mi collego
+echo $connessione;
 mysql_select_db("$db_name",$connessione); 
+
  
 //variabili POST con anti sql Injection
 $username=mysql_real_escape_string($_POST['username']); //faccio l'escape dei caratteri dannosi
