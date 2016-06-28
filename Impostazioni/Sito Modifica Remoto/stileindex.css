@@ -30,7 +30,11 @@ font-family:calibri;
 #logout:hover, #logout:active {
     background-color: grey;
 }
-
+#sinistra {
+    position: absolute;
+    top: 0%;
+   
+       }
 #centro {
     position: absolute;
     top: 0%;
