@@ -219,7 +219,41 @@ body{
   opacity: 1;
   right: 0;
 }
-  
+ .button6 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:  #86592d;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+.button6 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.button6 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+.button6:hover span {
+  padding-right: 25px;
+}
+.button6:hover span:after {
+  opacity: 1;
+  right: 0;
+} 
 h2 {
     
     font-family: calibri;
@@ -317,6 +351,9 @@ font-family:calibri;
 <br></br>
 
 <a id="btn" href="log.php" <button class="button4" style="vertical-align:middle"><span>Log Eventi</span></button></a>
+<br></br>
+
+<a id="btn" href="stazioni.php" <button class="button6" style="vertical-align:middle"><span>Stazioni</span></button></a>
 </section>
 <br></br>
 <a id="logout" href="logout.php">Logout</a>
