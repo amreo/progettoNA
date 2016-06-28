@@ -12,7 +12,7 @@ $timeout = $_POST['timeout'];
 
 $query = "UPDATE dati_produzione.settings SET Lineaproduzione = $lineaproduzione, Barcodetimeout = $timeout WHERE IDstazione = $idstazione;";
 if(mysql_query($query)){
-echo "updated";}
+echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
 else{
 echo "fail";}
 ?>
