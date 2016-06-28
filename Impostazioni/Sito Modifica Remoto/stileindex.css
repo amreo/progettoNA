@@ -7,6 +7,12 @@ h2 {
     
     font-family:calibri;
 }
+#logout{
+  position: absolute;
+    top: 85%;
+    
+  
+}
 
 #logout:link, #logout:visited {
     background-color: #9A9A9A;
@@ -24,3 +30,14 @@ font-family:calibri;
 #logout:hover, #logout:active {
     background-color: grey;
 }
+
+#centro {
+    position: absolute;
+    top: 0%;
+    right: 56%;
+       }
+#destra {
+    position: absolute;
+    top: 0%;
+    right: 31%;
+       }
