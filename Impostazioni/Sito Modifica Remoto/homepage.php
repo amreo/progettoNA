@@ -1,5 +1,5 @@
 <html>
-  <link rel="stylesheet" href="stileindex.css" type="text/css" />
+  
 <head>
   
 <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -25,7 +25,7 @@
   transition: 0.5s;
 }
 .button span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -61,7 +61,7 @@
   transition: 0.5s;
 }
 .button1 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -96,7 +96,7 @@
   transition: 0.5s;
 }
 .button2 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -131,7 +131,7 @@
   transition: 0.5s;
 }
 .button3 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -166,7 +166,7 @@
   transition: 0.5s;
 }
 .button4 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
@@ -202,7 +202,7 @@
   transition: 0.5s;
 }
 .button5 span:after {
-  content: '»';
+  content: 'Â»';
   position: absolute;
   opacity: 0;
   top: 0;
