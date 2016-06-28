@@ -4,6 +4,9 @@
   
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <style>
+body{
+  background-color:#ebeaea;
+}
 .button {
   display: inline-block;
   border-radius: 4px;
