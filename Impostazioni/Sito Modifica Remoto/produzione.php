@@ -16,7 +16,7 @@
 $connection=mysql_connect('localhost','root','PASSWORD') or die(mysql_error());
 //select a database for given connection
 //if database selection  fails stop further execution and show mysql error
-mysql_select_db('dati_produzione.output_catena',$connection) or die(mysql_error());
+mysql_select_db('dati_produzione',$connection) or die(mysql_error());
  
 //execute a mysql query to retrieve all the users from users table
 //if  query  fails stop further execution and show mysql error
