@@ -2,9 +2,7 @@ input[type=text]:focus{
  
   border:  2px solid #555;
 }
-body{
-  background-color:#ebeaea;
-}
+
 input[type=submit] {
    background-color: #FF6633;
    border: none;
