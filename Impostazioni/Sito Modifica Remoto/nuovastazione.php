@@ -14,7 +14,7 @@ VALUES ($idstazione,$lineaproduzione,$timeout)";
 
 if(mysql_query($query))
 {
-echo "updated";}
+echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
 
 else{
 echo "fail";}
