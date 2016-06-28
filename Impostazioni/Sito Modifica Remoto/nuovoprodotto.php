@@ -14,7 +14,7 @@ VALUES ($linea,$idprodotto,'$nome','$descrizione',0)";
 
 if(mysql_query($query))
 {
-echo "updated";}
+echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
 
 else{
 echo "fail";}
