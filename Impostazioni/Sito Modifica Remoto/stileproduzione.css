@@ -15,3 +15,20 @@ th {
     background-color: #e68a00;
     color: white;
 }
+
+a:link, a:visited {
+    background-color: #9A9A9A;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+font-family:calibri;
+
+
+}
+
+
+a:hover, a:active {
+    background-color: grey;
+}
