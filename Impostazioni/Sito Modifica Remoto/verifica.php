@@ -5,7 +5,7 @@ session_start(); //inizio la sessione
 include("config.php"); 
  
 //mi collego
-mysql_select_db("dati_produzione", mysql_connect("$host","$db_user","$db_psw")); 
+mysql_select_db("dati_produzione.login", mysql_connect("$host","$db_user","$db_psw")); 
 
  
 //variabili POST con anti sql Injection
@@ -35,12 +35,12 @@ if($trovato === 1) {
   $_SESSION['cod'] = $cod;
  
  /*Redirect alla pagina riservata*/
-   echo '<script language=javascript>document.location.href="homepage.php"</script>'; 
+   echo '<script language=javascript>window.location.href="homepage.php"</script>'; 
  
 } else {
  
 /*Username e password errati, redirect alla pagina di login*/
- echo '<script language=javascript>document.location.href="index.php"</script>';
+ echo '<script language=javascript>window.location.href="index.php"</script>';
  
 }
 ?>
