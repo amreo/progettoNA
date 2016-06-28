@@ -4,7 +4,7 @@
 <!DOCTYPE html >
 <html >
 <head>
- <meta charset="UTF-8" />
+<meta charset="utf-8" />
  <link href="stileproduzione.css" rel="stylesheet" type="text/css">
 <title></title>
 </head>
