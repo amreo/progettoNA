@@ -5,7 +5,7 @@ session_start(); //inizio la sessione
 include("config.php"); 
  
 //mi collego
-mysql_select_db("dati_produzione.login", mysql_connect("$host","$db_user","$db_psw")); 
+mysql_select_db("dati_produzione", mysql_connect("$host","$db_user","$db_psw")); 
 
  
 //variabili POST con anti sql Injection
