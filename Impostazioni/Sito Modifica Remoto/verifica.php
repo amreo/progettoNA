@@ -35,7 +35,7 @@ if($trovato === 1) {
   $_SESSION['cod'] = $cod;
  
  /*Redirect alla pagina riservata*/
-   echo '<script language=javascript>window.location.href="homepage.php"</script>'; 
+   echo '<script language=javascript>window.location.replace("192.168.1.226/homepage.php");</script>'; 
  
 } else {
  
