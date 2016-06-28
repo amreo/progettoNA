@@ -1,6 +1,8 @@
 <html>
   <link rel="stylesheet" href="stileindex.css" type="text/css" />
 <head>
+  
+<meta name="viewport" content="width=device-width, user-scalable=no">
 <style>
 .button {
   display: inline-block;
@@ -214,6 +216,76 @@
   opacity: 1;
   right: 0;
 }
+  
+h2 {
+    
+    font-family: calibri;
+}
+
+#btn{
+    
+    font-family:calibri;
+}
+#logout{
+  position: absolute;
+    top: 85%;
+    }
+
+#logout:link, #logout:visited {
+    background-color: #9A9A9A;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+font-family:calibri;
+
+
+}
+
+
+#logout:hover, #logout:active {
+    background-color: grey;
+}
+#sinistra {
+    position: absolute;
+    top: 0%;
+   
+       }
+#centro {
+    position: absolute;
+    top: 0%;
+    right: 56%;
+       }
+#destra {
+    position: absolute;
+    top: 0%;
+    right: 31%;
+       }
+
+@media screen and (max-width: 1187px) {
+ #logout{
+  position: static;
+    top: 85%;
+    }
+   #sinistra {
+    position: static;
+    top: 50%;
+   
+       }
+#centro {
+    position: static;
+    top: 0%;
+    right: 56%;
+       }
+#destra {
+    position: static;
+    top: 0%;
+    right: 31%;
+       }
+}
+
+
 </style>
 </head>
 <body>
