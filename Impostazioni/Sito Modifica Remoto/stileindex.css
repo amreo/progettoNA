@@ -3,6 +3,11 @@ h2 {
     font-family: calibri;
 }
 
+#btn{
+    
+    font-family:calibri;
+}
+
 #logout:link, #logout:visited {
     background-color: #9A9A9A;
     color: white;
