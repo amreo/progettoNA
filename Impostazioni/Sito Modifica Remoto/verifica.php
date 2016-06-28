@@ -1,11 +1,11 @@
 <?php
 session_start(); //inizio la sessione
 //includo i file necessari a collegarmi al db con relativo script di accesso
-// include("connessione_db.php");
+include("connessione_db.php");
 include("config.php"); 
  
 //mi collego
-mysql_select_db("dati_produzione", mysql_connect("$host","$db_user","$db_psw")); 
+mysql_select_db(, ); 
 
  
 //variabili POST con anti sql Injection
