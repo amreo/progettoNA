@@ -25,7 +25,6 @@ else $trovato = 1;
  
 /* Username e password corrette */
 if($trovato == 1) {
- echo "Sei entrato";
  
  /*Registro la sessione*/
   //session_register("autorizzato");
