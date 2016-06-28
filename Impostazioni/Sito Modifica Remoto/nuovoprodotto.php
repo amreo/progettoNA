@@ -10,7 +10,7 @@ $idprodotto = $_POST['idprodotto'];
 $nome = $_POST['nome'];
 
 $query = "INSERT INTO dati_produzione.output_catena (IDstazione, ID_prodotto, Nome,Descrizione,numProdotti)
-VALUES ($idstazione,$idprodotto,$nome,$descrizione,0)";
+VALUES ($idstazione,$idprodotto,'$nome','$descrizione',0)";
 
 if(mysql_query($query))
 {
