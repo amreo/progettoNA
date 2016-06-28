@@ -27,7 +27,7 @@ else $trovato = 1;
 if($trovato === 1) {
  
  /*Registro la sessione*/
-  session_register('autorizzato');
+  session_register("autorizzato");
  
   $_SESSION["autorizzato"] = 1;
  
