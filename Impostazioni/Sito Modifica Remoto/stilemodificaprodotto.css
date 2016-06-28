@@ -1,0 +1,40 @@
+input[type=text]:focus{
+ 
+  border:  2px solid #555;
+}
+
+input[type=submit] {
+   background-color: #00cc7a;
+   border: none;
+   color: white;
+   padding : 15px 32px;
+   text-align:center;
+   text-decoration:none;
+   display:inline-block;
+   font-size:16px;
+}
+h3 {
+    color: red;
+    font-family: calibri;
+}
+
+p {
+  font-family: calibri;
+}
+
+a:link, a:visited {
+    background-color: #9A9A9A;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+font-family:calibri;
+
+
+}
+
+
+a:hover, a:active {
+    background-color: grey;
+}
