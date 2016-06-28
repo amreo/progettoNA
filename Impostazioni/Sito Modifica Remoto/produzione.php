@@ -36,7 +36,7 @@ if(mysql_num_rows($query)>0):
     <th align="center">ID Stazione</th>
     <th align="center">Barcode Prodotto</th>
     <th align="center">Nome Prodotto</th>
-    <t align="center">Descrizione</th>
+    <th align="center">Descrizione</th>
     <th align="center">Quantita'</th>
   </tr>
   <?php 
