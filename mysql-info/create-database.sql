@@ -3,7 +3,7 @@
   	DEFAULT COLLATE utf8_general_ci;
 CREATE TABLE dati_produzione.output_catena 
 (
-	IDstazione INTEGER,			-- IDstazione dove viene fatto il prodotto
+	IDstazione INT NOT NULL,		-- IDstazione dove viene fatto il prodotto
 	ID_prodotto INT NOT NULL UNIQUE, 	-- barcode
 	Nome VARCHAR(40),			-- nome prodotto
 	Descrizione VARCHAR(255),		-- descrizione del prodotto
@@ -20,12 +20,6 @@ CREATE TABLE dati_produzione.log_eventi
 	Info VARCHAR(255),		-- descrizione dell'evento
 
 	PRIMARY KEY(ID)	
-);
-CREATE TABLE dati_produzione.contatori_dati
-(
-	ID INT NOT NULL,		-- Linea di produzione 
-	ID_prodotto INT NOT NULL,	-- ID del prodotto
-	numProdotti INT			-- Quantità prodotta
 );
 CREATE TABLE dati_produzione.settings 
 (
