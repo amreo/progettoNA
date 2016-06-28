@@ -230,7 +230,7 @@
 <a id="btn" href="log.php" <button class="button4" style="vertical-align:middle"><span>Vedi</span></button></a>
 
 <br></br>
-<a id="logout "href="logout.php">Logout</a>
+<a id="logout" href="logout.php">Logout</a>
 
 </body>
 </html>
