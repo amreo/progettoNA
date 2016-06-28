@@ -5,7 +5,7 @@ include("connessione_db.php");
 include("config.php"); 
  
 //mi collego
-mysql_select_db(, ); 
+mysql_select_db("$db_name",$connessione); 
 
  
 //variabili POST con anti sql Injection
