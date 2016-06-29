@@ -21,6 +21,14 @@ CREATE TABLE settings
 	Barcodetimeout INTEGER NOT NULL,
 	Descrizione TEXT
 );
+CREATE TABLE dati_produzione.log_produzione
+(
+	ID SERIAL PRIMARY KEY,
+	Linea INT,
+	Date TIMESTAMP,
+	Barcode INT
+);
+
 
 -- parte relativa agli utenti autorizzati a accedere al sito
 
@@ -41,5 +49,5 @@ VALUES (1, 'Fallita_Lettura_Barcode', 'Questo prodotti indica il numeri di prodo
 INSERT INTO log_eventi (Linea, Posizione, Info)
 VALUES (0, -1, 'sono stati inseriti i dati di default nel server');
 
-
+-- Gli eventi sono gestiti con crontab
 
