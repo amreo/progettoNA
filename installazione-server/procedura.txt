@@ -34,8 +34,10 @@
 	* xbuild contaserver/contaserver.sln 
 	* mkdir /usr/bin/local
 	* cp contaserver/bin/Debug/contaserver.exe /usr/bin/local/
-	* cat mysql-info/create-database.sql | mysql -u root -p
-	* cat mysql-info/permessi-arduino.sql | mysql -u root -p
+	* cp pgsql-info§/delete-older-30-days-log.sh /etc/cron.daily/
+	* su - postgres
+	* pgsql -f pgsql-info/create-database.sql 
+	* pgsql -f pgsql-info/permessi-arduino.sql 
 6-Test esecuzione contaserver
 	* /etc/init.d/contaserver start
 7-Test php
