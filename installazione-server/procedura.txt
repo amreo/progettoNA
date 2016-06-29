@@ -25,7 +25,6 @@
 	* mkdir /var/www/html/old
 	* mv /v
 	* cp Impostazioni/Sito\ Modifica\ Remoto/* /var/www/html/
-	* cat mysql-info/create-database.sql | mysql -u root -p
 	* cp contaserver-conf/contaserver.conf /etc/contaserver.conf
 	* chmod 500 /etc/contaserver.conf
 	* cp contaserver/contaserver /etc/init.d/contaserver
@@ -35,12 +34,13 @@
 	* xbuild contaserver/contaserver.sln 
 	* mkdir /usr/bin/local
 	* cp contaserver/bin/Debug/contaserver.exe /usr/bin/local/
+	* cat mysql-info/create-database.sql | mysql -u root -p
+	* cat mysql-info/permessi-arduino.sql | mysql -u root -p
 6-Test esecuzione contaserver
 	* /etc/init.d/contaserver start
 7-Test php
-	* nano /var/www/html/test.php
-	* scriverci <?php phpInfo(); ?>
-	* Salvare con CTRL+O,invio e uscire con CTRL+X,invio
+	* echo "<?php phpInfo(); ?>" >> /var/www/html/test.php
+	* aprire test.php su un browser online
 8-Impostazione IP statico
 	* nano /etc/networks/interface
 	* Decommentare con # la linea iface eth0 inet dhcp
