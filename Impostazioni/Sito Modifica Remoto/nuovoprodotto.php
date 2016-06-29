@@ -8,14 +8,17 @@ $linea = $_POST['linea'];
 $descrizione = $_POST['descrizione'];
 $idprodotto = $_POST['idprodotto'];
 $nome = $_POST['nome'];
+$a = 0;
 
 $query = "INSERT INTO dati_produzione.output_catena (Linea, ID_prodotto, Nome,Descrizione,numProdotti)
 VALUES ($linea,$idprodotto,'$nome','$descrizione',0)";
 
 if(mysql_query($query))
 {
-echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
+echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
+  $a = 1;
+}
 
 else{
-echo "fail";}
+echo "Operazione fallita";}
 ?>
