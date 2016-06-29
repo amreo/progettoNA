@@ -34,7 +34,7 @@
 	* xbuild contaserver/contaserver.sln 
 	* mkdir /usr/bin/local
 	* cp contaserver/bin/Debug/contaserver.exe /usr/bin/local/
-	* cp pgsql-info§/delete-older-30-days-log.sh /etc/cron.daily/
+	* cp pgsql-info/delete-older-30-days-log.sh /etc/cron.daily/
 	* su - postgres
 	* pgsql -f pgsql-info/create-database.sql 
 	* pgsql -f pgsql-info/permessi-arduino.sql 
