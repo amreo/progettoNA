@@ -24,7 +24,7 @@ if ($cod == NULL) $trovato = 0 ;
 else $trovato = 1;  
  
 /* Username e password corrette */
-if($trovato === 1) {
+if($trovato == 1) {
  
  /*Registro la sessione*/
   session_register('autorizzato');

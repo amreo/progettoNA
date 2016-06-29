@@ -1,5 +1,6 @@
 CREATE TABLE output_catena 
 (
+	Linea INT NOT NULL,									-- Linea dove viene fatto il prodotto
 	ID_prodotto INTEGER NOT NULL UNIQUE PRIMARY KEY, 	-- barcode
 	Nome VARCHAR(40),									-- nome prodotto
 	Descrizione VARCHAR(255),							-- descrizione del prodotto
@@ -12,12 +13,6 @@ CREATE TABLE log_eventi
 	Posizione INTEGER,									-- posizione dell'ultimo pacchetto ricevuto nell'ordine di produzione
 	Date TIMESTAMP,										-- data dell'evento
 	Info VARCHAR(255)									-- descrizione dell'evento
-);
-CREATE TABLE contatori_dati
-(
-	ID INTEGER NOT NULL,								-- Linea di produzione 
-	ID_prodotto INTEGER NOT NULL,						-- ID del prodotto
-	numProdotti INTEGER									-- Quantità prodotta
 );
 CREATE TABLE settings 
 (
