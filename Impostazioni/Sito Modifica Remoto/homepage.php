@@ -308,6 +308,41 @@ body{
   right: 0;
 } 
 
+ .button8 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:  #99cc00;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+.button8 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.button8 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+.button8:hover span {
+  padding-right: 25px;
+}
+.button8:hover span:after {
+  opacity: 1;
+  right: 0;
+} 
 
 h2 {
     
