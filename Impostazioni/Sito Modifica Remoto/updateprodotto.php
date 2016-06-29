@@ -5,9 +5,12 @@ $lineaproduzione = $_POST['lineaproduzione'];
 $barcode = $_POST['barcode'];
 $nome = $_POST['nome'];
 $descrizione = $_POST['descrizione'];
+$c = 0;
 $query = "UPDATE dati_produzione.output_catena SET ID_prodotto = $barcode, Nome = $nome, Descrizione = $descrizione,WHERE Linea = $lineaproduzione;";
 if(mysql_query($query)){
-echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
+echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
+  $c = 1;
+}
 else{
-echo "fail";}
+echo "Operazione fallita";}
 ?>
