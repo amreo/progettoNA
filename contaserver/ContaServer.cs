@@ -35,9 +35,9 @@ namespace contaserver
 
 		//Query dei comandi
 		const string LOG_QUERY = "INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
-		const string UPDATE_PRODUCT_QUERY = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND linea={1};";
+		const string UPDATE_PRODUCT_QUERY = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND Linea={1};";
 		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM dati_produzione.settings WHERE IDStazione = {0};";
-
+		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO dati_produzione.log_produzione (Linea, Barcode) VALUES ({0}, {1});";
 		//Modello stringa protocollo CCS
 		const string BOOL_MSG = "${0}!";
 		const string CONFIG_RETURN_MSG = "${0:D3}::{1:D5}!";
@@ -422,6 +422,7 @@ namespace contaserver
 					info[1], info[2]);
 			//Invia i comandi SQL
 			sendSQLCommand(String.Format(UPDATE_PRODUCT_QUERY, info[2], info[1]));
+			sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[2]));		
 		}
 		/// <summary>
 		/// Esegue il comando Check del protocollo CCS
@@ -446,7 +447,7 @@ namespace contaserver
 				Console.WriteLine ("Messaggio di controllo barcode BARCODE={0}", 
 					info[1]);
 			//Conta il numero di prodotti
-			int n = countProduct (info [1]);
+			int n = countProduct (info [1], 0);
 			//Scrive in output il risultato
 			sendMsg(client, string.Format (BOOL_MSG, n == 0 ? 'F' : 'T')); 
 		}
@@ -482,15 +483,17 @@ namespace contaserver
 				Console.WriteLine ("Messaggio di aggiunta sicura: LINEA={0} POSIZIONE={1} BARCODE={2}", 
 					info[1], info[2], info[3]);
 			//Conta il numero di prodotti
-			int n = countProduct (info [3]);
+			int n = countProduct (info [3], info[1]);
 
 			//Se n=0 significa non presente e quindi errore
 			if (n == 0) {
 				sendLogMessage (info [1], info [2], 
 					string.Format ("Barcode non esistente o corrotto: {0}", info [3]));
-				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, 1, 0));				
+				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, 1, 0));		
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));		
 			} else {
-				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, info[3], info[1]));					
+				sendSQLCommand (String.Format (UPDATE_PRODUCT_QUERY, info[3], info[1]));	
+				sendSQLCommand(String.Format(LOG_PRODUCT_DETECTED_QUERY, info[1], info[3]));				
 			}
 		}
 		/// <summary>
@@ -549,10 +552,10 @@ namespace contaserver
 		/// <summary>
 		/// Conta il numero di prodotti con quel barcode
 		/// </summary>
-		public int countProduct(string barcode)
+		public int countProduct(string barcode, int linea)
 		{
 			//Crea una nuova instanza di MySqlCommand 
-			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0};", barcode), conn);
+			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode), conn);
 			//Esegue il comando e resituisce il valore
 			object result = cmd.ExecuteScalar();
 			//lo converte in un numero intero
