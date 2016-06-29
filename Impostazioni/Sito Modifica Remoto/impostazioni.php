@@ -2,7 +2,7 @@
 
 <html>
 <link rel="stylesheet" href="stile.css" type="text/css" />
-<form method="post" name="Update" action="updateprodotto.php" />
+<form method="post" name="Update" action="updatestazione.php" />
   <h3>Impostazioni</h3>
 <p>ID Stazione<p>
  
