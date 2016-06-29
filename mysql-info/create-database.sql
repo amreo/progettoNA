@@ -57,4 +57,18 @@ VALUES (1, "Fallita_Lettura_Barcode", "Questo prodotti indica il numeri di prodo
 INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
 VALUES (0, -1, "sono stati inseriti i dati di default nel server");
 
--- -------------------
+-- ------------------- Eventi
+SET GLOBAL event_scheduler = ON;
+CREATE EVENT cancella_vecchi_log_eventi
+	ON SCHEDULE
+		EVERY 1 DAY
+	DO
+		DELETE FROM dati_produzione.log_eventi WHERE Date < DATE_SUB( CURRENT_TIME(), INTERVAL 30 DAY )
+SET GLOBAL event_scheduler = ON;
+CREATE EVENT cancella_vecchi_log_produzione
+	ON SCHEDULE
+		EVERY 1 DAY
+	DO
+		DELETE FROM dati_produzione.log_produzione WHERE Date < DATE_SUB( CURRENT_TIME(), INTERVAL 30 DAY )
+
+
