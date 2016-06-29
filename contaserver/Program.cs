@@ -1,5 +1,5 @@
 ﻿using System;
-using MySql.Data.MySqlClient;
+using Npgsql;
 using System.IO;
 using System.Net;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using System;
-using MySql.Data.MySqlClient;
+using Npgsql;
 using System.IO;
 using System.Net;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace contaserver
 {
 	/// <summary>
 	/// Classe che gestisce le funzioni da ContaServer
-	/// Si occupa anche da MySQL client
+	/// Si occupa anche da PGSQL client
 	/// E la lettura delle info da /etc/contaserver.conf o ./contaserver.conf
 	/// </summary>
 	public class ContaServer
@@ -18,9 +18,9 @@ namespace contaserver
 		//File di configurazione
 		//Di default è /etc/contaserver.conf
 		private string configFile; 
-		//Parametri di connessione a MySQL
-		private short mysqlPort = 3306;
-		private IPAddress mysqlIP = IPAddress.Parse ("127.0.0.1");
+		//Parametri di connessione a PGSQL
+		private short pgsqlPort = 5432;
+		private IPAddress pgsqlIP = IPAddress.Parse ("127.0.0.1");
 		private string username = "arduino";
 		private string password = "arduino4you";
 		//Parametri del contaserver
@@ -29,21 +29,21 @@ namespace contaserver
 		public bool errorInfo = true;
 
 		//Oggetti in uso
-		private MySqlConnection conn; //mysql-contaserver
+		private Npgsql.NpgsqlConnection conn; //pgsql-contaserver
 		private TcpListener listener; //contaserver-contatori
 		private List<TcpClient> clientsList; //lista di client connessi
 
 		//Query dei comandi
-		const string LOG_QUERY = "INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
-		const string UPDATE_PRODUCT_QUERY = "UPDATE dati_produzione.output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND Linea={1};";
-		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM dati_produzione.settings WHERE IDStazione = {0};";
-		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO dati_produzione.log_produzione (Linea, Barcode) VALUES ({0}, {1});";
+		const string LOG_QUERY = "INSERT INTO log_eventi (Linea, Posizione, Info) VALUES ({0}, {1}, '{2}');";
+		const string UPDATE_PRODUCT_QUERY = "UPDATE output_catena SET numProdotti = numProdotti + 1 WHERE ID_prodotto = {0} AND Linea={1};";
+		const string READ_CONFIG_QUERY = "SELECT IDStazione, Lineaproduzione, Barcodetimeout FROM settings WHERE IDStazione = {0};";
+		const string LOG_PRODUCT_DETECTED_QUERY = "INSERT INTO log_produzione (Linea, Barcode) VALUES ({0}, {1});";
 		//Modello stringa protocollo CCS
 		const string BOOL_MSG = "${0}!";
 		const string CONFIG_RETURN_MSG = "${0:D3}::{1:D5}!";
 
 		/// <summary>
-		/// Inizializza i parametri del client mysql e porta locale
+		/// Inizializza i parametri del client pgsql e porta locale
 		/// </summary>
 		/// <param name="configFile">Percorso di configurazione file.</param>
 		public ContaServer (string configFile)
@@ -59,7 +59,7 @@ namespace contaserver
 		{
 			//inizializza varie funzionalità
 			initConfigurationFile ();
-			if (!initMysqlConnection ())
+			if (!initPgsqlConnection ())
 				return false;
 			initServerListener ();
 
@@ -127,19 +127,19 @@ namespace contaserver
 		}
 
 		/// <summary>
-		/// Inizializza la connessione verso mysql
+		/// Inizializza la connessione verso pgsql
 		/// </summary>
-		public bool initMysqlConnection()
+		public bool initPgsqlConnection()
 		{
-			conn = new MySqlConnection ();
-			conn.ConnectionString = string.Format("Server={0};Port={1};Database=dati_produzione;Uid={2};Pwd={3};", 
-				mysqlIP, mysqlPort, username, password);
+			conn = new NpgsqlConnection();
+			conn.ConnectionString = string.Format("Server={0};Port={1};Database=dati_produzione;User Id={2};Password={3};", 
+				pgsqlIP, pgsqlPort, username, password);
 
 			try {
-				conn.Open ();
+				conn.Open();
 				return true;
 			} catch (Exception ex) {
-				Console.WriteLine ("Errore nell'apertura della connessione verso mysql, {0}, connection string: {1}", ex.ToString (), conn.ConnectionString);
+				Console.WriteLine ("Errore nell'apertura della connessione verso pgsql, {0}, connection string: {1}", ex.ToString (), conn.ConnectionString);
 				return false;
 			}
 		}
@@ -167,22 +167,22 @@ namespace contaserver
 			key = key.ToLower();			
 
 			switch (key) {
-				case "mysql.port": //se key="mysql.port" imposta l'intero
+				case "pgsql.port": //se key="pgsql.port" imposta l'intero
 					if (short.TryParse (value, out tempInt)) //verifica che sia una stringa e quindi la mette
-						mysqlPort = tempInt;
+						pgsqlPort = tempInt;
 					else
-						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per mysql.port", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per pgsql.port", value);
 					break;
-				case "mysql.ip": //se key="mysql.ip" imposta l'ip di mysql
+				case "pgsql.ip": //se key="pgsql.ip" imposta l'ip di pgsql
 					if (IPAddress.TryParse (value, out tempIP)) //verifica che sia un indirizzo ip
-						mysqlIP = tempIP;
+						pgsqlIP = tempIP;
 					else
-						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per mysql.ip", value);
+						if (errorInfo) Console.WriteLine ("Valore {0} non è valido per pgsql.ip", value);
 					break;
-				case "mysql.username": //se key="mysql.username"
+				case "pgsql.username": //se key="pgsql.username"
 					username = value;
 					break;
-				case "mysql.password": //se key="mysql.password"
+				case "pgsql.password": //se key="pgsql.password"
 					password = value;
 					break;
 				case "contaserver.port": //se key="contaserver.port"
@@ -216,10 +216,10 @@ namespace contaserver
 		public void printInfo()
 		{
 			Console.WriteLine ("Config file = {0}", configFile);
-			Console.WriteLine ("mysql.ip = {0}", mysqlIP);
-			Console.WriteLine ("mysql.port = {0}", mysqlPort);
-			Console.WriteLine ("mysql.username = {0}", username);
-			Console.WriteLine ("mysql.password = {0}", password);
+			Console.WriteLine ("pgsql.ip = {0}", pgsqlIP);
+			Console.WriteLine ("pgsql.port = {0}", pgsqlPort);
+			Console.WriteLine ("pgsql.username = {0}", username);
+			Console.WriteLine ("pgsql.password = {0}", password);
 			Console.WriteLine ("contaserver.port = {0}", localPort);
 		}
 
@@ -447,7 +447,7 @@ namespace contaserver
 				Console.WriteLine ("Messaggio di controllo barcode BARCODE={0}", 
 					info[1]);
 			//Conta il numero di prodotti
-			int n = countProduct (info [1], 0);
+			int n = countProduct (info [1], "0");
 			//Scrive in output il risultato
 			sendMsg(client, string.Format (BOOL_MSG, n == 0 ? 'F' : 'T')); 
 		}
@@ -521,7 +521,7 @@ namespace contaserver
 			//Conta il numero di prodotti
 			Console.WriteLine(READ_CONFIG_QUERY, info[1]);
 			string[] rows = sendSQLTableCommandOneRow(string.Format(READ_CONFIG_QUERY, info[1]), 3);
-			if (rows.length > 0)
+			if (rows.Length > 0)
 			{
 				//Scrive in output il risultato
 				sendMsg(client, string.Format (CONFIG_RETURN_MSG, rows[1].PadLeft(3,'0'), rows[2].PadLeft(5,'0'))); 
@@ -533,7 +533,7 @@ namespace contaserver
 
 
 		/// <summary>
-		/// Invia un messaggio di log al server mysql
+		/// Invia un messaggio di log al server pgsql
 		/// </summary>
 		public void sendLogMessage(string linea, string position, string msg)
 		{
@@ -545,17 +545,17 @@ namespace contaserver
 		/// </summary>
 		public void sendSQLCommand(string query)
 		{
-			MySqlCommand cmd = new MySqlCommand (query);
+			NpgsqlCommand cmd = new NpgsqlCommand(query);
 			cmd.Connection = conn;
 			cmd.ExecuteNonQuery ();
 		}
 		/// <summary>
 		/// Conta il numero di prodotti con quel barcode
 		/// </summary>
-		public int countProduct(string barcode, int linea)
+		public int countProduct(string barcode, string linea)
 		{
-			//Crea una nuova instanza di MySqlCommand 
-			MySqlCommand cmd = new MySqlCommand (string.Format("SELECT COUNT(*) FROM dati_produzione.output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode), conn);
+			//Crea una nuova instanza di NpgsqlCommand 
+			NpgsqlCommand cmd = new NpgsqlCommand(string.Format("SELECT COUNT(*) FROM output_catena WHERE ID_prodotto = {0} AND Linea = {1};", barcode), conn);
 			//Esegue il comando e resituisce il valore
 			object result = cmd.ExecuteScalar();
 			//lo converte in un numero intero
@@ -571,13 +571,13 @@ namespace contaserver
 		/// </summary>
 		public string[] sendSQLTableCommandOneRow(string query, int n)
 		{
-			//Crea una nuova instanza di MySqlCommand che contiene la query
-			MySqlCommand cmd = new MySqlCommand (query);
+			//Crea una nuova instanza di NpgsqlCommand che contiene la query
+			NpgsqlCommand cmd = new NpgsqlCommand (query);
 			cmd.Connection = conn;
 			cmd.CommandType = System.Data.CommandType.Text;
 			try {
 				//Esegue il comando e ne restituisce un lettore di dati
-				MySqlDataReader reader = cmd.ExecuteReader ();
+				NpgsqlDataReader reader = cmd.ExecuteReader ();
 				string[] result = new string[n];
 				//legge la prima riga e imposta le celle di result i valori corrispondenti
 				reader.Read ();
