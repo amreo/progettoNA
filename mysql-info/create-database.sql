@@ -28,6 +28,15 @@ CREATE TABLE dati_produzione.settings
 	Barcodetimeout INTEGER NOT NULL,
 	Descrizione TEXT
 );
+CREATE TABLE dati_produzione.log_produzione
+(
+	ID INT NOT NULL AUTO_INCREMENT,
+	Linea INT,
+	Date TIMESTAMP,
+	Barcode INT,
+
+	PRIMARY KEY(ID)
+);
 
 -- parte relativa agli utenti autorizzati a accedere al sito
 
@@ -48,5 +57,4 @@ VALUES (1, "Fallita_Lettura_Barcode", "Questo prodotti indica il numeri di prodo
 INSERT INTO dati_produzione.log_eventi (Linea, Posizione, Info)
 VALUES (0, -1, "sono stati inseriti i dati di default nel server");
 
-
-
+-- -------------------
