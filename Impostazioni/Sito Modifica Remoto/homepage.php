@@ -271,6 +271,44 @@ body{
   opacity: 1;
   right: 0;
 } 
+
+ .button7 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:  #ac3939;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+.button7 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.button7 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+.button7:hover span {
+  padding-right: 25px;
+}
+.button7:hover span:after {
+  opacity: 1;
+  right: 0;
+} 
+
+
 h2 {
     
     font-family: calibri;
@@ -371,6 +409,11 @@ font-family:calibri;
 <br></br>
 
 <a id="btn" href="stazioni.php" <button class="button6" style="vertical-align:middle"><span>Stazioni</span></button></a>
+
+<br></br>
+
+<a id="btn" href="graficoproduzione.php" <button class="button7" style="vertical-align:middle"><span>Grafico Prodotti</span></button></a>
+
 </section>
 <br></br>
 <a id="logout" href="logout.php">Logout</a>
