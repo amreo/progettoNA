@@ -405,14 +405,19 @@ font-family:calibri;
 
 <br></br>
 
-<a id="btn" href="log.php" <button class="button4" style="vertical-align:middle"><span>Log Eventi</span></button></a>
-<br></br>
-
 <a id="btn" href="stazioni.php" <button class="button6" style="vertical-align:middle"><span>Stazioni</span></button></a>
 
 <br></br>
 
+<a id="btn" href="logeventi.php" <button class="button4" style="vertical-align:middle"><span>Log Eventi</span></button></a>
+<br></br>
+
+<a id="btn" href="logproduzione.php" <button class="button8" style="vertical-align:middle"><span>Log Produzione</span></button></a>
+<br></br>
+
 <a id="btn" href="graficoproduzione.php" <button class="button7" style="vertical-align:middle"><span>Grafico Prodotti</span></button></a>
+
+
 
 </section>
 <br></br>
