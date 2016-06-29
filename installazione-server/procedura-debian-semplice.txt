@@ -1,0 +1,30 @@
+1-Installare Debian (GNU/Linux)
+	* Scaricare almeno la prima ISO (o versione CD o versione DVD)
+	* Se in virtuale settare la scheda di rete come bridge
+2-Elevarsi i diritti amministrativi
+	* su
+3-Aggiornare Debian
+	* apt-get update
+	* apt-get upgrade
+4-Installazione software essenziali necessari
+	* apt-get install git
+5-Clonazione del repositori e installazione componenti
+	* mkdir github
+	* cd github
+	* git clone https://github.com/amreo/progettona.git
+	* cd progettoNA
+6-Installazione da script
+	* installazione-server/install.sh
+6-Test esecuzione contaserver
+	* /etc/init.d/contaserver start
+7-Test php
+	* echo "<?php phpInfo(); ?>" >> /var/www/html/test.php
+	* aprire test.php su un browser online
+8-Impostazione IP statico
+	* nano /etc/networks/interface
+	* Decommentare con # la linea iface eth0 inet dhcp
+	* Aggiungere:
+	iface eth0 inet static
+		address 192.168.250.50  # IP del server
+		netmask 255.255.255.0   # Subnet mask
+		gateway 192.168.250.254 # Gateway
