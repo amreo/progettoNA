@@ -10,6 +10,8 @@ $lineaproduzione = $_POST['lineaproduzione'];
 $timeout = $_POST['timeout'];
 
 
+
+
 $query = "UPDATE dati_produzione.settings SET Lineaproduzione = $lineaproduzione, Barcodetimeout = $timeout WHERE IDstazione = $idstazione;";
 if(mysql_query($query)){
 echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;}
