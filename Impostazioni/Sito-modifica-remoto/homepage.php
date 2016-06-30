@@ -1,16 +1,12 @@
 <?php
-include("nuovoprodotto.php");
-include("nuovastazione.php");
-include("updateprodotto.php");
-include("updatestazione.php");
 
-if($a == 1 || $b == 1 || $c == 1 || $d == 1)
+if($_SESSION["success0"] == 1 || $_SESSION["success1"] == 1 || $_SESSION["success2"] == 1 || $_SESSION["success3"] == 1)
 {
   echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
-  $a = 0;
-  $b = 0;
-  $c = 0;
-  $d = 0;
+  $_SESSION["success0"] = 0;
+  $_SESSION["success1"] = 0;
+  $_SESSION["success2"] = 0;
+  $_SESSION["success3"] = 0;
   
 }
 ?>
