@@ -38,6 +38,6 @@
  </script>
 </head>
 <body>
- <div id="piechart" style="width: 1200px; height: 800px;"></div>
+ <div id="piechart" style="width: 1100px; height: 700px;"></div>
 </body>
 </html>
