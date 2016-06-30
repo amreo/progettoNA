@@ -16,7 +16,7 @@ VALUES ($linea,$idprodotto,'$nome','$descrizione',0)";
 if(mysql_query($query))
 {
 echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
-  $_SESSION["success3"]= 0;
+  $_SESSION["success3"]= 1;
 }
 
 else{
