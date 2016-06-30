@@ -29,7 +29,6 @@
 
  var options = {
  title: 'Statistiche di produzione'
- is3D: true
  };
 
  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
