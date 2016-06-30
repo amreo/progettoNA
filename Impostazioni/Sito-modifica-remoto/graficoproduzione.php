@@ -15,14 +15,14 @@
  function drawChart() {
 
  var data = google.visualization.arrayToDataTable([
- ['Prodotto', 'Quantità'],
+ ['Nome', 'numProdotti'],
  <?php 
  $query = "SELECT sum(numProdotti) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
 
- echo "['".$row['Prodotto']."',".$row['Quantità']."],";
+ echo "['".$row['Nome']."',".$row['numProdotti']."],";
  }
  ?>
  ]);
