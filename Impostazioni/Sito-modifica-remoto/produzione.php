@@ -33,7 +33,7 @@ if(mysql_num_rows($query)>0):
  
 <table>
   <tr>
-    <th align="center">ID Stazione</th>
+    <th align="center">Linea Produzione</th>
     <th align="center">Barcode Prodotto</th>
     <th align="center">Nome Prodotto</th>
     <th align="center">Descrizione</th>
@@ -43,7 +43,7 @@ if(mysql_num_rows($query)>0):
   // looping 
   while($row=mysql_fetch_object($query)):?>
   <tr>
-    <td align="center"><?php echo $row->IDstazione;  //row id ?></td>
+    <td align="center"><?php echo $row->Linea;  //row id ?></td>
     <td align="center"><?php echo $row->ID_prodotto; // row first name ?></td>
     <td align="center"><?php echo $row->Nome; //row last name  ?></td>
     <td align="center"><?php echo $row->Descrizione; //row contact number ?></td>
