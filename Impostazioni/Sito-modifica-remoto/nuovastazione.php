@@ -9,7 +9,7 @@ $lineaproduzione = $_POST['lineaproduzione'];
 
 $timeout = $_POST['timeout'];
 
-$b = 0;
+$_SESSION["success2"]= 0;
 
 $query = "INSERT INTO dati_produzione.settings (IDstazione, Lineaproduzione, Barcodetimeout)
 VALUES ($idstazione,$lineaproduzione,$timeout)";
@@ -17,7 +17,7 @@ VALUES ($idstazione,$lineaproduzione,$timeout)";
 if(mysql_query($query))
 {
 echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
-  $b = 1;
+  $_SESSION["success2"]= 0;
 }
 
 else{
