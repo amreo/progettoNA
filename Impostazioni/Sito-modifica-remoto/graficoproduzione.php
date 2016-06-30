@@ -1,5 +1,5 @@
 <?php
- $con = mysqli_connect('localhost','root','PASSWORD','dati_produzione');
+ $con = mysql_connect('localhost','root','PASSWORD','dati_produzione');
 ?>
 <!DOCTYPE HTML>
 <html>
