@@ -432,7 +432,7 @@ font-family:calibri;
 <section id = "destra">
 <h2>Visualizza Database</h2>
 
-<a id="btn" href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Produzione</span></button></a>
+<a id="btn" href="produzione.php" <button class="button3" style="vertical-align:middle"><span>Prodotti</span></button></a>
 
 <br></br>
 
