@@ -15,14 +15,14 @@
  function drawChart() {
 
  var data = google.visualization.arrayToDataTable([
- ['Prodotto', 'Quantit‡'],
+ ['Prodotto', 'Quantit√†'],
  <?php 
  $query = "SELECT numProdotti(*) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
 
- echo "['".$row['Prodotto']."',".$row['Quantit‡']."],";
+ echo "['".$row['Prodotto']."',".$row['Quantit√†']."],";
  }
  ?>
  ]);
@@ -38,7 +38,6 @@
  </script>
 </head>
 <body>
- <h3>Grafico</h3>
  <div id="piechart" style="width: 1200px; height: 800px;"></div>
 </body>
 </html>
