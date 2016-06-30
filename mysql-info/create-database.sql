@@ -1,7 +1,4 @@
-﻿CREATE DATABASE dati_produzione -- Crea il database
-	DEFAULT CHARACTER SET utf8
-  	DEFAULT COLLATE utf8_general_ci;
-CREATE TABLE dati_produzione.output_catena 
+﻿CREATE TABLE dati_produzione.output_catena 
 (
 	Linea INT NOT NULL,			-- Linea dove viene fatto il prodotto
 	ID_prodotto INT NOT NULL UNIQUE, 	-- barcode
