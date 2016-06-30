@@ -1,4 +1,5 @@
 <?php
+session_start();
 mysql_connect("127.0.0.1", "root", "PASSWORD") or die("Connection Failed");
 
 mysql_select_db("dati_produzione")or die("Connection Failed");
