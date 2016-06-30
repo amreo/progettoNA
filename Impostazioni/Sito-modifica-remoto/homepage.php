@@ -1,5 +1,11 @@
 <?php
 session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+
 if($_SESSION["success0"] == 1 || $_SESSION["success1"] == 1 || $_SESSION["success2"] == 1 || $_SESSION["success3"] == 1)
 {
   echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
