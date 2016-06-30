@@ -19,5 +19,5 @@ echo "<script language=javascript>window.location.href='homepage.php';</script>"
  $_SESSION["success"] = 1;
 }
 else{
-//echo "Operazione fallita";}
+echo "Operazione fallita";}
 ?>
