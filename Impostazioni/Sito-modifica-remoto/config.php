@@ -13,9 +13,9 @@ $vers = "2.0";
  
 $host = "localhost";
  
-$db_user = "root";
+$db_user = "postgres";
  
-$db_psw = "PASSWORD";
+$db_psw = "";
  
 $db_name = "dati_produzione";
 
