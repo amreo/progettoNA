@@ -17,12 +17,12 @@
  var data = google.visualization.arrayToDataTable([
  ['Nome', 'Numero'],
  <?php 
- $query = "SELECT count(numProdotti) AS count, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
+ $query = "SELECT sum(numProdotti) AS sum, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
 
- echo "['".$row['Nome']."',".$row['count']."],";
+ echo "['".$row['Nome']."',".$row['sum']."],";
  }
  ?>
  ]);
