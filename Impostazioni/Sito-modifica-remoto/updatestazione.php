@@ -16,7 +16,7 @@ $_SESSION["success"] = 0;
 $query = "UPDATE dati_produzione.settings SET Lineaproduzione = $lineaproduzione, Barcodetimeout = $timeout WHERE IDstazione = $idstazione;";
 if(mysql_query($query)){
 echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
- $_SESSION["success"] = 1;
+ $_SESSION["success0"] = 1;
 }
 else{
 echo "Operazione fallita";}
