@@ -2,6 +2,7 @@
 
 if($_SESSION["success0"] == 1 || $_SESSION["success1"] == 1 || $_SESSION["success2"] == 1 || $_SESSION["success3"] == 1)
 {
+  echo "sei arrivato qua";
   echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
   $_SESSION["success0"] = 0;
   $_SESSION["success1"] = 0;
