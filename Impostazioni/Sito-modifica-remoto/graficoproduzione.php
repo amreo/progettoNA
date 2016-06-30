@@ -1,4 +1,13 @@
 <?php
+session_start();
+if($_SESSION["autorizzato"] == 0)
+{
+  echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+  
+}
+?>
+
+<?php
  $con = mysqli_connect('localhost','root','PASSWORD','dati_produzione');
 ?>
 <!DOCTYPE HTML>
