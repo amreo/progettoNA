@@ -16,7 +16,7 @@ VALUES ($idstazione,$lineaproduzione,$timeout)";
 
 if(mysql_query($query))
 {
-echo "<script language=javascript>window.location.href='homepage.php';</script>"; ;
+echo "<script language=javascript>window.location.href='homepage.php';</script>";
   $_SESSION["success2"]= 0;
 }
 
