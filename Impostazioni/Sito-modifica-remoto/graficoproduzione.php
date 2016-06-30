@@ -1,5 +1,5 @@
 <?php
- $con = mysql_connect('localhost','root','PASSWORD','dati_produzione');
+ $con = mysqli_connect('localhost','root','PASSWORD','dati_produzione');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -15,14 +15,14 @@
  function drawChart() {
 
  var data = google.visualization.arrayToDataTable([
- ['Nome', 'numProdotti'],
+ ['Nome', 'Numero'],
  <?php 
- $query = "SELECT sum(numProdotti) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
+ $query = "SELECT count(numProdotti) AS count, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
 
- echo "['".$row['Nome']."',".$row['numProdotti']."],";
+ echo "['".$row['Nome']."',".$row['count']."],";
  }
  ?>
  ]);
