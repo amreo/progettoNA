@@ -17,7 +17,7 @@
  var data = google.visualization.arrayToDataTable([
  ['Prodotto', 'Quantità'],
  <?php 
- $query = "SELECT numProdotti(*) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome";
+ $query = "SELECT numProdotti(*) AS numProdotti, Nome FROM dati_produzione.output_catena GROUP BY Nome;";
 
  $exec = mysqli_query($con,$query);
  while($row = mysqli_fetch_array($exec)){
