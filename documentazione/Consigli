@@ -1,1 +1,5 @@
 Ogni volta che si crea un file è consigliato non usare lettere maiuscole e/o spazi ma separare con _ o -
+
+Quando trovate scritto TODO:significa che sono cose da fare, TOFIX: cose da fixare
+
+Nel caso abbiate la necessità di reinstallare Debian seguite la procedura che si trova nella cartella installazione-server
