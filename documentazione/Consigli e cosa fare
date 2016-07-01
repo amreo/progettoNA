@@ -30,3 +30,7 @@ Se trovate un file .svg che non vi si apre nel browser fate file file.svg su deb
 Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master).
 
 Non preoccupatevi degli account invalid-mail-address o root (nella pagina contributors del repo)
+
+I file php non possono visti direttamente nel browser ma hanno bisogno di un webserver.
+
+Se ricevi 500 da una pagina web sul server e se è php probabilmente hai fatto un errore di sintassi. Verificare con php5 /var/www/html/filephp.php
