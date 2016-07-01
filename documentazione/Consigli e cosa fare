@@ -24,3 +24,5 @@ Per clonare il progetto fate git clone https://github.com/amreo/progettona.git
 Non fate commit dei file che risultato output di compilazione
 
 Se trovate un file .svg che non vi si apre nel browser fate file file.svg su debian e in base al risultato capito che tipo di file è e quindi rinominatelo
+
+Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master)

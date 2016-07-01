@@ -1,0 +1,6 @@
+CONTROLLARE il ramo con pgsql, che non è stato testato completamente che sia il contaserver che impostazioni sito remoto
+CONTROLLARE Impostazioni/settings per modificare impostazioni microSD
+SOSTITUIRE tutti gli echo "fail" degli script php con qualcosa di più elegante
+TESTARE sia src che src2, però prima eseguite i programmi di test
+FARE bugfixing generale
+VERIFICA l'hw che è arrivato
