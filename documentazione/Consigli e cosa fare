@@ -2,6 +2,8 @@
 
 Quando trovate scritto TODO:significa che sono cose da fare, TOFIX: cose da fixare
 
+Dentro la cartella test trovate tutti i file necessari per testare il funzionamento di sensore IR, barcode reader, e lettore file SD
+
 Nel caso abbiate la necessità di reinstallare Debian seguite la procedura che si trova nella cartella installazione-server
 
 Quando fate un commit su GitHub potete aggiungere una descrizione della modifica (fortemente consigliato) in modo che l'altro
@@ -17,7 +19,7 @@ Per identare il codice usare TAB.
 
 Assegnare nomi coerenti ai file.
 
-Evitare di utilizzare il github online perchè è limitato.
+Evitare di utilizzare il github online perchè è limitato (All'inizio però è meglio usarlo per capire come funziona GitHub).
 
 Per clonare il progetto fate git clone https://github.com/amreo/progettona.git
 
@@ -27,5 +29,4 @@ Se trovate un file .svg che non vi si apre nel browser fate file file.svg su deb
 
 Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master).
 
-Non preoccupatevi degli account invalid-mail-address o root (nella pagina contributors del repo), sono solo dei fantasmi 
-che compaiono talvolta su github e fanno commit utili
+Non preoccupatevi degli account invalid-mail-address o root (nella pagina contributors del repo)
