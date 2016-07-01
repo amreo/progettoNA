@@ -1,5 +1,5 @@
-Premessa: Leggete tutto prima di iniziare a lavorare...
-	  Fatevi un account GitHub e inviate il nome a Laisa, chiedete la mail a Luca o al prof, non la scriviamo qua perchè essendo visibile a tutti potrebbero fare           spam.
+﻿Premessa: Leggete tutto prima di iniziare a lavorare...
+	  Fatevi un account GitHub e inviate l'username a Laisa, chiedete la mail a Luca o al prof, non la scriviamo qua perchè essendo visibile a tutti potrebbero fare spam.
 	  Il progetto si trova al seguente link: https://github.com/amreo/progettoNA , le cartelle nominate in seguito sono su GitHub
 
 
@@ -15,8 +15,18 @@ Vi consigliamo prima di iniziare a lavorare e a fare modifiche sul progetto di s
 
 Guardate pure anche le altre cartelle ...
 
-Vi consigliamo di studiarvi il linguaggio SQL e PHP magari facendovi il corso su Codecademy, SQL è semplice e serve per gestire i database, PHP serve per fare le pagine web, le abbiamo realizzate in questo linguaggio perchè dovevamo andare a modificare il database da web, queste pagine non si trovano in locale ma su un server installato su VirtualBox sul PC-20(si trova nell'ufficio è un computer della Lenovo, l'altro pc che potete usare è il PC-09) avviate la macchina virtuale (Debian)l'username per l'accesso è: progettona e la password: PASSWORD (non viene mostrata su schermo) poi digitate: su, e reinserite le credenziali d'accesso questo comando da i privilegi d'amministratore. Naturalmente dovete essere connessi alla rete locale attraverso i cavi Ethernet che si trovano sul tavolo, la pagine sono visibili andando all'indirizzo IP 192.168.1.226, è assegnato in DHCP quindi potrebbe cambiare per essere sicuri dell'indirizzo IP digitate il comando ifconfig su Debian, il progetto su debian di trova nella cartella: /home/progettona/githbu/progettona/ per saperne di più vedere il file mini-guida-linux-shell.txt sempre nella cartella: documentazione.
+Vi consigliamo di studiarvi il linguaggio SQL e PHP magari facendovi il corso su Codecademy, SQL è semplice e serve per gestire i database, PHP serve per 
+fare le pagine web dinamiche, le abbiamo realizzate in questo linguaggio perchè dovevamo andare a leggere/modificare il database da web, 
+queste pagine non si trovano in locale ma su un server installato su VirtualBox sul PC-20(si trova nell'ufficio è un computer della Lenovo, 
+l'altro pc che potete usare è il PC-09) avviate la macchina virtuale (Debian)l'username per l'accesso è: progettona e la password: PASSWORD 
+(non viene mostrata su schermo) poi digitate: su, e reinserite le credenziali d'accesso questo comando da i privilegi d'amministratore. 
+Naturalmente dovete essere connessi alla rete locale attraverso i cavi Ethernet che si trovano sul tavolo, la pagine sono visibili andando all'indirizzo 
+IP 192.168.1.226, è assegnato in DHCP quindi potrebbe cambiare per essere sicuri dell'indirizzo IP digitate il comando ifconfig su Debian, 
+il progetto su debian di trova nella cartella: /home/progettona/githbu/progettona/ per saperne di più vedere il file 
+mini-guida-linux-shell.txt sempre nella cartella: documentazione.
 
-Debian essendo su macchina virtuale è un po' lento quindi pazientate, è tutto a riga di comando non ha interfaccia grafica.
+Debian essendo su macchina virtuale è un po' lento quindi pazientate (probabilmente dovuto a virtualbox o al network stack di windows), 
+Debian è stato installato senza interfaccia grafica che non server ed è pesante.
 
-Scr differisce da Src2 in base al modo in cui legge i dati dal lettore barcode
+Src differisce da Src2 in base al modo in cui legge i dati dal lettore barcode. Src legge i pin direttamente, invece src2 fa uso della libreria PS2Keyboard
+(che è più semplice)
