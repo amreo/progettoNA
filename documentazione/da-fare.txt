@@ -1,0 +1,10 @@
+CONTROLLARE il ramo con pgsql, che non è stato testato completamente che sia il contaserver che impostazioni sito remoto
+CONTROLLARE Impostazioni/settings per modificare impostazioni microSD
+TESTARE sia src che src2, però prima eseguite i programmi di test
+FARE bugfixing generale
+VERIFICARE l'hw che è arrivato
+VERIFICARE che l'account mysql arduino è stato configurato correttamente per lavorare al minimo previlegio, editando il file di configurazione
+di contaserver in /etc/contaserver.conf
+IMPLEMENTARE sul contaserver un metodo per chiuderlo correttamente senza doverlo uccidere con il comando kill. Un suggerimento è 
+l'uso dei segnali POSIX per controllarlo (quando rileva un segnale imposta running = false e si chiude correttamente)
+MIGLIORARE la sicurezza tra lo scambio di pacchetti tra il contatore-contaserver

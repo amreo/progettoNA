@@ -1,0 +1,122 @@
+Puoi usare un sistema operativo GNU/Linux (come debian) via linea di comando
+(non è necessario avere un'interfaccia grafica)
+
+I comandi (in generale) sono composti da diversi parti
+nomeeseguibile opzioni destinazione
+"nomeeseguibile" è il nome di un programma come ls oppure è il filename completo come '/bin/ls'
+Le opzioni sono un metodo per configurare il comportamento del programma indicato precentemente.
+Sono indicati da un trattino '-' e il nome della lettera corrispondenze all'opzione come l (es ls -l)
+L'ordine delle opzioni non importa quindi 'ls -la' è uguale a 'ls -al' come 'ls -l -a'
+Le opzioni possono essere indicate col doppio trattino e nome completo della opzione come 'ls --all'
+Altre opzioni richiedono anche un valore da passare come 'ls --block-size=1024'
+Infine ci sono i parametri finali che di solito indicano la destinazione come 'ls -al /etc'
+
+Molti programmi supportano l'opzione --help o -h che scrivono le informazioni di aiuto es le opzioni e come si usa
+
+Quando specifichi il nome di un file in un opzione o parametro puoi usare anche i glob che ti permettono fare la stessa operazione su più file,
+come * che ti permette di fare l'operazione su tutti i file/dir nella directory corrente.
+
+NB: i comandi sono case sensitive.
+NB: i manpage sono pagine di manuale che contiene tutta la documentazione relativa a un programma
+NB: i comandi possono essere annullati con CTRL+C, puoi inviare EOF (fine di un file) con CTRL+D, che viene usato di solito per terminare i programmi "interattivi"
+(cioè che chiedono l'input dell'utente) come bash(shell), su e mysql client.
+NB: puoi usare i tasti freccia su/giù per cercare un comando precedentemente usato
+NB: puoi usare il tasto TAB per completare alcuni parti del comando come filename o il nome del programma
+Alcuni programmi utili:
+	* ls visualizza l'elenco dei file nella directory corrente a meno che non venga specificato un parametro di destinazione
+		* Alcune opzioni: l (i file sono visualizzati come una lista completa con tutte le informazioni)
+				  a --all (vengono listati tutti i file)
+		* Esempio: ls -al visualizza tutti i file con tutte le info nella directory corrente
+			   ls /etc visualizza tutti i file contenuti in /etc
+		* Manpage: http://man7.org/linux/man-pages/man1/ls.1.html
+	* cd ti permette di spostare tra le directory
+		* Esempio: cd github (ti sposti nella directory github contenuta nella directory corrente)
+			   cd /etc (ti sposti nella directory /etc)
+			   cd (ritorni nella tua home come /home/progettona)
+			   cd .. (ti sposti nella directory padre)
+			   cd . (non fa nulla9
+	* pwd scrive in output la directory corrente
+		* Esempio: pwd
+		* Manpage: http://linux.die.net/man/1/pwd
+	* nano è un editor di testo semplice che ti permette di modificare file semplicemnte
+		* Uso: appena avviato, puoi modificare il file semplicemente con i soliti tasti,
+		  Dopo aver finito, salvare con CTRL+X, y e invio (il menu è visualizzato sotto)
+		* Esempio: nano /etc/contaserver.conf (per modificare il file /etc/contaserver.conf
+		* Manpage: http://linux.die.net/man/1/nano
+	* su ti eleva i diritti a amministratore o di qualcun'altro e quindi ti permette di fare operazioni privilegiate (ti serve la password di solito)
+		* Esempio: su ti fa diventare l'utente root
+	* git è un sistema di controllo di versione usato (da noi) per gestire il progetto e quindi di fare modifiche e download centralizzate
+		* Vedere mini-guida-git.shell
+		* Manpage: https://www.kernel.org/pub/software/scm/git/docs/
+	* ping è un programma che ti permette di pingare un host
+		* Normalmente è infinito quindi usare CTRL+C per terminare l'invio
+		* Alcune opzioni: c [n] (invia n pacchetti
+		* Esempio: ping google.it invia infiniti pacchetti ICMP a google.it
+			   ping -c 10 facebook.com invia 10 pacchetti ICMP a facebook.com
+		* Manpage: http://linux.die.net/man/8/ping
+		* Su debian ci vogliono i diritti di root per eseguirlo rispetto alle altre distribuzioni GNU/Linux
+	* ifconfig è un programma che ti scrive in output le informazioni di configurazione delle interfaccie di rete come eth0  (non default gateway)
+		* Esempio: ifconfig ti visualizza gli indirizzi ip e subnet mask ti tutte le schede di rete
+		* Manpage: http://linux.die.net/man/8/ifconfig
+	* route è un programma per visualizzare il default gateway
+		* Esempio: route
+		* Manpage: http://linux.die.net/man/8/route
+	* ifdown è un programma che spegne/disattiva una determinata interfaccia di rete
+		* è usato principalmente in combinazione con ifup per riaggiornare l'indirizzo ip in seguito alla modifica di /etc/network/interface
+		* Esempio ifdown eth0 Disattiva l'interfaccia di rete eth0
+		* Manpage: http://linux.die.net/man/8/ifdown
+	* ifup è un programma che accende/attiva una determinata interfaccia di rete
+		* è usato principalmente in combinazione con ifdown per riaggiornare l'indirizzo ip in seguito alla modifica di /etc/network/interface
+		* Esempio ifup eth0 Attiva l'interfaccia di rete eth0
+		* Manpage: http://linux.die.net/man/8/ifup
+	* reboot è usato per riavviare il PC
+		* Esempio: reboot
+		* Manpage: http://linux.die.net/man/8/reboot
+	* shutdown per spegnere il pc in vari modi (anche in modo ritardato)
+		* Alcune opzioni: h per spegnere semplicemente
+		* Esempio shutdown -h now spegne il pc immediatamente
+		* Manpage: http://linux.die.net/man/8/shutdown
+	* apt-get per operare sui pacchetti(programmi e non solo) installati
+		* Esempio: apt-get install geogebra per installare il pacchetto geogebra
+			   apt-get purge geogebra per disinstallare il pacchetto geogebra
+			   apt-get update per aggiornare l'indice dei pacchetti installabili e le loro versioni	
+			   apt-get upgrade per aggiornare tutti i pacchetti installati alla loro ultima versione
+		* NB: apt-get update e apt-get upgrade sono spesso usato in combinazione per aggiornare tutti i pacchetti installati
+		* NB: per sapere il nome di un pacchetto fate prima a cercare su internet
+		* Manpage: http://linux.die.net/man/8/apt-get
+	* mysql è un client mysql 
+		* Alcune opzioni: u [nome] per indicare un utente mysql
+				  p per dire al client di utilizare la password
+				  D [nome_db] per connettersi subito a un specifico database come dati_produzione
+		* Esempio: mysql -u root -pD dati_produzione per connettersi al database dati_produzione con l'account root. La password viene chiesta dopo
+	* mv ti permette di spostare un file da un origine a destinazione	
+		* Alcune opzioni: r per agire anche sulle directory e discendenti
+		* Esempio mv /etc/contaserver.conf /tmp/contaserver.conf sposta il file contaserver.conf contenuto in /etc a /tmp
+			  mv contaserver.conf contaserver2.conf per rinominare il file
+			  mv -r /tmp/mamma/ /tmp/papa sposta la cartella mamma in /tmp dentro /tmp/papa
+	* cp ti permette di copiare i file da una sorgente a destinazione
+		* Alcune opzioni: r per agirea anche sulle directory e discendenti
+		* Esempio: cp -r Impostazioni/sito-modifica-remoto/* /var/www/html/
+	* xbuild ti compila codice sorgente cs con il relativo progetto .sln o .csproj
+		* Esempio: xbuild ti compila il progetto c# contenuto nella directory corrente
+			   xbuild contaserver/contaserver.sln ti compila il progetto contaserver.sln contenuto nella directory contaserver
+	
+Altre info le trovate su internet (cercate anche sulle wiki non di debian come quelle di ubuntu o linux mint).
+
+
+Funzionamento generale sistema operativo GNU/Linux:
+Dopo POST parte il bootloader grub che ti permette di scegliere quale OS far partire, dopo parte linux che avvierà il programma init, 
+che a sua volta avvia tutti gli altri programmi come mysql, apache2 e (se fosse installato lightdm per l'interfaccia grafica)
+
+I nomi dei file sui sistemi operativi GNU/Linux sono case sensitive, perciò fanno differenza tra MAIUSCOLO e minuscolo, cioè Ciao è diverso da CIAO come ciao.
+Il filesystem è strutturato come tutto è un discendente (diretto o indiretto) di /, che contiene tutte le directory/cartelle
+
+Alcune directory importanti:
+/home contiene una directory per ogni utente, che contiene a sua volta file personali, come /home/progettona
+/tmp è una directory che contengono file temporanei, all'avvio di Debian tutti i file in /tmp sono cancellati
+/etc contiene i file di configurazione globali come /etc/contaserver.conf
+/var/www/html contiene le pagine web (HTTP)
+/var/log/contaserver.log contiene il log di contaserver
+
+NB: puoi eseguire un programma che hai fatto, però devi specificare il suo percorso, come contaserver/bin/debug/contaserver.exe per eseguire il programma contaserver
+NB: puoi eseguire i programmi nella directory corrente, però prependi ./ per questioni di sicurezza, es ./contaserver.exe

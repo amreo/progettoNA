@@ -1,0 +1,17 @@
+Il progetto è spiegato brevemente nel file readme.md qui si trova una descrizione più dettagliata e approfondita vi consigliamo anche di guardare il manuale d'uso che si trova nella cartella Manuale d'uso --> Manuale d'uso.pdf
+
+Ad arduino sarà collegato un sensore IR e un lettore barcode, il lettore barcode viene collegato ad arduino attraverso uno zoccolo PS/2 il codice sorgente da caricare si trova nella cartella src, prima di collegare tutto però installare la ethernet shield e inserire nello slot micro sd una micro sd da 2 GB (più grandi arduino non le legge) dove sono caricati i file .txt che si trovano nella  cartella File-sd dove si trovano tutte le impostazioni riguardanti la connessione al server,le altre impostazioni verranno lette dal database, il codice è già completato dovete solo modificare le impostazionni di collegamento al server nel caso qualcosa non funzionasse.
+
+Quello che deve fare è questo:
+
+Ogni "Stazione" (arduino) sarà posizionata su un output di una catena di produzione su dove passeranno dei pacchi contenenti qualcosa ad ogni pacco è associato un codice a barre che identifica il tipo di prodotto, si possono aggiungere prodotti dal sito web, arduino leggerà attraverso il sensore IR la presenza del pacco e poi leggerà il codice a barre sulla scatola attraverso il lettore barcode, una volta fatto questo invia i dati al contaserver (guardatelo su GitHub) e il contaserver verifica il codice a barre e se il prodotto si trova nel db (questo perchè arduino non è abbastanza potente per gestire questa funzione) aumenterà il numero di merce prodotta, tutti i dati inerenti la produzione si trovano sulla pagina web come anche il grafico di produzione e i log, visto che in un'azienda si trova più di una catena di output dal web si possono installare nel DB (database) più stazioni, attenzione ogni stazione ha un ID stazione diverso , una spiegazione dettagliata di questo concetto si trova nel manuale d'uso.
+
+ Una volta fatta partire la macchina virtuale con il server e essersi recati alla pagina web 192.168.1.226 vi sarà chiesto di autenticarvi le credenziali per l'accesso sono username: tecnicoautorizzato, password: pwddifficile.
+
+Non vi dovrebbero servire comunque le credenziali di accesso al database MySQL sono username:root, password:PASSWORD.
+
+Il db MySQL è hostato sul localhost alla porta 3306.
+
+Ricordatevi di lavorare sempre sul branch master, GitHub una volta imparato ad usare è facile.
+
+Un idea di come sarà fatta una stazione una volta ultimata la potete trovare nella cartella concept.

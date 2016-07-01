@@ -1,0 +1,36 @@
+﻿Ogni volta che si crea un file è consigliato non usare lettere maiuscole e/o spazi ma separare con _ o -
+
+Quando trovate scritto TODO:significa che sono cose da fare, TOFIX: cose da fixare
+
+Dentro la cartella test trovate tutti i file necessari per testare il funzionamento di sensore IR, barcode reader, e lettore file SD
+
+Nel caso abbiate la necessità di reinstallare Debian seguite la procedura che si trova nella cartella installazione-server
+
+Quando fate un commit su GitHub potete aggiungere una descrizione della modifica (fortemente consigliato) in modo che l'altro
+compagno possa capire cosa è stato modificato
+
+Evitate di usare file binari ma sopratutto con formati chiusi perchè sono difficilmente gestibili da git.
+USARE solo file TESTUALI (cioè che se lo rinomini in .txt riesci a leggere il suo contenuto). Se usate libreoffice salvateli in .fodt! non .odt perchè è compresso
+Modificare impostazioni windows per visualizzare estensione file
+
+Identare IL CODICE!
+
+Per identare il codice usare TAB.
+
+Assegnare nomi coerenti ai file.
+
+Evitare di utilizzare il github online perchè è limitato (All'inizio però è meglio usarlo per capire come funziona GitHub).
+
+Per clonare il progetto fate git clone https://github.com/amreo/progettona.git
+
+Non fate commit dei file che risultato output di compilazione
+
+Se trovate un file .svg che non vi si apre nel browser fate file file.svg su debian e in base al risultato capito che tipo di file è e quindi rinominatelo
+
+Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master).
+
+Non preoccupatevi degli account invalid-mail-address o root (nella pagina contributors del repo)
+
+I file php non possono visti direttamente nel browser ma hanno bisogno di un webserver.
+
+Se ricevi 500 da una pagina web sul server e se è php probabilmente hai fatto un errore di sintassi. Verificare con php5 /var/www/html/filephp.php
