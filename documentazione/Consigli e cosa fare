@@ -1,4 +1,4 @@
-Ogni volta che si crea un file è consigliato non usare lettere maiuscole e/o spazi ma separare con _ o -
+﻿Ogni volta che si crea un file è consigliato non usare lettere maiuscole e/o spazi ma separare con _ o -
 
 Quando trovate scritto TODO:significa che sono cose da fare, TOFIX: cose da fixare
 
@@ -6,3 +6,21 @@ Nel caso abbiate la necessità di reinstallare Debian seguite la procedura che s
 
 Quando fate un commit su GitHub potete aggiungere una descrizione della modifica (fortemente consigliato) in modo che l'altro
 compagno possa capire cosa è stato modificato
+
+Evitate di usare file binari ma sopratutto con formati chiusi perchè sono difficilmente gestibili da git.
+USARE solo file TESTUALI (cioè che se lo rinomini in .txt riesci a leggere il suo contenuto). Se usate libreoffice salvateli in .fodt! non .odt perchè è compresso
+Modificare impostazioni windows per visualizzare estensione file
+
+Identare IL CODICE!
+
+Per identare il codice usare TAB.
+
+Assegnare nomi coerenti ai file.
+
+Evitare di utilizzare il github online perchè è limitato.
+
+Per clonare il progetto fate git clone https://github.com/amreo/progettona.git
+
+Non fate commit dei file che risultato output di compilazione
+
+Se trovate un file .svg che non vi si apre nel browser fate file file.svg su debian e in base al risultato capito che tipo di file è e quindi rinominatelo
