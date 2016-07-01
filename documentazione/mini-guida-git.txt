@@ -1,0 +1,23 @@
+
+Git è un sistema di controllo della versione, cioè un programma che permette di sviluppare un programma (o altro) 
+in parallello con moltissime persone senza avere troppi problemi riguardo all'unione delle parti infatti
+Tutti possono lavorare sulla stessa parte senza se ne deve preoccupare gli altri.
+
+Per usarlo abbiamo bisogno di un client git. Consigliato github desktop per windows a questo indirizzo: https://github-windows.s3.amazonaws.com/GitHubSetup.exe
+Gli utenti GNU/Linux o Macosx sono fortunati perchè hanno il client git ufficiale a linea di comando funzionante bene.
+Nonostante consigliamo github desktop non consigliamo l'uso dell'interfaccia grafica perchè è confusionaria e fa poco, tuttavia consigliamo git shell
+che viene installato automaticamente insieme a github desktop.
+Su windows dato che git viene eseguito all'interno di powershell è parecchio lento e a volte c'è la necessità di fare invio
+
+VEDERE: http://rogerdudler.github.io/git-guide/index.it.html (facile)
+VEDERE: https://git-scm.com/book/it/v1
+VEDERE: https://www.codecademy.com/en/courses/learn-git/resume
+
+Comandi: git add * aggiunge tutti i file non stagiati nell'area di stage
+	 git commit fa il commit dei file modificati
+	 git push invia i commit fatti al repository remoto	
+	 git clone fa una copia del repository online in locale. Non è necessario eseguirlo più volte
+	 git pull aggiorna il repository locale scaricando le modifiche fatte sul repo remoto
+	 git branch nomebranch crea un nuovo branch	
+	 git checkout nomebranch cambia branch
+	 git status visualizza lo stato del repo locale come file da stagiare o commitare
