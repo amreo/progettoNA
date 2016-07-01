@@ -1,0 +1,25 @@
+Nel sistema sono presenti un server che funge da server mysql e contaserver e delle n stazioni
+
+
+Le stazioni sono gli arduino con la loro infrastruttura hw che gestiscono il rilevamento delle scatole.
+Invece i server raccolgono le informazioni.
+
+L'arduino all'avvio legge i file di configurazione statici sulla microSD della ethernet shield, i parametri relativi alla connessione a internet.
+Un modello di tali file li trovate in File-sd
+Dopo la lettura dei parametri di connessione inizializza l'ethernet shield e quindi va a recupare le informazioni semi-fisse dal contaserver
+tramite il comando CONFIG del protocollo CCS (vedi protocollo-contatore-contaserver.txt) quali linea e barcode reading timeout. La linea 
+indica una linea di produzione, ovvero una catena di inscatolamento di prodotti. Invece il barcode reading timeout è il tempo massimo che arduino 
+tenta di leggere con il lettore barcode il barcode prima che capisce che il codice non è presente.
+Dopo aver recuparate le informazioni comincia il ciclo infinito di arduino, il quale aspetta che rileva una scatola col lettore infrarossi,
+se la scatola viene rilevata, aspetta di ricevere dal lettore barcode PS/2 il barcode entro TIMEOUT_READING_BARCODE, se è arrivato invia il codice 
+al contaserver tramite il comando CHECKED-ADD del protocollo CCS, altrimenti invia il codice 1 che indica rivelazione fallito oltre al messaggio di log.
+
+ADD e CHECK sono deprecati!
+
+Il contaserver è il software che fa da "interfaccia" tra la stazione e il server mysql perchè arduino ha troppa poca memoria per poter supportare 
+la libreria di connessione arduino-mysql.
+
+All'avvio di contaserver va a leggere le informazioni di configurazione da /etc/contaserver.conf, poi si connette al server mysql e inizializza il tcplistner
+che ascolta sulla porta di default 1001 (ContaServer.init()). Dopo con ContaServer.run() comincia a ascoltare effettivamente sulla porta 1001 e parte il ciclo quasi
+infinito che consiste nel rilevare client non connessi nella lista e quindi rimuoverli, accettare le richieste di conessione in attesa e rilevare messaggi arrivati.
+Quando arrivano i messaggi vengono interpretati e quindi viene eseguita l'azione corrispondente al comando, che esegue uno script SQL.
