@@ -25,4 +25,7 @@ Non fate commit dei file che risultato output di compilazione
 
 Se trovate un file .svg che non vi si apre nel browser fate file file.svg su debian e in base al risultato capito che tipo di file è e quindi rinominatelo
 
-Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master)
+Ogni modifiche che fate al master fate la fusione dal master in pgsql-version (spostatevi in pgsql-version con checkout e fate merge master).
+
+Non preoccupatevi degli account invalid-mail-address o root (nella pagina contributors del repo), sono solo dei fantasmi 
+che compaiono talvolta su github e fanno commit utili
