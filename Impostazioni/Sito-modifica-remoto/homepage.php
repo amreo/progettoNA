@@ -338,7 +338,7 @@
 				opacity: 1;
 				right: 0;
 			} 
-            .button9 {
+            		.button9 {
 				display: inline-block;
 				border-radius: 4px;
 				background-color:  #CD853F;
@@ -446,7 +446,7 @@
 			<br></br>
 			<a id="btn" href="prodotti.php"><button class="button2" style="vertical-align:middle"><span>Nuovo</span></button></a>
 			<br></br>
-            <a id="btn" href="StampaEtichette.php"><button class="button9" style="vertical-align:middle"><span>Stampa etichette</span></button></a>
+            		<a id="btn" href="StampaEtichette.php"><button class="button9" style="vertical-align:middle"><span>Stampa etichette</span></button></a>
 		    <br></br>
         </section>
 		<section id="destra">
