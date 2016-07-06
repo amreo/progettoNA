@@ -4,7 +4,6 @@
 	{
 		echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
 	}
-
 	if($_SESSION["success0"] == 1 || $_SESSION["success1"] == 1 || $_SESSION["success2"] == 1 || $_SESSION["success3"] == 1)
 	{
 		echo "<script language=javascript>window.alert(\"Operazione completata con successo\");</script>";
@@ -269,7 +268,6 @@
 				opacity: 1;
 				right: 0;
 			} 
-
 			 .button7 {
 				display: inline-block;
 				border-radius: 4px;
@@ -340,6 +338,41 @@
 				opacity: 1;
 				right: 0;
 			} 
+            .button9 {
+				display: inline-block;
+				border-radius: 4px;
+				background-color:  #CD853F;
+				border: none;
+				color: #FFFFFF ;
+				text-align: center;
+				font-size: 28px;
+				padding: 20px;
+				width: 200px;
+				transition: all 0.5s;
+				cursor: pointer;
+				margin: 5px;
+			}
+			.button9 span {
+				cursor: pointer;
+				display: inline-block;
+				position: relative;
+				transition: 0.5s;
+			}
+			.button9 span:after {
+				content: '»';
+				position: absolute;
+				opacity: 0;
+				top: 0;
+				right: -20px;
+				transition: 0.5s;
+			}
+			.button9:hover span {
+				padding-right: 25px;
+			}
+			.button9:hover span:after {
+				opacity: 1;
+				right: 0;
+			}
 			h2 {
 				font-family: calibri;
 			}
@@ -350,7 +383,6 @@
 				position: absolute;
 				top: 85%;
 			}
-
 			#logout:link, #logout:visited {
 				background-color: #9A9A9A;
 				color: white;
@@ -377,7 +409,6 @@
 			top: 0%;
 			right: 31%;
 			}
-
 			@media screen and (max-width: 1187px) {
 				#logout{
 					position: static;
@@ -415,7 +446,9 @@
 			<br></br>
 			<a id="btn" href="prodotti.php"><button class="button2" style="vertical-align:middle"><span>Nuovo</span></button></a>
 			<br></br>
-		</section>
+            <a id="btn" href="StampaEtichette.php"><button class="button9" style="vertical-align:middle"><span>Stampa etichette</span></button></a>
+		    <br></br>
+        </section>
 		<section id="destra">
 			<h2>Visualizza Database</h2>
 			<a id="btn" href="produzione.php"><button class="button3" style="vertical-align:middle"><span>Prodotti</span></button></a>
