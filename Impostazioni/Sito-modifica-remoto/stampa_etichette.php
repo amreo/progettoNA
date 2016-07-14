@@ -11,13 +11,9 @@
 	<form method="post" name="Stampa" action="stampa.php">
 		<h3>Stampa</h3>
 		<form> 
- 		<fieldset>
-  			<legend>Prodotti</legend>
-
   			<select name='prodotti'>
 				 
   			</select>
- 		</fieldset>
 		<a href="logout.php">Logout</a>
 	        </form> 
 	</form> 
