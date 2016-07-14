@@ -35,7 +35,11 @@ CREATE TABLE dati_produzione.log_produzione
 
 	PRIMARY KEY(ID)
 );
-
+CREATE TABLE dati_produzione.etichette
+(
+        Nome VARCHAR(40),
+        Barcode INT
+);
 -- parte relativa agli utenti autorizzati a accedere al sito
 
 CREATE TABLE dati_produzione.login (
