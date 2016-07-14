@@ -1,40 +1,26 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width, user-scalable=no">
-		<style>
-			body{
-				background-color:#ebeaea;
-			}
+<?php
+	session_start();
+	if($_SESSION["autorizzato"] == 0)
+	{
+		echo '<script language=javascript>window.location.href="nonautorizzato.html"</script>';
+	}
+?>
 
-		</style>
-	</head>
-	<body>
-    
-    <center><h1>Selezionare il prodotto di cui si vogliono stampare le etichette</h1></center>
-		<div style=" float: center; padding: 10px;">
-        <table border="0" height="100%" width="100%">
-        <tr>
-        <td width="33%">
-			<center><a style="text-decoration: none;"  href="Mouse.php"><h1></h1>Mouse</h1></a></center>
-		</td>
-        <td width="33%">
-             <center><a style="text-decoration: none;" href="Tastiera.php"><h1>Tastiera</h1></a></center>
-        </td>
-        <td width="33%">
-        	 <center><a style="text-decoration: none;" href="Alimentatore.php"><h1>Alimentatore</h1></a></center>
-        </td>
-        
-        </tr>
-        
-			
-		
-		   
-        
-		</table>
-		
-</div>
-		<img alt="testing" src="barcode.php" />
-	</body>
+<html>
+	<link rel="stylesheet" href="stilemodificaprodotto.css" type="text/css" />
+	<form method="post" name="Update" action="updateprodotto.php">
+		<h3>Impostazioni</h3>
+		<p>Linea Produzione<p>
+ 		<input type="text" name="lineaproduzione" />
+		<p>Barcode Prodotto<p>
+		<input type="text" name="barcode" />
+		<p>Nome Prodotto<p>
+ 		<input type="text" name="nome" />
+		<p>Descrizione Prodotto<p>
+		<input type="text" name="descrizione" />
+		<br></br>
+		<input type="submit" name="Submit" value="Update" />
+		<br></br>
+		<a href="logout.php">Logout</a>
+	</form> 
 </html>
