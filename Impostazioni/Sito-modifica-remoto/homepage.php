@@ -343,7 +343,7 @@
 				border-radius: 4px;
 				background-color:  #CD853F;
 				border: none;
-				color: black ;
+				color: white ;
 				text-align: center;
 				font-size: 28px;
 				padding: 20px;
