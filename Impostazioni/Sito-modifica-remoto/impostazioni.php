@@ -23,6 +23,6 @@
 		<br></br>
 		<input type="submit" name="Submit" value="Update" />
 		<br></br>
-		<a href="homepage.php">Home</a>
+		<a href="logout.php">Logout</a>
 	</form> 
 </html>
