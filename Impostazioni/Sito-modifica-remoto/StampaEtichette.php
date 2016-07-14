@@ -35,6 +35,6 @@
 		</table>
 		
 </div>
-		
+		<img alt="testing" src="barcode.php" />
 	</body>
 </html>
