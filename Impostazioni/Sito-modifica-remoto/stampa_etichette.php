@@ -7,20 +7,18 @@
 ?>
 
 <html>
-	<link rel="stylesheet" href="stilemodificaprodotto.css" type="text/css" />
-	<form method="post" name="Update" action="updateprodotto.php">
-		<h3>Impostazioni</h3>
-		<p>Linea Produzione<p>
- 		<input type="text" name="lineaproduzione" />
-		<p>Barcode Prodotto<p>
-		<input type="text" name="barcode" />
-		<p>Nome Prodotto<p>
- 		<input type="text" name="nome" />
-		<p>Descrizione Prodotto<p>
-		<input type="text" name="descrizione" />
-		<br></br>
-		<input type="submit" name="Submit" value="Update" />
-		<br></br>
+	<link rel="stylesheet" href="stilestampaetichette.css" type="text/css" />
+	<form method="post" name="Stampa" action="stampa.php">
+		<h3>Stampa</h3>
+		<form> 
+ 		<fieldset>
+  			<legend>Prodotti</legend>
+
+  			<select name='prodotti'>
+				 
+  			</select>
+ 		</fieldset>
 		<a href="logout.php">Logout</a>
+	        </form> 
 	</form> 
 </html>
