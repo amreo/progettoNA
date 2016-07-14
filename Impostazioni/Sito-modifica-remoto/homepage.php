@@ -446,7 +446,7 @@
 			<br></br>
 			<a id="btn" href="prodotti.php"><button class="button2" style="vertical-align:middle"><span>Nuovo</span></button></a>
 			<br></br>
-            		<a id="btn" href="StampaEtichette.php"><button class="button9" style="vertical-align:middle"><span>Stampa etichette</span></button></a>
+            		<a id="btn" href="stampa_etichette.php"><button class="button9" style="vertical-align:middle"><span>Stampa etichette</span></button></a>
 		    <br></br>
         </section>
 		<section id="destra">
