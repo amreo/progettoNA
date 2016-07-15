@@ -13,6 +13,7 @@
 			
 			<p>Prodotto<p>
 			<select name="prodotti">
+				<option> </option>
 	   			<option value="Mouse">Mouse</option>
 	   			<option value="Alimentatore">Alimentatore</option>
 	   			<option value="Tastiera">Tastiera</option>
