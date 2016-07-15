@@ -12,8 +12,8 @@
 			<h3>Stampa</h3>
 			
 			<p>Prodotto<p>
-			<select name="prodotti" >
-	   			<option value="Mouse">Mouse</option></option>
+			<select name="prodotti">
+	   			<option value="Mouse">Mouse</option>
 	   			<option value="Alimentatore">Alimentatore</option>
 	   			<option value="Tastiera">Tastiera</option>
 	  		</select>
