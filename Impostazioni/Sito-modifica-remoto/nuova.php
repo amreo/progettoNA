@@ -19,6 +19,6 @@
 		<br></br>
 		<input type="submit" name="Submit" value="Salva" />
 		<br></br>
-		<a href="logout.php">Logout</a>
+		<a href="homepage.php">Home</a>
 	</form>
 </html>
