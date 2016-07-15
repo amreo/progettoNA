@@ -9,19 +9,12 @@
 <html>
 	<link rel="stylesheet" href="stile.css" type="text/css" />
 	<form method="post" name="Update" action="updatestazione.php" />
-		<h3>Impostazioni</h3>
+		<h3>Stampa</h3>
 		
-		<p>ID Stazione<p>
+		<p>Prodotto<p>
 		<input type="text" name="idstazione" />
-		
-		<p>Linea Produzione<p>
-		<input type="text" name="lineaproduzione" />
-		
-		<p>Timeout Barcode<p>
- 		<input type="text" name="timeout" />
-		
 		<br></br>
-		<input type="submit" name="Submit" value="Update" />
+		<input type="submit" name="Print" value="Stampa" href="stampa.php"/>
 		<br></br>
 		<a href="homepage.php">Home</a>
 	</form> 
