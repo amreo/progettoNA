@@ -38,5 +38,6 @@
 	</head>
 <body>
  <div id="piechart" style="width: 1100px; height: 700px;"></div>
+ <a id="logout" href="homepage.php">Home</a>
 </body>
 </html>
