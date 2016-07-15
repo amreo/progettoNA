@@ -8,15 +8,15 @@
 	
 	<html>
 		<link rel="stylesheet" href="stile.css" type="text/css" />
-		<form method="post" name="Update" action="stampa.php" />
+		<form method="post" action="stampa.php" />
 			<h3>Stampa</h3>
 			
 			<p>Prodotto<p>
 			<select name="prodotti">
-				<option value="Seleziona">Seleziona il prodotto</option>
-	   			<option value="Mouse">Mouse</option>
-	   			<option value="Alimentatore">Alimentatore</option>
-	   			<option value="Tastiera">Tastiera</option>
+				<option name="prodotto" value="Seleziona">Seleziona il prodotto</option>
+	   			<option name="prodotto" value="Mouse">Mouse</option>
+	   			<option name="prodotto" value="Alimentatore">Alimentatore</option>
+	   			<option name="prodotto" value="Tastiera">Tastiera</option>
 	  		</select>
 			<br></br>
 			<input type="submit" name="Update" value="Stampa"/>
