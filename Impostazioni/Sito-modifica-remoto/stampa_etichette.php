@@ -14,7 +14,7 @@
   			<select name='prodotti'>
 				 
   			</select>
-		<a href="logout.php">Logout</a>
+		<a href="homepage.php">Home</a>
 	        </form> 
 	</form> 
 </html>
