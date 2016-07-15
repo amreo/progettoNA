@@ -70,6 +70,6 @@
 		<h3>No Results found.</h3>
 		<?php endif; ?>
 		<br></br>
-		<a href="logout.php">Logout</a>
+		<a href="homepage.php">Home</a>
 	</body>
 </html>
