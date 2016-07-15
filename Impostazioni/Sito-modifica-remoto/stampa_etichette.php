@@ -8,13 +8,13 @@
 
 <html>
 	<link rel="stylesheet" href="stile.css" type="text/css" />
-	<form method="post" name="Update" action="updatestazione.php" />
+	<form method="post" name="Update" action="stampa.php" />
 		<h3>Stampa</h3>
 		
 		<p>Prodotto<p>
 		<input type="text" name="idstazione" />
 		<br></br>
-		<input type="submit" name="Print" value="Stampa" href="stampa.php"/>
+		<input type="submit" name="Update" value="Stampa"/>
 		<br></br>
 		<a href="homepage.php">Home</a>
 	</form> 
